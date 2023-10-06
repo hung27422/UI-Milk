@@ -1,0 +1,55 @@
+.search {
+  width: 500px;
+  height: 40px;
+  background-color: rgb(177, 221, 255);
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+.icon-search {
+  margin: 0 8px;
+  padding: 3px 0;
+  color: var(--white);
+  font-size: 1.8rem;
+}
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  font-size: 1.6rem;
+  background-color: transparent;
+  color: var(--black);
+}
+
+//Toollip
+.box {
+  width: 470px;
+  text-align: center;
+  cursor: pointer;
+}
+.header-search {
+  text-align: left;
+  padding: 12px 0px 6px 12px;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.icon-shop {
+  color: var(--secondary);
+  margin-right: 8px;
+}
+.search-body {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.result-search {
+  padding: 5px 0;
+  font-size: 1.7rem;
+  padding: 4px 12px;
+  &:hover {
+    background: rgba(22, 24, 35, 0.03);
+  }
+}
+
