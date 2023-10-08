@@ -8,8 +8,9 @@
   padding: 0 12px;
   background-color: var(--white);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  z-index: 10;
 }
-.logo{
+.logo {
   width: 240px;
 }
 .img-logo {
@@ -55,7 +56,7 @@
   color: var(--white);
   font-weight: 600;
 }
-.avatar{
+.avatar {
   display: block;
   width: 45px;
   height: 45px;

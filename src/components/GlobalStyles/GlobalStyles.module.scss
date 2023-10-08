@@ -5,6 +5,9 @@
   --secondary: #3d85c0;
   --white: #fff;
   --black: #000;
+  --text-color: #103a71;
+
+  --font-primary: FontPrimary, sans-serif;
 }
 * {
   padding: 0;
@@ -17,11 +20,16 @@ html {
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-primary);
   font-size: 1.6rem;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
   overflow-y: overlay;
+}
+//Font family
+@font-face {
+  font-family: FontPrimary;
+  src: url(../../assets/Fonts/DINRoundOT.otf);
 }
 input {
   outline: none;

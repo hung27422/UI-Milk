@@ -1,8 +1,15 @@
-.wrapper{
-    display: flex;
+.wrapper {
+  display: flex;
 }
-.content{
-    display: flex;
-    width: 100%;
-    margin-top: 60px;
+.content {
+  display: flex;
+  width: 100%;
+  margin-top: 60px;
+}
+.page {
+  width: 100%;
+  padding: 18px 24px 0 24px;
+  height: 100%;
+  overflow-y: hidden scroll;
+  margin-left: 94px;
 }

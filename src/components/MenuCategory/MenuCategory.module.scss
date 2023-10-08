@@ -1,0 +1,33 @@
+.body-menu {
+  display: flex;
+}
+.box-menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  padding: 6px 8px;
+  margin-right: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  //   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &.active {
+    background-color: var(--secondary);
+    color: #fff !important;
+  }
+}
+
+.menu-logo {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  padding: 4px;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+.menu-name {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 700;
+}

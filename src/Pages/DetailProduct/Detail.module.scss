@@ -1,0 +1,133 @@
+.wrapper {
+  width: 1300px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  display: flex;
+}
+.image {
+  width: fit-content;
+  height: 500px;
+  margin-top: 30px;
+  background-color: var(--white);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;
+  border-radius: 12px;
+}
+.img-product {
+  display: block;
+  width: 350px;
+  height: 500px;
+  border-radius: 12px;
+}
+//Details
+.detail-product {
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+}
+.product-name {
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.product-price {
+  font-size: 2rem;
+  color: var(--text-color);
+  font-weight: 500;
+  margin-top: 10px;
+}
+.product-capacity {
+  display: block;
+  font-size: 1.8rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.product-size {
+  display: flex;
+  align-items: center;
+}
+.title-size {
+  font-size: 1.8rem;
+}
+.form-size {
+  display: block;
+  margin-left: 16px;
+  display: inline-flex;
+  align-items: center;
+}
+.name-size {
+  font-size: 1.6rem;
+  margin-left: 4px;
+}
+//ActionButton
+.action-btn {
+  display: flex;
+  align-items: center;
+  margin: 40px 0;
+}
+.select-quantity {
+  margin-right: 8px;
+  width: 100px;
+  height: 40px;
+  padding: 0 3px;
+  background-color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 8px 0 rgba(103, 151, 255, 0.11),
+    0 12px 18px 0 rgba(103, 151, 255, 0.11);
+  border-radius: 8px;
+}
+.btn-minus,
+.btn-add {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: var(--primary);
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.btn-buy,
+.btn-add__cart {
+  background-color: var(--secondary);
+  width: 200px;
+  height: 40px;
+  padding: 4px;
+  color: var(--white);
+  font-size: 2rem;
+  text-align: center;
+  border-radius: 8px;
+  margin: 0 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--white);
+    border: 1px solid var(--secondary);
+    color: var(--text-color);
+  }
+  &:hover .icon-buy {
+    color: var(--text-color);
+  }
+  &:hover .icon-cart {
+    color: var(--text-color);
+  }
+}
+.btn-add__cart {
+  background-color: var(--text-color);
+}
+.icon-buy,
+.icon-cart {
+  margin-right: 6px;
+  color: var(--white);
+}
+.title{
+    margin-bottom: 8px;
+}
+.product-description,
+.product-manual,
+.product-ingredient {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
