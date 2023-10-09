@@ -3,7 +3,15 @@ import styles from "./Button.module.scss";
 import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
-function Button({ to, href, primary, children, onClick, ...passProps }) {
+function Button({
+  to,
+  href,
+  primary,
+  select,
+  children,
+  onClick,
+  ...passProps
+}) {
   let Comp = "button";
   let props = {
     onClick,
@@ -20,6 +28,7 @@ function Button({ to, href, primary, children, onClick, ...passProps }) {
 
   const classes = cx("wrapper", {
     primary,
+    select,
   });
   return (
     <Comp className={classes} {...props}>

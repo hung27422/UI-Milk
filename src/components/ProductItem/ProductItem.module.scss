@@ -29,10 +29,10 @@
 .product-name {
   width: 180px;
   display: block;
-  margin: 0 0 3px;
   font-size: 1.6rem;
   color: var(--text-color);
   text-align: center;
+  padding-bottom: 10px;
 }
 .product-info {
   padding: 14px 0;
@@ -48,4 +48,7 @@
 .price-new {
   color: #103a71;
   font-weight: 600;
+}
+.hidden {
+  display: none !important;
 }

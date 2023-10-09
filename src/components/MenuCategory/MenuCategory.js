@@ -25,9 +25,6 @@ function MenuCategory() {
   };
   return (
     <div className={cx("wrapper")}>
-      {/* <h2 className={cx("title")}>
-        <span>Menu</span> Category
-      </h2> */}
       <div className={cx("body-menu")}>
         <BoxMenu
           id={"1"}

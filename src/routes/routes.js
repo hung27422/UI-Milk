@@ -1,5 +1,5 @@
 import DetailProduct from "../Pages/DetailProduct/DetailProduct";
-import Product from "../Pages/Product/Product";
+import Product from "../Pages/Home/HomePage";
 import configs from "../configs";
 import History from "~/Pages/History/History";
 import Order from "~/Pages/Order/Order";
