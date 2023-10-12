@@ -9,6 +9,11 @@ import cream from "./images/Kem.png";
 import milk from "./images/Milk.png";
 import yogurt from "./images/Yogurt.png";
 import nuocgiaikhat from "./images/Nuocgiaikhat.png";
+import facebook from "./images/facebook.png";
+import tiktok from "./images/tiktok.png";
+import instagram from "./images/instagram.png";
+import twitter from "./images/twitter.png";
+
 const images = {
   logo,
   menusidebar,
@@ -21,5 +26,9 @@ const images = {
   yogurt,
   milk,
   nuocgiaikhat,
+  facebook,
+  tiktok,
+  twitter,
+  instagram,
 };
 export default images;

@@ -8,6 +8,7 @@ function Button({
   href,
   primary,
   select,
+  pointgift,
   children,
   onClick,
   ...passProps
@@ -29,6 +30,7 @@ function Button({
   const classes = cx("wrapper", {
     primary,
     select,
+    pointgift,
   });
   return (
     <Comp className={classes} {...props}>

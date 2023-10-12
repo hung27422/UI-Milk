@@ -17,12 +17,23 @@
     margin-left: 8px;
   }
 }
-//Button Primary
+//Button Classname
 .primary {
   background-color: var(--primary);
   color: var(--white) !important;
 }
 .select {
+  background-color: var(--text-color);
+  color: white;
+  font-size: 2rem;
+  font-weight: 500;
+  &:hover {
+    border: 1px solid var(--text-color);
+    background-color: var(--white);
+    color: var(--text-color);
+  }
+}
+.pointgift {
   background-color: var(--text-color);
   color: white;
   font-size: 2rem;

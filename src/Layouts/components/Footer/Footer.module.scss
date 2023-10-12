@@ -1,0 +1,73 @@
+.wrapper {
+  width: 100%;
+  height: 300px;
+  background-color: var(--primary);
+  padding: 0 -24px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.footer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 8px;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  padding-top: 12px;
+}
+.footer-item {
+  display: flex;
+  flex-direction: column;
+}
+.logo {
+  width: 180px;
+  height: 90px;
+}
+.description {
+  font-size: 1.4rem;
+  text-align: justify;
+  margin-left: 8px;
+  width: 200px;
+}
+.society {
+  width: 230px;
+  border-top: 1px solid var(--secondary);
+}
+.icon-society {
+  width: 40px;
+  height: 40px;
+  margin-top: 10px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+.title {
+  font-size: 3rem;
+  font-weight: 600;
+}
+.des-item {
+  display: flex;
+  margin-top: 8px;
+  margin-left: 10px;
+  margin-bottom: 8px;
+}
+.icon {
+  margin-right: 8px;
+  font-size: 1.6rem;
+}
+.menu-img {
+  width: 25px;
+  height: 25px;
+  margin: 0 8px;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.service-item {
+  padding: 4px 0;
+  margin-left: 8px;
+  cursor: pointer;
+}
