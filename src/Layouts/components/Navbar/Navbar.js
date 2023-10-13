@@ -3,13 +3,7 @@ import styles from "./Navbar.module.scss";
 import images from "~/assets/Images/Image";
 import Button from "~/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBell,
-  faCartShopping,
-  faL,
-  faMagnifyingGlass,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBell, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext } from "react";
 import Search from "../Search/Search";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
@@ -19,7 +13,7 @@ const Quantity = ({ children }) => {
   return <span className={cx("quantity")}>{children}</span>;
 };
 function Navbar() {
-  const { currentUser, setCurrentUser } = useContext(MilkContext);
+  const { currentUser } = useContext(MilkContext);
 
   return (
     <div className={cx("wrapper")}>

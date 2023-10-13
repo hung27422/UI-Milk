@@ -9,6 +9,7 @@ function Button({
   primary,
   select,
   pointgift,
+  checkout,
   children,
   onClick,
   ...passProps
@@ -31,6 +32,7 @@ function Button({
     primary,
     select,
     pointgift,
+    checkout,
   });
   return (
     <Comp className={classes} {...props}>

@@ -7,18 +7,19 @@
   border-radius: 12px;
   display: flex;
   align-items: center;
+  // font-size: var(--font-size-primary);
 }
 .icon-search {
   margin: 0 8px;
   padding: 3px 0;
   color: var(--white);
-  font-size: 1.8rem;
+  font-size: 18px;
 }
 .search-input {
   width: 100%;
   padding: 10px;
   border: none;
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
   background-color: transparent;
   color: var(--black);
 }
@@ -32,7 +33,7 @@
 .header-search {
   text-align: left;
   padding: 12px 0px 6px 12px;
-  font-size: 1.8rem;
+  font-size: 18px;
   font-weight: 600;
 }
 .icon-shop {
@@ -46,10 +47,9 @@
 }
 .result-search {
   padding: 5px 0;
-  font-size: 1.7rem;
+  font-size: 17px;
   padding: 4px 12px;
   &:hover {
     background: rgba(22, 24, 35, 0.03);
   }
 }
-

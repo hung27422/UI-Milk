@@ -4,8 +4,8 @@
   align-items: center;
   min-width: 100px;
   height: 36px;
-  font-size: 1.6rem;
-  padding: 9px 16px;
+  font-size: var(--font-size-primary);
+  padding: 9px var(--font-size-primary);
   font-weight: 700;
   background-color: var(--white);
   outline: none;
@@ -25,7 +25,7 @@
 .select {
   background-color: var(--text-color);
   color: white;
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: 500;
   &:hover {
     border: 1px solid var(--text-color);
@@ -36,11 +36,26 @@
 .pointgift {
   background-color: var(--text-color);
   color: white;
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: 500;
   &:hover {
     border: 1px solid var(--text-color);
     background-color: var(--white);
     color: var(--text-color);
+  }
+}
+.checkout {
+  margin-top: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 4px;
+  font-size: 20px;
+  background-color: var(--secondary);
+  color: var(--white);
+  font-weight: 700;
+  width: 180px;
+  height: 45px;
+  font-family: var(--font-primary);
+  &:active {
+    background-color: var(--primary);
   }
 }

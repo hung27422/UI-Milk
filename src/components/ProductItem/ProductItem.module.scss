@@ -25,11 +25,12 @@
 }
 .container {
   margin: 8px 8px;
+  font-size: var(--font-size-primary);
 }
 .product-name {
   width: 180px;
   display: block;
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
   color: var(--text-color);
   text-align: center;
   padding-bottom: 10px;
@@ -38,7 +39,7 @@
   padding: 14px 0;
 }
 .product-price {
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
 }
 .price-discount {
   color: #888;

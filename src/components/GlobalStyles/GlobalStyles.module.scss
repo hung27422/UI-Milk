@@ -7,6 +7,7 @@
   --black: #000;
   --text-color: #103a71;
   --font-primary: FontPrimary, sans-serif;
+  --font-size-primary: 16px;
 }
 * {
   padding: 0;
@@ -14,13 +15,12 @@
   box-sizing: border-box;
 }
 html {
-  font-size: 62.5%;
   background-color: var(--background-primary);
 }
 
 body {
   font-family: var(--font-primary);
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
   line-height: 1.5;
   text-rendering: optimizeSpeed;
   overflow-y: overlay;
@@ -34,3 +34,6 @@ input {
   outline: none;
 }
 
+.css-1hv8oq8-MuiStepLabel-label {
+  font-size: var(--font-size-primary) !important;
+}

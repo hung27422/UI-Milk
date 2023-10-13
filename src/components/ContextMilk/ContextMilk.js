@@ -4,9 +4,17 @@ export const MilkContext = createContext();
 function ContextMilk({ children }) {
   const [currentUser, setCurrentUser] = useState(true);
   const [active, setActive] = useState("1");
+  const [total, setTotal] = useState(8000);
   return (
     <MilkContext.Provider
-      value={{ currentUser, setCurrentUser, active, setActive }}
+      value={{
+        currentUser,
+        setCurrentUser,
+        active,
+        setActive,
+        total,
+        setTotal,
+      }}
     >
       {children}
     </MilkContext.Provider>

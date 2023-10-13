@@ -26,19 +26,19 @@
   flex-direction: column;
 }
 .product-name {
-  font-size: 3rem;
+  font-size: 30px;
   font-weight: 600;
   color: var(--text-color);
 }
 .product-price {
-  font-size: 2rem;
+  font-size: 20px;
   color: var(--text-color);
   font-weight: 500;
   margin-top: 10px;
 }
 .product-capacity {
   display: block;
-  font-size: 1.8rem;
+  font-size: 18px;
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -47,16 +47,16 @@
   align-items: center;
 }
 .title-size {
-  font-size: 1.8rem;
+  font-size: 18px;
 }
 .form-size {
   display: block;
-  margin-left: 16px;
+  margin-left: var(--font-size-primary);
   display: inline-flex;
   align-items: center;
 }
 .name-size {
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
   margin-left: 4px;
 }
 //ActionButton
@@ -84,7 +84,7 @@
   height: 30px;
   border: none;
   background-color: var(--primary);
-  font-size: 2rem;
+  font-size: 20px;
   cursor: pointer;
   border-radius: 8px;
 }
@@ -95,7 +95,7 @@
   height: 40px;
   padding: 4px;
   color: var(--white);
-  font-size: 2rem;
+  font-size: 20px;
   text-align: center;
   border-radius: 8px;
   margin: 0 12px;
@@ -120,14 +120,14 @@
   margin-right: 6px;
   color: var(--white);
 }
-.title{
-    margin-bottom: 8px;
+.title {
+  margin-bottom: 8px;
 }
 .product-description,
 .product-manual,
 .product-ingredient {
   display: flex;
   flex-direction: column;
-  font-size: 1.8rem;
+  font-size: 18px;
   margin-bottom: 20px;
 }

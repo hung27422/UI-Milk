@@ -5,6 +5,7 @@ import History from "~/Pages/History/History";
 import Order from "~/Pages/Order/Order";
 import Menu from "~/Pages/Menu/Menu";
 import Setting from "~/Pages/Setting/Setting";
+import OrderStepper from "~/Pages/OrderStep/OrderStepper";
 const publicRoutes = [
   { path: configs.routes.product, component: Product },
   { path: configs.routes.detailproduct, component: DetailProduct },
@@ -12,5 +13,6 @@ const publicRoutes = [
   { path: configs.routes.order, component: Order },
   { path: configs.routes.menu, component: Menu },
   { path: configs.routes.setting, component: Setting },
+  { path: configs.routes.orderstepper, component: OrderStepper },
 ];
 export default publicRoutes;

@@ -25,7 +25,7 @@
   height: 90px;
 }
 .description {
-  font-size: 1.4rem;
+  font-size: 14px;
   text-align: justify;
   margin-left: 8px;
   width: 200px;
@@ -42,7 +42,7 @@
   cursor: pointer;
 }
 .title {
-  font-size: 3rem;
+  font-size: 30px;
   font-weight: 600;
 }
 .des-item {
@@ -53,7 +53,7 @@
 }
 .icon {
   margin-right: 8px;
-  font-size: 1.6rem;
+  font-size: var(--font-size-primary);
 }
 .menu-img {
   width: 25px;
