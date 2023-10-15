@@ -59,3 +59,27 @@
     background-color: var(--primary);
   }
 }
+.discount {
+  margin-top: 15px;
+  background-color: var(--secondary);
+  color: var(--white);
+  font-family: var(--font-primary);
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.payment {
+  width: 120px;
+  height: 45px;
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &:active {
+    background-color: var(--primary);
+  }
+}

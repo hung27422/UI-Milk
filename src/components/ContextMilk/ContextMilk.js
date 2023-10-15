@@ -5,6 +5,7 @@ function ContextMilk({ children }) {
   const [currentUser, setCurrentUser] = useState(true);
   const [active, setActive] = useState("1");
   const [total, setTotal] = useState(8000);
+  const [activeStep, setActiveStep] = useState(0);
   return (
     <MilkContext.Provider
       value={{
@@ -14,6 +15,8 @@ function ContextMilk({ children }) {
         setActive,
         total,
         setTotal,
+        activeStep,
+        setActiveStep,
       }}
     >
       {children}

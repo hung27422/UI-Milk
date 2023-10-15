@@ -6,5 +6,6 @@ const routes = {
   menu: "/menu",
   setting: "/setting",
   orderstepper: "/orderstepper",
+  payment: "/payment",
 };
 export default routes;

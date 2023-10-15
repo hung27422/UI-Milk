@@ -1,0 +1,53 @@
+.payment-online {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 8px;
+}
+.select-card {
+  display: flex;
+}
+
+
+.input-card {
+  margin-top: 20px;
+}
+.input-number {
+  width: 400px;
+  height: 80px !important;
+}
+.check-save {
+  margin-left: 12px;
+}
+.input-checkbox {
+  font-size: 2rem;
+}
+.content-right {
+  display: flex;
+  flex-direction: column;
+}
+.container-price {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.title-order {
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+.price {
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 18px;
+}
+.number-price {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.last-price {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.btn-action {
+  text-align: right;
+}

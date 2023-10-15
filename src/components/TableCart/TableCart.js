@@ -24,20 +24,6 @@ const rows = [
     <TotalPrice />,
     <DeleteProduct />
   ),
-  createData(
-    <ItemProduct />,
-    <PriceProduct />,
-    <QuantityProduct />,
-    <TotalPrice />,
-    <DeleteProduct />
-  ),
-  createData(
-    <ItemProduct />,
-    <PriceProduct />,
-    <QuantityProduct />,
-    <TotalPrice />,
-    <DeleteProduct />
-  ),
 ];
 
 export default function TableCart() {

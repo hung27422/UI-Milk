@@ -13,6 +13,7 @@ import facebook from "./images/facebook.png";
 import tiktok from "./images/tiktok.png";
 import instagram from "./images/instagram.png";
 import twitter from "./images/twitter.png";
+import check from "./images/check-icon.png";
 
 const images = {
   logo,
@@ -30,5 +31,6 @@ const images = {
   tiktok,
   twitter,
   instagram,
+  check,
 };
 export default images;

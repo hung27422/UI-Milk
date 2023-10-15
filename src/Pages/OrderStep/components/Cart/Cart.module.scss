@@ -10,7 +10,35 @@
   margin-right: auto;
   height: 20px;
 }
-.btn-action{
-  text-align: right;
-  margin-right: 20px;
+.container {
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--background-primary);
+  width: 1300px;
+  overflow-y: hidden scroll;
+}
+.title {
+  font-size: 30px;
+}
+.content {
+  font-size: 20px;
+  color: var(--text-color);
+  font-weight: 700;
+}
+.discount,
+.total-price,
+.btn-action {
+  margin-top: 15px;
+  margin-right: 40px;
+  width: 300px;
+  text-align: center;
+}
+.discount-item {
+  margin-right: 22px;
+}
+.discount {
+  display: flex;
+  align-items: center;
 }
