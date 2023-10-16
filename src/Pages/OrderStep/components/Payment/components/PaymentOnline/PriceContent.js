@@ -19,9 +19,7 @@ function PriceContent() {
           Tông tiền: <span className={cx("price")}>26000 VNĐ</span>
         </span>
       </div>
-      <div className={cx("btn-action")}>
-        <Button payment>Tiếp tục</Button>
-      </div>
+      
     </div>
   );
 }

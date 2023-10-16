@@ -7,5 +7,6 @@ const routes = {
   setting: "/setting",
   orderstepper: "/orderstepper",
   payment: "/payment",
+  delivery: "/delivery",
 };
 export default routes;

@@ -3,6 +3,7 @@ import styles from "./Payment.module.scss";
 import OrderSteps from "~/components/OrderSteps";
 import Button from "~/components/Button";
 import PaymentOnline from "./components/PaymentOnline/PaymentOnline";
+import PaymentOffline from "./components/PaymentOfline/PaymentOffline";
 import { useState } from "react";
 const cx = classNames.bind(styles);
 
@@ -51,11 +52,7 @@ function Payment() {
         </div>
         <div className={cx("content")}>
           {activeID === 1 && <PaymentOnline />}
-          {activeID === 2 && (
-            <>
-              <h2>Thanh toán khi nhận hàng</h2>
-            </>
-          )}
+          {activeID === 2 && <PaymentOffline />}
         </div>
       </div>
     </div>

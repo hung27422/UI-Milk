@@ -7,6 +7,7 @@ import Menu from "~/Pages/Menu/Menu";
 import Setting from "~/Pages/Setting/Setting";
 import OrderStepper from "~/Pages/OrderStep/OrderStepper";
 import Payment from "~/Pages/OrderStep/components/Payment";
+import Delivery from "~/Pages/OrderStep/components/Delivery/Delivery";
 const publicRoutes = [
   { path: configs.routes.product, component: Product },
   { path: configs.routes.detailproduct, component: DetailProduct },
@@ -16,5 +17,6 @@ const publicRoutes = [
   { path: configs.routes.setting, component: Setting },
   { path: configs.routes.orderstepper, component: OrderStepper },
   { path: configs.routes.payment, component: Payment },
+  { path: configs.routes.delivery, component: Delivery },
 ];
 export default publicRoutes;
