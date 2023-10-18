@@ -18,7 +18,7 @@ const InfoPrice = ({ numberPrice, title }) => {
 function Cart() {
   const { activeStep, setActiveStep } = useContext(MilkContext);
 
-  const hanldeActiveStep = () => {
+  const handleActiveStep = () => {
     setActiveStep(activeStep + 1);
   };
   return (
@@ -39,10 +39,10 @@ function Cart() {
         <div className={cx("btn-action")}>
           <Button
             checkout
-            to={configs.routes.payment}
-            onClick={hanldeActiveStep}
+            to={configs.routes.delivery}
+            onClick={handleActiveStep}
           >
-            Check out
+            Mua hàng
           </Button>
         </div>
       </div>

@@ -31,7 +31,7 @@ const Container = () => {
           icon={<MenuIcon />}
         ></MenuItem>
         <MenuItem
-          to={configs.routes.order}
+          to={configs.routes.orderstepper}
           title="Order"
           icon={<OrderIcon />}
         ></MenuItem>

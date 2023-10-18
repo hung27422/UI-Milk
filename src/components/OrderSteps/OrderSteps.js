@@ -5,7 +5,7 @@ import StepLabel from "@mui/material/StepLabel";
 import { useContext } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
 
-const OrderStepsData = ["Cart", "Payment", "Delivery", "Done"];
+const OrderStepsData = ["Cart", "Delivery", "Payment", "Done"];
 
 function OrderSteps() {
   const { activeStep } = useContext(MilkContext);

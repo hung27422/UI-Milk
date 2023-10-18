@@ -33,7 +33,7 @@
     color: var(--text-color);
   }
 }
-.pointgift {
+.pointGift {
   background-color: var(--text-color);
   color: white;
   font-size: 20px;
@@ -69,6 +69,34 @@
   }
 }
 .payment {
+  height: 40px;
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: 700;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.changAddress {
+  width: 50px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.delivery {
   width: 120px;
   height: 45px;
   font-size: 20px;
@@ -79,6 +107,18 @@
   color: var(--white);
   background-color: var(--secondary);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.orderDone {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
   &:active {
     background-color: var(--primary);
   }

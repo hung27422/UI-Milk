@@ -34,7 +34,7 @@ function PointToGift() {
             </span>
           </div>
           <div className={cx("btn-detail")}>
-            <Button pointgift>Xem chi tiết</Button>
+            <Button pointGift>Xem chi tiết</Button>
           </div>
         </div>
       </div>

@@ -7,6 +7,8 @@ import { faBell, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext } from "react";
 import Search from "../Search/Search";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import { NavLink } from "react-router-dom";
+import configs from "~/configs";
 const cx = classNames.bind(styles);
 
 const Quantity = ({ children }) => {
@@ -22,10 +24,10 @@ function Navbar() {
       </div>
       <Search />
       <div className={cx("btn-action")}>
-        <div className={cx("icon-action")}>
+        <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faCartShopping} />
           <Quantity>6</Quantity>
-        </div>
+        </NavLink>
         <div className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faBell} />
           <Quantity>3</Quantity>

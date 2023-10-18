@@ -8,6 +8,7 @@ import Setting from "~/Pages/Setting/Setting";
 import OrderStepper from "~/Pages/OrderStep/OrderStepper";
 import Payment from "~/Pages/OrderStep/components/Payment";
 import Delivery from "~/Pages/OrderStep/components/Delivery/Delivery";
+import OrderDone from "~/Pages/OrderStep/components/OrderDone/OrderDone";
 const publicRoutes = [
   { path: configs.routes.product, component: Product },
   { path: configs.routes.detailproduct, component: DetailProduct },
@@ -18,5 +19,6 @@ const publicRoutes = [
   { path: configs.routes.orderstepper, component: OrderStepper },
   { path: configs.routes.payment, component: Payment },
   { path: configs.routes.delivery, component: Delivery },
+  { path: configs.routes.orderdone, component: OrderDone },
 ];
 export default publicRoutes;

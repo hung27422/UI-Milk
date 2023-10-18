@@ -16,11 +16,15 @@ function ButtonPayment() {
   };
   return (
     <div className={cx("btn-action")}>
-      <Button to={configs.routes.orderstepper} payment onClick={hanldeActiveStepPre}>
+      <Button
+        to={configs.routes.delivery}
+        payment
+        onClick={hanldeActiveStepPre}
+      >
         Trở lại
       </Button>
-      <Button to={configs.routes.delivery} payment onClick={hanldeActiveStep}>
-        Tiếp tục
+      <Button to={configs.routes.orderdone} payment onClick={hanldeActiveStep}>
+        Xác nhận thanh toán
       </Button>
     </div>
   );
