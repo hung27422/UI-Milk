@@ -19,9 +19,10 @@
 }
 //Button Classname
 .primary {
-  background-color: var(--primary);
+  background-color: var(--secondary) !important;
   color: var(--white) !important;
 }
+
 .select {
   background-color: var(--text-color);
   color: white;
@@ -82,7 +83,7 @@
     background-color: var(--primary);
   }
 }
-.changAddress {
+.selectChoose {
   width: 50px;
   height: 30px;
   font-size: 16px;
@@ -112,6 +113,32 @@
   }
 }
 .orderDone {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.waitConfirm {
+  height: 45px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  &:active {
+    background-color: var(--primary);
+  }
+}
+.confirmOrderDone {
+  height: 45px;
   font-size: 18px;
   font-weight: 700;
   text-align: center;

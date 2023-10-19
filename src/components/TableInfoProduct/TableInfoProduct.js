@@ -5,7 +5,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import classNames from "classnames/bind";
-import styles from "../../Delivery.module.scss";
+import styles from "./TableInfoProduct.module.scss";
 
 import ItemProduct from "~/components/ItemCart/ItemProduct";
 import PriceProduct from "~/components/ItemCart/PriceProduct";
@@ -48,10 +48,22 @@ const rows = [
   ),
 ];
 
-function TableInfoProduct() {
+function TableInfoProduct({ waitConfirm, doneOrder }) {
   return (
     <div>
-      <h2 className={cx("title")}>Thông tin sản phẩm</h2>
+      <div className={cx("box-title")}>
+        <h2 className={cx("title")}>Thông tin sản phẩm</h2>
+        {waitConfirm && (
+          <h2 className={cx("title")} style={{ color: "red" }}>
+            Chờ xác nhận
+          </h2>
+        )}
+        {doneOrder && (
+          <h2 className={cx("title")} style={{ color: "green" }}>
+            Giao hàng thành công
+          </h2>
+        )}
+      </div>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>

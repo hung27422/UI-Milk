@@ -15,7 +15,10 @@ import instagram from "./images/instagram.png";
 import twitter from "./images/twitter.png";
 import check from "./images/check-icon.png";
 import checkdone from "./images/checkdone.png";
-
+import iconsWait from "./images/wait.png";
+import shipMent from "./images/shipment.png";
+import shipDone from "./images/shipdone.png";
+import evaluate from "./images/evaluate.png";
 const images = {
   logo,
   menusidebar,
@@ -34,5 +37,9 @@ const images = {
   instagram,
   check,
   checkdone,
+  iconsWait,
+  shipMent,
+  shipDone,
+  evaluate,
 };
 export default images;

@@ -3,6 +3,7 @@ import styles from "./OrderDone.module.scss";
 import OrderSteps from "~/components/OrderSteps";
 import images from "~/assets/Images/Image";
 import Button from "~/components/Button";
+import configs from "~/configs";
 const cx = classNames.bind(styles);
 function OrderDone() {
   return (
@@ -17,7 +18,9 @@ function OrderDone() {
         </div>
       </div>
       <div className={cx("btn-action")}>
-        <Button orderDone>Xem chi tiết đơn hàng</Button>
+        <Button to={configs.routes.detailorder} orderDone>
+          Xem chi tiết đơn hàng
+        </Button>
       </div>
     </div>
   );

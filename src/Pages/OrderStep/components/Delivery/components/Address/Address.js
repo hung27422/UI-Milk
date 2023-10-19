@@ -9,7 +9,7 @@ function Address({ children, selectAddress, border }) {
       <span className={cx("address")}>{children}</span>
       {selectAddress && (
         <div className={cx("btn-action")}>
-          <Button changAddress>Chọn</Button>
+          <Button selectChoose>Chọn</Button>
         </div>
       )}
     </div>

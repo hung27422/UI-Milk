@@ -1,0 +1,10 @@
+.box-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.title {
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--text-color);
+}

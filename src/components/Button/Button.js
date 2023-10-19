@@ -13,8 +13,10 @@ function Button({
   delivery,
   payment,
   orderDone,
+  waitConfirm,
+  confirmOrderDone,
   discount,
-  changAddress,
+  selectChoose,
   children,
   onClick,
   ...passProps
@@ -40,9 +42,11 @@ function Button({
     checkout,
     delivery,
     orderDone,
+    waitConfirm,
+    confirmOrderDone,
     discount,
     payment,
-    changAddress,
+    selectChoose,
   });
   return (
     <Comp className={classes} {...props}>

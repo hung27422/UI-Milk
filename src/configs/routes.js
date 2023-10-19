@@ -9,5 +9,8 @@ const routes = {
   payment: "/payment",
   delivery: "/delivery",
   orderdone: "/orderdone",
+  detailorder: "/detailorder",
+  shipment: "/shipment",
+  confirmorderdone: "/confirmorderdone",
 };
 export default routes;

@@ -10,8 +10,8 @@ import styles from "../../Delivery.module.scss";
 import ButtonChangeAddress from "../ButtonChangeAddress/ButtonChangeAddress";
 import Address from "../Address/Address";
 const cx = classNames.bind(styles);
-function createData(name, phone, address) {
-  return { name, phone, address };
+function createData(name, phone, address, hiddenButtonAddresses) {
+  return { name, phone, address, hiddenButtonAddresses };
 }
 const rows = [
   createData(
@@ -20,10 +20,13 @@ const rows = [
     <div className={cx("address-content")}>
       <Address>QL 22, Tân Xuân, HoocMon, Tp.HCM</Address>
       <ButtonChangeAddress />
+    </div>,
+    <div className={cx("address-content")}>
+      <Address>QL 22, Tân Xuân, HoocMon, Tp.HCM</Address>
     </div>
   ),
 ];
-function TableInfoDelivery() {
+function TableInfoDelivery({ hiddenButtonAddresses }) {
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>
@@ -61,7 +64,11 @@ function TableInfoDelivery() {
               <TableCell style={{ padding: "20px" }} align="left">
                 {row.phone}
               </TableCell>
-              <TableCell align="left">{row.address}</TableCell>
+              {hiddenButtonAddresses ? (
+                <TableCell align="left">{row.hiddenButtonAddresses}</TableCell>
+              ) : (
+                <TableCell align="left">{row.address}</TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

@@ -1,10 +1,11 @@
 import classNames from "classnames/bind";
-import TableCart from "~/components/TableCart/TableCart";
 import styles from "./Cart.module.scss";
+import TableCart from "~/components/TableCart/TableCart";
 import Button from "~/components/Button";
 import configs from "~/configs";
 import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import ButtonDiscount from "./ButtonDiscount";
 const cx = classNames.bind(styles);
 
 const InfoPrice = ({ numberPrice, title }) => {
@@ -31,7 +32,7 @@ function Cart() {
           <div className={cx("discount-item")}>
             <InfoPrice title={"Discount"} numberPrice={"- 5000"} />
           </div>
-          <Button discount>Áp dụng</Button>
+          <ButtonDiscount />
         </div>
         <div className={cx("total-price")}>
           <InfoPrice title={"TotalPrice"} numberPrice={24000}></InfoPrice>

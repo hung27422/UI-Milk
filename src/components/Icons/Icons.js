@@ -54,3 +54,39 @@ export function LogoutIcon() {
     />
   );
 }
+export function WaitIcon() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.iconsWait}
+      alt=""
+    />
+  );
+}
+export function ShipIcon() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.shipMent}
+      alt=""
+    />
+  );
+}
+export function EvaluateIcon() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.evaluate}
+      alt=""
+    />
+  );
+}
+export function ShipDoneIcon() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.shipDone}
+      alt=""
+    />
+  );
+}

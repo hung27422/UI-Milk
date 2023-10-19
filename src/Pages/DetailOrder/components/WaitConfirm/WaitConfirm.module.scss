@@ -1,0 +1,24 @@
+.wrapper {
+  width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  background-color: var(--white);
+  border-radius: 12px;
+}
+.btn-action {
+  text-align: right;
+  padding: 20px;
+}
+//Reason Cancel
+.reason-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 12px;
+}
+.reason {
+  font-size: 18px;
+  font-family: var(--font-primary);
+}

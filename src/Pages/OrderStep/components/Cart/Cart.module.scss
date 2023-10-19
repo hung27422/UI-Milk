@@ -25,6 +25,7 @@
 }
 .title {
   font-size: 30px;
+  color: var(--text-color);
 }
 .content {
   font-size: 20px;
@@ -45,4 +46,46 @@
 .discount {
   display: flex;
   align-items: center;
+}
+// --- Modal .discount
+.form-discount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.title-voucher {
+  font-size: 18px;
+}
+.input-voucher {
+  height: 35px;
+  width: 200px;
+  margin: 0 12px;
+  padding-left: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  &:focus {
+    border: 1px solid var(--black);
+  }
+}
+.list-discount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.desc-discount {
+  font-size: 18px;
+  .desc-item {
+    font-size: 17px !important;
+  }
+}
+.expiry {
+  color: #777;
+}
+.img-discount{
+  width: 100px;
+  height: 100px;
 }
