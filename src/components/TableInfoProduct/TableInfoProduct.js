@@ -12,8 +12,8 @@ import PriceProduct from "~/components/ItemCart/PriceProduct";
 import TotalPrice from "~/components/ItemCart/TotalPrice";
 
 const cx = classNames.bind(styles);
-function createData(name, price, quantity, total, deleteproduct) {
-  return { name, price, quantity, total, deleteproduct };
+function createData(name, price, quantity, total) {
+  return { name, price, quantity, total };
 }
 const rows = [
   createData(
@@ -31,21 +31,7 @@ const rows = [
     </span>,
     <TotalPrice />
   ),
-  createData(
-    <ItemProduct />,
-    <PriceProduct />,
-    <span
-      style={{
-        color: "var(--text-color)",
-        fontSize: "20px",
-        fontWeight: "700",
-        marginLeft: "42px",
-      }}
-    >
-      1
-    </span>,
-    <TotalPrice />
-  ),
+ 
 ];
 
 function TableInfoProduct({ waitConfirm, doneOrder }) {

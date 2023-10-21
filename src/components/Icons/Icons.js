@@ -90,3 +90,17 @@ export function ShipDoneIcon() {
     />
   );
 }
+export function UserIcon() {
+  return (
+    <img style={{ width: "30px", height: "30px" }} src={images.user} alt="" />
+  );
+}
+export function LocationIcon() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.location}
+      alt=""
+    />
+  );
+}

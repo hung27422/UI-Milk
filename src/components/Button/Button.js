@@ -16,6 +16,7 @@ function Button({
   waitConfirm,
   confirmOrderDone,
   discount,
+  userInfo,
   selectChoose,
   children,
   onClick,
@@ -46,6 +47,7 @@ function Button({
     confirmOrderDone,
     discount,
     payment,
+    userInfo,
     selectChoose,
   });
   return (

@@ -3,8 +3,27 @@ import styles from "./Footer.module.scss";
 import images from "~/assets/Images/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
+import { client } from "~/ApolloClient";
+import { gql } from "~/ApolloClient";
+import { useQuery } from "@apollo/client";
 const cx = classNames.bind(styles);
 function Footer() {
+  const { data } = useQuery(gql`
+    query Users {
+      users {
+        email
+        id
+        imageURL
+        name
+        roleId
+        token
+      }
+    }
+  `);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("footer")}>

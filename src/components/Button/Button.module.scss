@@ -150,3 +150,18 @@
     background-color: var(--primary);
   }
 }
+.userInfo {
+  height: 40px;
+  line-height: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 4px;
+  user-select: none;
+  font-family: var(--font-primary);
+  color: var(--white);
+  background-color: var(--secondary);
+  &:active {
+    background-color: var(--primary);
+  }
+}

@@ -1,27 +1,28 @@
 import classNames from "classnames/bind";
 import styles from "./Navbar.module.scss";
+import "tippy.js/dist/tippy.css";
 import images from "~/assets/Images/Image";
-import Button from "~/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { useState, useContext } from "react";
 import Search from "../Search/Search";
-import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { NavLink } from "react-router-dom";
 import configs from "~/configs";
+import LoginButton from "~/AuTh0/login";
+import { useAuth0 } from "@auth0/auth0-react";
+import AvatarUse from "~/components/AvatarUser/AvatarUse";
 const cx = classNames.bind(styles);
 
 const Quantity = ({ children }) => {
   return <span className={cx("quantity")}>{children}</span>;
 };
 function Navbar() {
-  const { currentUser } = useContext(MilkContext);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("logo")}>
+      <NavLink to={configs.routes.product} className={cx("logo")}>
         <img src={images.logo} alt="" className={cx("img-logo")} />
-      </div>
+      </NavLink>
       <Search />
       <div className={cx("btn-action")}>
         <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
@@ -32,15 +33,7 @@ function Navbar() {
           <FontAwesomeIcon className={cx("btn-icon")} icon={faBell} />
           <Quantity>3</Quantity>
         </div>
-        {!currentUser ? (
-          <Button primary>Login</Button>
-        ) : (
-          <img
-            className={cx("avatar")}
-            src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
-            alt="avatar"
-          />
-        )}
+        {!isAuthenticated ? <LoginButton /> : <AvatarUse />}
       </div>
     </div>
   );

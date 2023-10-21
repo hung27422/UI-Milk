@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  font-size: var(--font-size-primary);
+}
+.content {
+  display: flex;
+  margin-top: 100px;
+  width: 1300px;
+  height: 80vh;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  background-color: var(--white);
+}
+.page{
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}

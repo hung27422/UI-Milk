@@ -1,0 +1,14 @@
+.btn-login {
+  color: var(--white);
+  background-color: var(--secondary);
+  width: 80px;
+  height: 35px;
+  border-radius: 8px;
+  border-color: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  &:active {
+    background-color: var(--primary);
+  }
+}

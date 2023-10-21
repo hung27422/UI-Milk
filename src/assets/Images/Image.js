@@ -19,6 +19,8 @@ import iconsWait from "./images/wait.png";
 import shipMent from "./images/shipment.png";
 import shipDone from "./images/shipdone.png";
 import evaluate from "./images/evaluate.png";
+import user from "./images/user.png";
+import location from "./images/location.png";
 const images = {
   logo,
   menusidebar,
@@ -41,5 +43,7 @@ const images = {
   shipMent,
   shipDone,
   evaluate,
+  location,
+  user,
 };
 export default images;

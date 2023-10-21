@@ -1,0 +1,42 @@
+.wrapper {
+  margin-top: 50px;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.info-user {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
+.img-user {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.form-group {
+  display: flex;
+}
+.form-checkbox {
+  display: flex;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+}
+.input-data {
+  width: 450px;
+}
+.content {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 12px;
+  row-gap: 12px;
+}
+.btn-action {
+  text-align: center;
+  margin-top: 50px;
+}

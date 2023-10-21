@@ -1,0 +1,25 @@
+.avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.box-item {
+  padding: 0 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #fafafa;
+  }
+}
+.box-link {
+  display: block;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--black);
+  font-size: 18px;
+  padding: 8px 0;
+  &:hover {
+    color: var(--text-color);
+  }
+}

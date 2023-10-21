@@ -61,7 +61,7 @@
   height: 35px;
   width: 200px;
   margin: 0 12px;
-  padding-left: 8px;
+  padding: 0 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   &:focus {
@@ -85,7 +85,7 @@
 .expiry {
   color: #777;
 }
-.img-discount{
+.img-discount {
   width: 100px;
   height: 100px;
 }

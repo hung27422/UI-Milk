@@ -4,13 +4,24 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./components/GlobalStyles/GlobalStyles";
 import ContextMilk from "./components/ContextMilk/ContextMilk";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./ApolloClient";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AuthProvider from "./AuTh0/AuthProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
-      <ContextMilk>
-        <App />
-      </ContextMilk>
+      <AuthProvider>
+        <ApolloProvider client={client}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ContextMilk>
+              <App />
+            </ContextMilk>
+          </LocalizationProvider>
+        </ApolloProvider>
+      </AuthProvider>
     </GlobalStyles>
   </React.StrictMode>
 );

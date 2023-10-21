@@ -3,12 +3,13 @@ import styles from "./MenuItem.module.scss";
 import { NavLink } from "react-router-dom";
 
 const cx = classNames.bind(styles);
-function MenuItem({ title, to, icon }) {
+function MenuItem({ title, to, icon, onClick, logOut }) {
   return (
     <NavLink
       to={to}
       icon={icon}
-      className={(nav) => cx("menu-item", { active: nav.isActive })}
+      onClick={onClick}
+      className={(nav) => cx("menu-item", !logOut && { active: nav.isActive })}
     >
       <div className={cx("wrapper")}>
         <span className={cx("menu-icon")}>{icon}</span>

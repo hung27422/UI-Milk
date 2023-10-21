@@ -10,7 +10,7 @@ function PointToGift() {
         <div className={cx("image-content")}>
           <img
             className={cx("image-gift")}
-            src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/281085797_7681250348582535_2377076021992571870_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5614bc&_nc_ohc=FdmodgXWzP8AX_h3def&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfD8z2vZu5PTxOV9tcyZCsSb4AQCL4MmM5uhr7brMv6AyA&oe=6529BC16"
+            src="https://i.ytimg.com/vi/TQiCBT6IdA4/maxresdefault.jpg"
             alt=""
           />
         </div>
