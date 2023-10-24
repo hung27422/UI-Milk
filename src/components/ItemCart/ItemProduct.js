@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./ItemCart.module.scss";
 const cx = classNames.bind(styles);
-function ItemProduct() {
+function ItemProduct({ data }) {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("image")}>
@@ -12,13 +12,14 @@ function ItemProduct() {
         />
       </div>
       <div className={cx("info-product")}>
-        <span className={cx("name-product")}>Sữa tươi tiệc trùng</span>
+        <span className={cx("name-product")}>{data?.name}</span>
         <div className={cx("des-product")}>
           <span className={cx("size")}>
             Size: <span className={cx("size-select")}>L</span>
           </span>
           <span className={cx("capacity")}>
-            Dung tích: <span className={cx("capacity-select")}>180ml</span>
+            Dung tích
+            <span className={cx("capacity-select")}></span>
           </span>
         </div>
       </div>

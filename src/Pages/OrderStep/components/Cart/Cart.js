@@ -17,8 +17,9 @@ const InfoPrice = ({ numberPrice, title }) => {
   );
 };
 function Cart() {
+  const { cartItem } = useContext(MilkContext);
   const { activeStep, setActiveStep } = useContext(MilkContext);
-
+  let total = 0;
   const handleActiveStep = () => {
     setActiveStep(activeStep + 1);
   };
@@ -35,7 +36,10 @@ function Cart() {
           <ButtonDiscount />
         </div>
         <div className={cx("total-price")}>
-          <InfoPrice title={"TotalPrice"} numberPrice={24000}></InfoPrice>
+          {cartItem.forEach((item) => {
+            total = total + item.total;
+          })}
+          <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>
         </div>
         <div className={cx("btn-action")}>
           <Button

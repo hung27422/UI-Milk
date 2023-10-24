@@ -13,7 +13,7 @@ function Product() {
         <SliderItem />
       </div>
       <div className={cx("product-outstanding")}>
-        <ProductOutStanding />
+        {/* <ProductOutStanding /> */}
       </div>
       <div className={cx("point-gift")}>
         <PointToGift />

@@ -1,13 +1,10 @@
 import classNames from "classnames/bind";
 import styles from "./ItemCart.module.scss";
-import { useContext } from "react";
-import { MilkContext } from "../ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
-function TotalPrice() {
-  const { total } = useContext(MilkContext);
+function TotalPrice({ data }) {
   return (
     <div className={cx("wrapper")}>
-      <span className={cx("total")}>{total} VNĐ</span>
+      <span className={cx("total")}>{data?.total} VNĐ</span>
     </div>
   );
 }

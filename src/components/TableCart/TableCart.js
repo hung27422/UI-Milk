@@ -11,22 +11,31 @@ import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import DeleteProduct from "../ItemCart/DeleteProduct";
-
-function createData(name, price, quantity, total, deleteproduct) {
-  return { name, price, quantity, total, deleteproduct };
-}
-
-const rows = [
-  createData(
-    <ItemProduct />,
-    <PriceProduct />,
-    <QuantityProduct />,
-    <TotalPrice />,
-    <DeleteProduct />
-  ),
-];
+import { useContext } from "react";
+import { MilkContext } from "../ContextMilk/ContextMilk";
+import { useEffect } from "react";
+import { gql, useQuery } from "@apollo/client";
 
 export default function TableCart() {
+  const { cartItem } = useContext(MilkContext);
+  const { data } = useQuery(gql`
+    query Items {
+      items {
+        name
+        orderId
+        price
+        productId
+        quantity
+        sku
+      }
+    }
+  `);
+  useEffect(() => {
+    if (cartItem) {
+      console.log(cartItem);
+    }
+  }, [cartItem]);
+
   return (
     <TableContainer sx={{ backgroundColor: "var(--white)" }} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -48,20 +57,32 @@ export default function TableCart() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="left">{row.price}</TableCell>
-              <TableCell align="left">{row.quantity}</TableCell>
-              <TableCell align="left">{row.total}</TableCell>
-              <TableCell align="left">{row.deleteproduct}</TableCell>
-            </TableRow>
-          ))}
+          {cartItem?.map((item) => {
+            return (
+              <TableRow
+                key={item?.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <ItemProduct data={item} />
+                </TableCell>
+                <TableCell align="left">
+                  <PriceProduct data={item} />
+                </TableCell>
+
+                <TableCell align="left">
+                  <QuantityProduct data={item} />
+                </TableCell>
+
+                <TableCell align="left">
+                  <TotalPrice data={item} />
+                </TableCell>
+                <TableCell align="left">
+                  <DeleteProduct data={item} />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

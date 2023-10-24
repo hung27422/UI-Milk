@@ -16,8 +16,6 @@
   width: fit-content;
   height: 100px;
 }
-.info-product {
-}
 .name-product {
   font-size: 20px;
 }
@@ -45,18 +43,11 @@
   color: var(--text-color);
   font-weight: 600;
 }
-.select-quantity {
-  margin-right: 8px;
-  width: 100px;
-  height: 40px;
-  padding: 0 3px;
-  background-color: var(--white);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 8px 8px 0 rgba(103, 151, 255, 0.11),
-    0 12px 18px 0 rgba(103, 151, 255, 0.11);
-  border-radius: 8px;
+.quantity {
+  margin-left: 12px;
+  font-size: 18px;
+  color: var(--text-color);
+  font-weight: 700;
 }
 .btn-minus,
 .btn-add {
@@ -68,6 +59,7 @@
   cursor: pointer;
   border-radius: 8px;
 }
+
 .total {
   font-size: 18px;
   color: var(--text-color);

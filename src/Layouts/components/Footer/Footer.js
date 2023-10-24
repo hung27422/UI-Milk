@@ -21,9 +21,6 @@ function Footer() {
       }
     }
   `);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("footer")}>
