@@ -13,15 +13,11 @@ function ItemProduct({ data }) {
       </div>
       <div className={cx("info-product")}>
         <span className={cx("name-product")}>{data?.name}</span>
-        <div className={cx("des-product")}>
+        {/* <div className={cx("des-product")}>
           <span className={cx("size")}>
-            Size: <span className={cx("size-select")}>L</span>
+            Size: <span className={cx("size-select")}>{data?.nameSize}</span>
           </span>
-          <span className={cx("capacity")}>
-            Dung tích
-            <span className={cx("capacity-select")}></span>
-          </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

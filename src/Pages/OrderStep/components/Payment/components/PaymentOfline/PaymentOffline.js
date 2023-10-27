@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./PaymentOffline.module.scss";
 import PriceContent from "../PaymentOnline/PriceContent";
 import ButtonPayment from "../ButtonPayment/ButtonPayment";
+import PayPal from "~/Pages/OrderStep/components/Payment/components/PayPalCheckout/PayPal";
 const cx = classNames.bind(styles);
 function PaymentOffline() {
   return (

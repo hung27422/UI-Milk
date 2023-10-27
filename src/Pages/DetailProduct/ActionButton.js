@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faShop } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import { gql, useQuery } from "@apollo/client";
 const cx = classNames.bind(styles);
 
 function ActionButton({ product }) {
-  const { setCartItem, showTotal, setShowTotal } = useContext(MilkContext);
+  const { setCartItem, setShowTotal } = useContext(MilkContext);
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(product.price);
 

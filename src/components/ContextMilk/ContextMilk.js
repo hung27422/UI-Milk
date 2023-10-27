@@ -11,7 +11,9 @@ function ContextMilk({ children }) {
   const [cartItem, setCartItem] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [showTotal, setShowTotal] = useState(false);
-  const [soluong, setSoluong] = useState(1);
+  const [nameSize, setNameSize] = useState("");
+  const [isChecked, setIsChecked] = useState(1);
+  const [priceSize, setPriceSize] = useState();
   return (
     <MilkContext.Provider
       value={{
@@ -31,10 +33,14 @@ function ContextMilk({ children }) {
         setCartItem,
         showTotal,
         setShowTotal,
-        soluong,
-        setSoluong,
         quantity,
         setQuantity,
+        nameSize,
+        setNameSize,
+        isChecked,
+        setIsChecked,
+        priceSize,
+        setPriceSize,
       }}
     >
       {children}

@@ -1,27 +1,13 @@
 import classNames from "classnames/bind";
 import styles from "./Detail.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faShop } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import DescriptionProduct from "./DescriptionProduct";
 import ManualProduct from "./ManualProduct";
 import ProductIngredient from "./ProductIngredient";
-import ProductSize from "./ProductSize";
 import ActionButton from "./ActionButton";
+import InfoProduct from "./InfoProduct";
 const cx = classNames.bind(styles);
-
-const InfoProduct = ({ namePro, pricePro, capacityPro }) => {
-  return (
-    <>
-      <span className={cx("product-name")}>{namePro}</span>
-      <span className={cx("product-price")}>Giá: {pricePro} đ/hộp</span>
-      <span className={cx("product-capacity")}>
-        Dung tích: {capacityPro}/hộp
-      </span>
-    </>
-  );
-};
 
 function DetailProduct() {
   const { products } = useContext(MilkContext);
@@ -41,12 +27,7 @@ function DetailProduct() {
                 />
               </div>
               <div className={cx("detail-product")}>
-                <InfoProduct
-                  namePro={product.name}
-                  pricePro={product.price}
-                  capacityPro={180}
-                />
-                <ProductSize />
+                <InfoProduct product={product} />
                 <ActionButton product={product} />
                 <DescriptionProduct />
                 <ManualProduct />

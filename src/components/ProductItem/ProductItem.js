@@ -3,8 +3,7 @@ import styles from "./ProductItem.module.scss";
 import Popper from "../Popper/Popper";
 import configs from "~/configs";
 import { NavLink } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);

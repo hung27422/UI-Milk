@@ -4,7 +4,7 @@ const cx = classNames.bind(styles);
 function PriceProduct({ data }) {
   return (
     <div className={cx("wrapper")}>
-      <span className={cx("price")}>{data?.price}</span>
+      <span className={cx("price")}>{data?.price} VNĐ</span>
     </div>
   );
 }

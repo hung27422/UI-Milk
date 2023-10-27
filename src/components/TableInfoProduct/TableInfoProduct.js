@@ -1,40 +1,23 @@
+import classNames from "classnames/bind";
+import styles from "./TableInfoProduct.module.scss";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import classNames from "classnames/bind";
-import styles from "./TableInfoProduct.module.scss";
-
-import ItemProduct from "~/components/ItemCart/ItemProduct";
-import PriceProduct from "~/components/ItemCart/PriceProduct";
-import TotalPrice from "~/components/ItemCart/TotalPrice";
+import ItemProduct from "../ItemCart/ItemProduct";
+import PriceProduct from "../ItemCart/PriceProduct";
+import QuantityProduct from "../ItemCart/QuantityProduct";
+import TotalPrice from "../ItemCart/TotalPrice";
+import { useContext } from "react";
+import { MilkContext } from "../ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);
-function createData(name, price, quantity, total) {
-  return { name, price, quantity, total };
-}
-const rows = [
-  createData(
-    <ItemProduct />,
-    <PriceProduct />,
-    <span
-      style={{
-        color: "var(--text-color)",
-        fontSize: "20px",
-        fontWeight: "700",
-        marginLeft: "42px",
-      }}
-    >
-      1
-    </span>,
-    <TotalPrice />
-  ),
- 
-];
 
 function TableInfoProduct({ waitConfirm, doneOrder }) {
+  const { cartItem } = useContext(MilkContext);
+  let total = 0;
   return (
     <div>
       <div className={cx("box-title")}>
@@ -79,19 +62,23 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {cartItem?.map((item) => (
             <TableRow
-              key={row.name}
+              key={item.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                <ItemProduct data={item} />
               </TableCell>
               <TableCell style={{ padding: "20px" }} align="left">
-                {row.price}
+                <PriceProduct data={item} />
               </TableCell>
-              <TableCell align="left">{row.quantity}</TableCell>
-              <TableCell align="left">{row.total}</TableCell>
+              <TableCell align="left">
+                <QuantityProduct data={item} />
+              </TableCell>
+              <TableCell align="left">
+                <TotalPrice data={item} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -106,7 +93,10 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
         }}
       >
         <span>Tổng tiền: </span>
-        <span style={{ color: "var(--text-color)" }}>24000 VNĐ</span>
+        {cartItem.forEach((item) => {
+          total = total + item.total;
+        })}
+        <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
       </div>
     </div>
   );

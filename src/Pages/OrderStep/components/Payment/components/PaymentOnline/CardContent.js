@@ -6,6 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
+import PayPal from "~/Pages/OrderStep/components/Payment/components/PayPalCheckout/PayPal";
 const cx = classNames.bind(styles);
 function CardContent() {
   const [isActiveCard, setIsActiveCard] = useState(1);
@@ -25,9 +26,7 @@ function CardContent() {
         />
         <CardItem
           id={2}
-          src={
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEnpXBk8SCsdQOEEY35rHZJkP7z_xsvb01Wg&usqp=CAU"
-          }
+          src={"https://www.onlinecasinoreportsvn.com/images/zalopay-big.png"}
           isActiveCard={isActiveCard}
           handleCardClick={handleCardClick}
         />
