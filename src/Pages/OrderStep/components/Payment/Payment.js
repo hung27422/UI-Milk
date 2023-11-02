@@ -4,8 +4,8 @@ import OrderSteps from "~/components/OrderSteps";
 import Button from "~/components/Button";
 import PaymentOnline from "./components/PaymentOnline/PaymentOnline";
 import PaymentOffline from "./components/PaymentOfline/PaymentOffline";
-import { useState } from "react";
-import PayPal from "./components/PayPalCheckout/PayPal";
+import { useContext, useEffect, useState } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 
 const MethodPayment = ({ children, handleChoosePayment, id, activeID }) => {
@@ -23,6 +23,9 @@ const MethodPayment = ({ children, handleChoosePayment, id, activeID }) => {
 };
 
 function Payment() {
+  const { setActiveStep } = useContext(MilkContext);
+  useEffect(() => setActiveStep(2), [setActiveStep]);
+
   const [activeID, setActiveID] = useState(1);
   const handleChoosePayment = (id) => {
     setActiveID(id);

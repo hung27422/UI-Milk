@@ -14,6 +14,8 @@ import {
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
+import { useContext } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -100,18 +102,15 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = [
-  "Chờ xác nhận",
-  "Đang giao hàng",
-  "Xác nhận đơn hàng",
-];
+const steps = ["Chờ xác nhận", "Đang giao hàng", "Xác nhận đơn hàng"];
 
 export default function DetailOrderStep() {
+  const { activeStepOrder } = useContext(MilkContext);
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
       <Stepper
         alternativeLabel
-        activeStep={2}
+        activeStep={activeStepOrder}
         connector={<ColorlibConnector />}
       >
         {steps.map((label) => (

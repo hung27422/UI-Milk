@@ -119,6 +119,24 @@
 .btn-add__cart {
   background-color: var(--text-color);
 }
+/* Trong tệp CSS của bạn (ví dụ: Detail.module.scss) */
+.add-to-cart-animation {
+  animation-name: slide-in; /* Tên của animation */
+  animation-duration: 0.5s; /* Thời gian của animation */
+  animation-timing-function: ease-in-out; /* Hàm thời gian */
+  animation-iteration-count: 1; /* Số lần lặp (1 là chỉ chạy 1 lần) */
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(0); /* Vị trí bắt đầu */
+    opacity: 1; /* Độ trong suốt ban đầu */
+  }
+  100% {
+    transform: translateX(50px); /* Vị trí kết thúc */
+    opacity: 0; /* Độ trong suốt cuối cùng (ẩn đi) */
+  }
+}
 .icon-buy,
 .icon-cart {
   margin-right: 6px;

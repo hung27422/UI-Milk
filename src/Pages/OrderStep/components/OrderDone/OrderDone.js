@@ -4,8 +4,13 @@ import OrderSteps from "~/components/OrderSteps";
 import images from "~/assets/Images/Image";
 import Button from "~/components/Button";
 import configs from "~/configs";
+import { useContext, useEffect } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function OrderDone() {
+  const { setActiveStep } = useContext(MilkContext);
+  useEffect(() => setActiveStep(3), [setActiveStep]);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>

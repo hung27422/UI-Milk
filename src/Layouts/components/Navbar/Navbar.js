@@ -10,7 +10,7 @@ import configs from "~/configs";
 import LoginButton from "~/AuTh0/login";
 import { useAuth0 } from "@auth0/auth0-react";
 import AvatarUse from "~/components/AvatarUser/AvatarUse";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 
@@ -18,10 +18,15 @@ const Quantity = ({ children }) => {
   return <span className={cx("quantity")}>{children}</span>;
 };
 function Navbar() {
+  const { countQuantity, setCountQuantity } = useContext(MilkContext);
   const { isAuthenticated } = useAuth0();
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-
-  let countQuantity = 0;
+  const countQuantity1 = localStorageCart.reduce((total, product) => {
+    return total + product.quantity;
+  }, 0);
+  useEffect(() => {
+    setCountQuantity(countQuantity1);
+  }, [countQuantity1, setCountQuantity]);
   return (
     <div className={cx("wrapper")}>
       <NavLink to={configs.routes.product} className={cx("logo")}>
@@ -31,9 +36,6 @@ function Navbar() {
       <div className={cx("btn-action")}>
         <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faCartShopping} />
-          {localStorageCart.forEach((element) => {
-            return (countQuantity += element.quantity);
-          })}
           <Quantity>{countQuantity}</Quantity>
         </NavLink>
         <div className={cx("icon-action")}>

@@ -3,9 +3,12 @@ import styles from "./ConfirmDoneOrder.module.scss";
 import DetailOrderStep from "../../DetailOrderStep/DetailOrderStep";
 import TableInfoProduct from "~/components/TableInfoProduct/TableInfoProduct";
 import Button from "~/components/Button";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function DoneOrder() {
+  const { setActiveStepOrder } = useContext(MilkContext);
+  useEffect(() => setActiveStepOrder(2), [setActiveStepOrder]);
   const [showButton, setShowButton] = useState(false);
   const handleConfirmOrderDone = () => {
     setShowButton(true);

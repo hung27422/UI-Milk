@@ -11,10 +11,9 @@ const cx = classNames.bind(styles);
 function PaymentOnline() {
   const { cartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-
-  const { user } = useAuth0();
   const [showPayment, setShowPayment] = useState(false);
   const apiTokenLocal = localStorage.getItem("apiToken");
+  console.log(apiTokenLocal);
   const { data } = useQuery(
     gql`
       query Orders {
@@ -58,14 +57,7 @@ function PaymentOnline() {
           })}
           {showPayment && (
             <div style={{ width: "300px", height: "40px" }}>
-              <PayPal
-                payload={{
-                  cartItem: cartItem,
-                  userName: user?.name,
-                  total: total,
-                }}
-                amount={100000}
-              />
+              <PayPal amount={total} />
             </div>
           )}
         </div>

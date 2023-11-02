@@ -5,9 +5,10 @@ import {
   PayPalButtons,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { client } from "~/ApolloClient";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import configs from "~/configs";
 
 // This value is from the props in the UI
 const style = { layout: "vertical" };
@@ -21,7 +22,7 @@ const CREATE_ORDER = gql`
   }
 `;
 // Custom component to wrap the PayPalButtons and show loading spinner
-const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
+const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
     dispatch({
@@ -31,26 +32,25 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
         currency: currency,
       },
     });
-    console.log("Chạy");
   }, [currency, showSpinner]);
-
-  const handleCreateOrder = async (data, user) => {
+  const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
+    console.log("Email ở Button: " + emailUser);
     for (const item of data) {
       const orderCreateOrderInput = {
-        email: "tanhungho2002@gmail.com",
+        email: emailUser,
         items: [
           {
+            name: item.productName,
             price: item.price,
             productId: item.productId,
-            name: item.productName,
             quantity: item.quantity,
             sku: item.sku,
           },
         ],
-        userId: "9e812fd4-7e8c-4f65-90c9-00853bfeade8",
+        shippingAddress: "HaNoi",
         total: 100000,
-        shippingAddress: "HCM",
+        userId: "df5f68c5-ffa2-49f0-9537-984abed0f4e2",
       };
 
       try {
@@ -61,13 +61,20 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
               authorization: `Bearer ${apiTokenLocal}`,
             },
           },
-          variables: { input: orderCreateOrderInput },
+          variables: {
+            input: orderCreateOrderInput,
+          },
         });
         console.log("Đã lưu đơn hàng:", result);
       } catch (error) {
         console.error("Lỗi khi lưu đơn hàng:", error);
       }
     }
+  };
+  const { setActiveStep } = useContext(MilkContext);
+  const handleDonePayment = () => {
+    setActiveStep(3);
+    window.location.href = `${configs.routes.orderdone}`;
   };
   return (
     <>
@@ -77,7 +84,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
         disabled={false}
         forceReRender={[style]}
         fundingSource={undefined}
-        onClick={() => handleCreateOrder(data, user)}
+        // onClick={handleCreateOrder}
         createOrder={(data, actions) => {
           return actions.order
             .create({
@@ -90,9 +97,10 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
         onApprove={(data, actions) =>
           actions.order.capture().then(async (response) => {
             console.log(response);
-            // if (response.status === "COMPLETED") {
-            //   handleSaveOrder(response);
-            // }
+            if (response.status === "COMPLETED") {
+              handleCreateOrder();
+              handleDonePayment();
+            }
           })
         }
       />
@@ -100,8 +108,16 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, user }) => {
   );
 };
 
-export default function PayPal({ amount, payload }) {
+export default function PayPal({ amount }) {
   const { user } = useAuth0();
+
+  const [emailUser, setEmailUser] = useState(null);
+  useEffect(() => {
+    if (user && user.email) {
+      setEmailUser(user.email);
+      console.log("Email ở PayPal \n" + emailUser);
+    }
+  }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const productOrder = [];
@@ -120,6 +136,7 @@ export default function PayPal({ amount, payload }) {
     // Xử lý trường hợp `cartItem` không phải là mảng
     console.error("cartItem is not an array");
   }
+
   return (
     <div style={{ maxWidth: "100px", minHeight: "50px" }}>
       <PayPalScriptProvider
@@ -129,14 +146,18 @@ export default function PayPal({ amount, payload }) {
           currency: "USD",
         }}
       >
-        <ButtonWrapper
-          payload={payload}
-          currency={"USD"}
-          amount={amount}
-          showSpinner={false}
-          data={productOrder}
-          user={user}
-        />
+        {emailUser !== null ? ( // Kiểm tra xem emailUser đã có giá trị
+          <ButtonWrapper
+            currency={"USD"}
+            amount={amount}
+            showSpinner={false}
+            data={productOrder}
+            emailUser={emailUser}
+          />
+        ) : (
+          // hiển thị một spinner hoặc thông báo "Loading" ở đây
+          <div>Loading...</div>
+        )}
       </PayPalScriptProvider>
     </div>
   );

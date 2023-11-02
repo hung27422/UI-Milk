@@ -3,18 +3,14 @@ import styles from "./Delivery.module.scss";
 import OrderSteps from "~/components/OrderSteps";
 import TableDelivery from "./components/TableDelivery/TableDelivery";
 import Button from "~/components/Button";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
 const cx = classNames.bind(styles);
 function Delivery() {
-  const { activeStep, setActiveStep } = useContext(MilkContext);
-  const handleActiveStep = () => {
-    setActiveStep(activeStep + 1);
-  };
-  const handleActiveStepPre = () => {
-    setActiveStep(activeStep - 1);
-  };
+  const { setActiveStep } = useContext(MilkContext);
+  useEffect(() => setActiveStep(1), [setActiveStep]);
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -25,18 +21,10 @@ function Delivery() {
           <TableDelivery />
         </div>
         <div className={cx("btn-action")}>
-          <Button
-            to={configs.routes.orderstepper}
-            delivery
-            onClick={handleActiveStepPre}
-          >
+          <Button to={configs.routes.orderstepper} delivery>
             Trở lại
           </Button>
-          <Button
-            to={configs.routes.payment}
-            delivery
-            onClick={handleActiveStep}
-          >
+          <Button to={configs.routes.payment} delivery>
             Tiếp tục
           </Button>
         </div>

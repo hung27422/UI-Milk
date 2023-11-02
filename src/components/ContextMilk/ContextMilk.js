@@ -6,6 +6,7 @@ function ContextMilk({ children }) {
   const [active, setActive] = useState("1");
   const [total, setTotal] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [activeStepOrder, setActiveStepOrder] = useState(0);
   const [products, setProducts] = useState();
   const [idProduct, setIdProduct] = useState();
   const [cartItem, setCartItem] = useState([]);
@@ -15,6 +16,7 @@ function ContextMilk({ children }) {
   const [isChecked, setIsChecked] = useState(1);
   const [priceSize, setPriceSize] = useState();
   const [apiToken, setApiToken] = useState(null);
+  const [countQuantity, setCountQuantity] = useState(0);
 
   return (
     <MilkContext.Provider
@@ -27,6 +29,8 @@ function ContextMilk({ children }) {
         setTotal,
         activeStep,
         setActiveStep,
+        activeStepOrder,
+        setActiveStepOrder,
         products,
         setProducts,
         idProduct,
@@ -45,6 +49,8 @@ function ContextMilk({ children }) {
         setPriceSize,
         apiToken,
         setApiToken,
+        countQuantity,
+        setCountQuantity,
       }}
     >
       {children}

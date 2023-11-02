@@ -3,7 +3,7 @@ import styles from "./Cart.module.scss";
 import TableCart from "~/components/TableCart/TableCart";
 import Button from "~/components/Button";
 import configs from "~/configs";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import ButtonDiscount from "./ButtonDiscount";
 const cx = classNames.bind(styles);
@@ -19,11 +19,10 @@ const InfoPrice = ({ numberPrice, title }) => {
 function Cart() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
 
-  const { activeStep, setActiveStep } = useContext(MilkContext);
+  const { setActiveStep } = useContext(MilkContext);
+  useEffect(() => setActiveStep(0), [setActiveStep]);
   let total = 0;
-  const handleActiveStep = () => {
-    setActiveStep(activeStep + 1);
-  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -43,11 +42,7 @@ function Cart() {
           <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>
         </div>
         <div className={cx("btn-action")}>
-          <Button
-            checkout
-            to={configs.routes.delivery}
-            onClick={handleActiveStep}
-          >
+          <Button checkout to={configs.routes.delivery}>
             Mua hàng
           </Button>
         </div>

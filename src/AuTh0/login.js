@@ -46,12 +46,12 @@ const LoginButton = () => {
       // Xóa dòng console.log("API Token: " + apiToken); nếu bạn không cần hiển thị giá trị trên console
       console.log("API Token: " + token); // Hiển thị giá trị mới
 
+      localStorage.setItem("email", user?.email);
       // Lưu giá trị vào local storage
       localStorage.setItem("apiToken", token);
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
     }
-    
   };
   return (
     <button className={cx("btn-login")} onClick={handleLogin}>

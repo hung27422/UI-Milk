@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faShop } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
 const cx = classNames.bind(styles);
 
 function ActionButton({ product }) {
   const { setCartItem, setShowTotal } = useContext(MilkContext);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(product.price);
-
   const handleAddToCart = () => {
     const cartItem = {
       ...product,
@@ -26,7 +27,11 @@ function ActionButton({ product }) {
 
     // Cập nhật state hoặc hiển thị thông báo thành công
     setCartItem(existingCartItems);
+    setShowSuccessModal(true);
   };
+  setTimeout(() => {
+    setShowSuccessModal(false);
+  }, 5000);
 
   const handleQuantityMinus = () => {
     if (quantity <= 1) {
@@ -62,6 +67,10 @@ function ActionButton({ product }) {
         <FontAwesomeIcon className={cx("icon-cart")} icon={faCartPlus} />
         <span>Thêm giỏ hàng</span>
       </div>
+      <ModalSuccessAddCart
+        open={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+      />
     </div>
   );
 }
