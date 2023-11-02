@@ -17,7 +17,7 @@ function UserInfo() {
           alt=""
         />
         <div className={cx("info-user")}>
-          <span className={cx("name")}>{user.name}</span>
+          <span className={cx("name")}>{user?.name}</span>
           <span className={cx("location")}>
             828 Sư Vạn Hạnh, Phường 12, Quận 10
           </span>

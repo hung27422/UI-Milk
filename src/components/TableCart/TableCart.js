@@ -11,31 +11,9 @@ import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import DeleteProduct from "../ItemCart/DeleteProduct";
-import { useContext } from "react";
-import { MilkContext } from "../ContextMilk/ContextMilk";
-import { useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
 
 export default function TableCart() {
-  const { cartItem } = useContext(MilkContext);
-  const { data } = useQuery(gql`
-    query Items {
-      items {
-        name
-        orderId
-        price
-        productId
-        quantity
-        sku
-      }
-    }
-  `);
-  useEffect(() => {
-    if (cartItem) {
-      console.log(cartItem);
-    }
-  }, [cartItem]);
-
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   return (
     <TableContainer sx={{ backgroundColor: "var(--white)" }} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -57,10 +35,10 @@ export default function TableCart() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartItem?.map((item) => {
+          {localStorageCart?.map((item, index) => {
             return (
               <TableRow
-                key={item?.id}
+                key={item?.id + index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">

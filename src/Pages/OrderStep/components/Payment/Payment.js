@@ -5,6 +5,7 @@ import Button from "~/components/Button";
 import PaymentOnline from "./components/PaymentOnline/PaymentOnline";
 import PaymentOffline from "./components/PaymentOfline/PaymentOffline";
 import { useState } from "react";
+import PayPal from "./components/PayPalCheckout/PayPal";
 const cx = classNames.bind(styles);
 
 const MethodPayment = ({ children, handleChoosePayment, id, activeID }) => {

@@ -1,35 +1,77 @@
 import classNames from "classnames/bind";
 import styles from "./PaymentOnline.module.scss";
 import PriceContent from "./PriceContent";
-import CardContent from "./CardContent";
-import ButtonPayment from "../ButtonPayment/ButtonPayment";
-import PayPal from "~/Pages/OrderStep/components/Payment/components/PayPalCheckout/PayPal";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import PayPal from "../PayPalCheckout/PayPal";
+import { useAuth0 } from "@auth0/auth0-react";
+import { gql, useQuery } from "@apollo/client";
 
 const cx = classNames.bind(styles);
 function PaymentOnline() {
   const { cartItem } = useContext(MilkContext);
-  let total = 0;
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
 
+  const { user } = useAuth0();
+  const [showPayment, setShowPayment] = useState(false);
+  const apiTokenLocal = localStorage.getItem("apiToken");
+  const { data } = useQuery(
+    gql`
+      query Orders {
+        orders {
+          date
+          id
+          shippingAddress
+          status
+          userId
+        }
+      }
+    `,
+    {
+      context: {
+        headers: {
+          authorization: `Bearer ${apiTokenLocal}`,
+        },
+      },
+    }
+  );
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+  let total = 0;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPayment(true);
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("payment-online")}>
         <div className={cx("content-left")}>
-          <CardContent />
+          <h2 className={cx("title-payment")}>Thông tin thanh toán</h2>
+          {localStorageCart.forEach((item) => {
+            total = total + item.total;
+          })}
+          {showPayment && (
+            <div style={{ width: "300px", height: "40px" }}>
+              <PayPal
+                payload={{
+                  cartItem: cartItem,
+                  userName: user?.name,
+                  total: total,
+                }}
+                amount={100000}
+              />
+            </div>
+          )}
         </div>
         <div className={cx("content-right")}>
-          <PriceContent />
+          <PriceContent price={total} />
         </div>
-      </div>
-      <div style={{ width: "200px", height: "40px" }}>
-        {cartItem.forEach((item) => {
-          total = total + item.total;
-        })}
-        <PayPal amount={total} />
-      </div>
-      <div className={cx("btn-action")}>
-        <ButtonPayment />
       </div>
     </div>
   );

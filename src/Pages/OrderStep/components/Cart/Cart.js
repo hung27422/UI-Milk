@@ -17,7 +17,8 @@ const InfoPrice = ({ numberPrice, title }) => {
   );
 };
 function Cart() {
-  const { cartItem } = useContext(MilkContext);
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+
   const { activeStep, setActiveStep } = useContext(MilkContext);
   let total = 0;
   const handleActiveStep = () => {
@@ -36,7 +37,7 @@ function Cart() {
           <ButtonDiscount />
         </div>
         <div className={cx("total-price")}>
-          {cartItem.forEach((item) => {
+          {localStorageCart.forEach((item) => {
             total = total + item.total;
           })}
           <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>

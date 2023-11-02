@@ -12,14 +12,20 @@ function ActionButton({ product }) {
   const [total, setTotal] = useState(product.price);
 
   const handleAddToCart = () => {
-    setCartItem((cartItem) => [
-      ...cartItem,
-      {
-        ...product,
-        quantity,
-        total,
-      },
-    ]);
+    const cartItem = {
+      ...product,
+      quantity,
+      total,
+    };
+    const existingCartItems =
+      JSON.parse(localStorage.getItem("cartItems")) || [];
+    existingCartItems.push(cartItem);
+
+    // Lưu danh sách các mục giỏ hàng vào Local Storage dưới dạng chuỗi JSON
+    localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
+
+    // Cập nhật state hoặc hiển thị thông báo thành công
+    setCartItem(existingCartItems);
   };
 
   const handleQuantityMinus = () => {

@@ -10,6 +10,8 @@ import configs from "~/configs";
 import LoginButton from "~/AuTh0/login";
 import { useAuth0 } from "@auth0/auth0-react";
 import AvatarUse from "~/components/AvatarUser/AvatarUse";
+import { useContext } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 
 const Quantity = ({ children }) => {
@@ -17,7 +19,9 @@ const Quantity = ({ children }) => {
 };
 function Navbar() {
   const { isAuthenticated } = useAuth0();
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
 
+  let countQuantity = 0;
   return (
     <div className={cx("wrapper")}>
       <NavLink to={configs.routes.product} className={cx("logo")}>
@@ -27,11 +31,14 @@ function Navbar() {
       <div className={cx("btn-action")}>
         <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faCartShopping} />
-          <Quantity>6</Quantity>
+          {localStorageCart.forEach((element) => {
+            return (countQuantity += element.quantity);
+          })}
+          <Quantity>{countQuantity}</Quantity>
         </NavLink>
         <div className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faBell} />
-          <Quantity>3</Quantity>
+          <Quantity>0</Quantity>
         </div>
         {!isAuthenticated ? <LoginButton /> : <AvatarUse />}
       </div>

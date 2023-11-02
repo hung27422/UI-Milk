@@ -2,14 +2,19 @@ import classNames from "classnames/bind";
 import styles from "./PaymentOffline.module.scss";
 import PriceContent from "../PaymentOnline/PriceContent";
 import ButtonPayment from "../ButtonPayment/ButtonPayment";
-import PayPal from "~/Pages/OrderStep/components/Payment/components/PayPalCheckout/PayPal";
 const cx = classNames.bind(styles);
 function PaymentOffline() {
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+
+  let total = 0;
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
         <div className={cx("content-left")}>
-          <PriceContent />
+          {localStorageCart.forEach((item) => {
+            total = total + item.total;
+          })}
+          <PriceContent price={total} />
         </div>
         <div className={cx("content-right")}>
           <span className={cx("title")}>Thanh toán khi nhận hàng: </span>

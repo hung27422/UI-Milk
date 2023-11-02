@@ -10,13 +10,11 @@ import ItemProduct from "../ItemCart/ItemProduct";
 import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
-import { useContext } from "react";
-import { MilkContext } from "../ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);
 
 function TableInfoProduct({ waitConfirm, doneOrder }) {
-  const { cartItem } = useContext(MilkContext);
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   let total = 0;
   return (
     <div>
@@ -62,7 +60,7 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartItem?.map((item) => (
+          {localStorageCart?.map((item) => (
             <TableRow
               key={item.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -93,7 +91,7 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
         }}
       >
         <span>Tổng tiền: </span>
-        {cartItem.forEach((item) => {
+        {localStorageCart.forEach((item) => {
           total = total + item.total;
         })}
         <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>

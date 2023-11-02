@@ -4,8 +4,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 function AuthProvider({ children }) {
   return (
     <Auth0Provider
-      domain="dev-jsawhwvxx4erzy36.jp.auth0.com"
-      clientId="5Y7zJIqmMkeDhbPc1xxOOim0o1SubZ7i"
+      domain="dev-zse8qge31om0dwlh.us.auth0.com"
+      clientId="6mNu2Dwxqvai9vX65n26bX59ZB82DspH"
       authorizationParams={{
         redirect_uri: "http://localhost:3000/",
       }}

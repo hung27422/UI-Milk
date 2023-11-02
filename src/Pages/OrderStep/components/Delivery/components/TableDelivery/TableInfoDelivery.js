@@ -10,6 +10,7 @@ import styles from "../../Delivery.module.scss";
 import ButtonChangeAddress from "../ButtonChangeAddress/ButtonChangeAddress";
 import Address from "../Address/Address";
 import { useAuth0 } from "@auth0/auth0-react";
+import { logDOM } from "@testing-library/react";
 const cx = classNames.bind(styles);
 function createData(name, phone, address, hiddenButtonAddresses) {
   return { name, phone, address, hiddenButtonAddresses };
@@ -17,10 +18,11 @@ function createData(name, phone, address, hiddenButtonAddresses) {
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
   const { isAuthenticated, user } = useAuth0();
+  console.log(user);
   const rows = [
     createData(
       <span className={cx("user-name")}>{user?.name}</span>,
-      <span className={cx("user-phone")}>098765321</span>,
+      <span className={cx("user-phone")}>{user?.phone_number}</span>,
       <div className={cx("address-content")}>
         <Address>QL 22, Tân Xuân, HoocMon, Tp.HCM</Address>
         <ButtonChangeAddress />

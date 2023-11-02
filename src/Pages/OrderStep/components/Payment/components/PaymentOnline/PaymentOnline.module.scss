@@ -1,7 +1,12 @@
 .payment-online {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 8px;
+  grid-gap: 20px;
+}
+.title-payment {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+  text-align: center;
 }
 .select-card {
   display: flex;

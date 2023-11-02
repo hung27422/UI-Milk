@@ -10,8 +10,12 @@ function DeleteProduct({ data }) {
 
   const handleDeleteItemCart = () => {
     const itemIdToDelete = data.id;
-    const updatedCart = cartItem.filter((item) => item.id !== itemIdToDelete);
+    const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+    const updatedCart = localStorageCart.filter(
+      (item) => item.id !== itemIdToDelete
+    );
     setCartItem(updatedCart);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
   return (
     <div className={cx("wrapper")} onClick={handleDeleteItemCart}>

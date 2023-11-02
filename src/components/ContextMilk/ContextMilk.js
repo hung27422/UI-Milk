@@ -14,6 +14,8 @@ function ContextMilk({ children }) {
   const [nameSize, setNameSize] = useState("");
   const [isChecked, setIsChecked] = useState(1);
   const [priceSize, setPriceSize] = useState();
+  const [apiToken, setApiToken] = useState(null);
+
   return (
     <MilkContext.Provider
       value={{
@@ -41,6 +43,8 @@ function ContextMilk({ children }) {
         setIsChecked,
         priceSize,
         setPriceSize,
+        apiToken,
+        setApiToken,
       }}
     >
       {children}
