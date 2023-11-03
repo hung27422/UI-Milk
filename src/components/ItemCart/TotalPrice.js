@@ -4,7 +4,9 @@ const cx = classNames.bind(styles);
 function TotalPrice({ data }) {
   return (
     <div className={cx("wrapper")}>
-      <span className={cx("total")}>{data?.total} VNĐ</span>
+      <span className={cx("total")}>
+        {data?.total ? data?.total : data?.price * data?.quantity} VNĐ
+      </span>
     </div>
   );
 }

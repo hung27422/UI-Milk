@@ -1,7 +1,5 @@
 import classNames from "classnames/bind";
 import styles from "./ItemCart.module.scss";
-import { useContext, useState } from "react";
-import { MilkContext } from "../ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function QuantityProduct({ data }) {
   return (

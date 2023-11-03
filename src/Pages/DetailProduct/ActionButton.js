@@ -28,6 +28,7 @@ function ActionButton({ product }) {
     // Cập nhật state hoặc hiển thị thông báo thành công
     setCartItem(existingCartItems);
     setShowSuccessModal(true);
+    console.log(cartItem);
   };
   setTimeout(() => {
     setShowSuccessModal(false);

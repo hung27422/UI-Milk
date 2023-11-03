@@ -26,15 +26,17 @@ function Milk() {
   useEffect(() => {
     if (data) {
       setProducts(data.products);
+      console.log(products);
     }
   }, [data, setProducts, products]);
-  return (
-    <div className={cx("wrapper")}>
-      {products?.map((product) => (
-        <ProductItem data={product} key={product.id} />
-      ))}
-    </div>
-  );
+  return <MilkList products={products} />;
 }
-
+//Hiển thị
+const MilkList = ({ products }) => (
+  <div className={cx("wrapper")}>
+    {products?.map((product) => (
+      <ProductItem data={product} key={product.id} />
+    ))}
+  </div>
+);
 export default Milk;

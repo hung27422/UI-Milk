@@ -4,13 +4,13 @@ import Button from "~/components/Button";
 
 import configs from "~/configs";
 const cx = classNames.bind(styles);
-function ButtonPayment() {
+function ButtonPayment({ onClick }) {
   return (
     <div className={cx("btn-action")}>
       <Button to={configs.routes.delivery} payment>
         Trở lại
       </Button>
-      <Button to={configs.routes.orderdone} payment>
+      <Button to={configs.routes.orderdone} payment onClick={onClick}>
         Xác nhận thanh toán
       </Button>
     </div>

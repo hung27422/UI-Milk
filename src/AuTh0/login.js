@@ -21,9 +21,10 @@ const LOGIN_USER = gql`
 const LoginButton = () => {
   const { loginWithRedirect, user } = useAuth0();
   const { apiToken, setApiToken } = useContext(MilkContext);
-  const [loginUser] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER, {
+    fetchPolicy: "network-only",
+  });
   const handleLogin = async () => {
-    loginWithRedirect();
     // Thực hiện yêu cầu GraphQL để đăng nhập
     const input = {
       input: {
@@ -32,6 +33,7 @@ const LoginButton = () => {
         name: user?.name || "null",
         roleId: user?.roleId || 1,
         token: user?.token || "1",
+        phoneNumber: "0987654321",
       },
     };
 
@@ -51,6 +53,8 @@ const LoginButton = () => {
       localStorage.setItem("apiToken", token);
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
+    } finally {
+      loginWithRedirect();
     }
   };
   return (

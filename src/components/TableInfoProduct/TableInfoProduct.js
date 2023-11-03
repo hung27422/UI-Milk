@@ -13,23 +13,15 @@ import TotalPrice from "../ItemCart/TotalPrice";
 
 const cx = classNames.bind(styles);
 
-function TableInfoProduct({ waitConfirm, doneOrder }) {
-  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-  let total = 0;
+function TableInfoProduct({ data, total = 0, tableStatus = "" }) {
+  console.log(data);
   return (
     <div>
       <div className={cx("box-title")}>
         <h2 className={cx("title")}>Thông tin sản phẩm</h2>
-        {waitConfirm && (
-          <h2 className={cx("title")} style={{ color: "red" }}>
-            Chờ xác nhận
-          </h2>
-        )}
-        {doneOrder && (
-          <h2 className={cx("title")} style={{ color: "green" }}>
-            Giao hàng thành công
-          </h2>
-        )}
+        <h2 className={cx("title")} style={{ color: "red" }}>
+          {tableStatus}
+        </h2>
       </div>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
@@ -60,25 +52,31 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {localStorageCart?.map((item) => (
-            <TableRow
-              key={item.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                <ItemProduct data={item} />
-              </TableCell>
-              <TableCell style={{ padding: "20px" }} align="left">
-                <PriceProduct data={item} />
-              </TableCell>
-              <TableCell align="left">
-                <QuantityProduct data={item} />
-              </TableCell>
-              <TableCell align="left">
-                <TotalPrice data={item} />
-              </TableCell>
-            </TableRow>
-          ))}
+          {data?.map((item, index) => {
+            console.log(item, "item ne");
+            if (item?.id === undefined) {
+              return <></>;
+            }
+            return (
+              <TableRow
+                key={item.id + index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <ItemProduct data={item} />
+                </TableCell>
+                <TableCell style={{ padding: "20px" }} align="left">
+                  <PriceProduct data={item} />
+                </TableCell>
+                <TableCell align="left">
+                  <QuantityProduct data={item} />
+                </TableCell>
+                <TableCell align="left">
+                  <TotalPrice data={item} />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
       <div
@@ -91,8 +89,8 @@ function TableInfoProduct({ waitConfirm, doneOrder }) {
         }}
       >
         <span>Tổng tiền: </span>
-        {localStorageCart.forEach((item) => {
-          total = total + item.total;
+        {data?.forEach((item) => {
+          total = total + (item?.price * item?.quantity);
         })}
         <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
       </div>
