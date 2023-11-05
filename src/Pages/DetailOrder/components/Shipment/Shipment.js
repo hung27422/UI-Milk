@@ -8,12 +8,12 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function Shipment() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  useEffect(() => setActiveStepOrder(1), [setActiveStepOrder]);
+  useEffect(() => setActiveStepOrder(3), [setActiveStepOrder]);
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("header")}>
+      {/* <div className={cx("header")}>
         <DetailOrderStep />
-      </div>
+      </div> */}
       <div className={cx("shipment")}>
         <div className={cx("container")}>
           <TableInfoDelivery hiddenButtonAddresses />

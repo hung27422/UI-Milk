@@ -54,6 +54,11 @@ export function LogoutIcon() {
     />
   );
 }
+export function ListOrder() {
+  return (
+    <img style={{ width: "30px", height: "30px" }} src={images.list} alt="" />
+  );
+}
 export function WaitIcon() {
   return (
     <img
@@ -72,11 +77,11 @@ export function ShipIcon() {
     />
   );
 }
-export function EvaluateIcon() {
+export function ConfirmOrder() {
   return (
     <img
       style={{ width: "30px", height: "30px" }}
-      src={images.evaluate}
+      src={images.shipDone}
       alt=""
     />
   );
@@ -86,6 +91,15 @@ export function ShipDoneIcon() {
     <img
       style={{ width: "30px", height: "30px" }}
       src={images.shipDone}
+      alt=""
+    />
+  );
+}
+export function DoneOrder() {
+  return (
+    <img
+      style={{ width: "30px", height: "30px" }}
+      src={images.confirm}
       alt=""
     />
   );

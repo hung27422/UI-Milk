@@ -10,6 +10,9 @@ import {
   ShipIcon,
   ShipDoneIcon,
   EvaluateIcon,
+  ListOrder,
+  DoneOrder,
+  ConfirmOrder,
 } from "~/components/Icons/Icons";
 import StepConnector, {
   stepConnectorClasses,
@@ -68,10 +71,11 @@ function ColorlibStepIcon(props) {
   const { active, completed, className } = props;
 
   const icons = {
-    1: <WaitIcon />,
-    2: <ShipIcon />,
-    3: <ShipDoneIcon />,
-    4: <EvaluateIcon />,
+    1: <ListOrder />,
+    2: <WaitIcon />,
+    3: <ConfirmOrder />,
+    4: <ShipIcon />,
+    5: <DoneOrder />,
   };
 
   return (
@@ -102,7 +106,13 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = ["Chờ xác nhận", "Đang giao hàng", "Xác nhận đơn hàng"];
+const steps = [
+  "Tất cả",
+  "Chờ xác nhận",
+  "Đã xác nhận",
+  "Đang giao hàng",
+  "Xác nhận đơn hàng",
+];
 
 export default function DetailOrderStep() {
   const { activeStepOrder } = useContext(MilkContext);

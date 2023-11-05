@@ -1,0 +1,24 @@
+.wrapper {
+  cursor: pointer;
+}
+.box-menu {
+  width: 150px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  &:focus {
+    color: #0c68ddd1;
+    border-bottom: 1px solid #0c68ddd1;
+  }
+}
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  &:hover {
+    color: #0c68ddd1;
+  }
+}
+.active {
+  color: #0c68ddd1;
+  border-bottom: 3px solid #0c68ddd1;
+}

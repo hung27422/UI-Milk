@@ -13,13 +13,23 @@ import TotalPrice from "../ItemCart/TotalPrice";
 
 const cx = classNames.bind(styles);
 
-function TableInfoProduct({ data, total = 0, tableStatus = "" }) {
-  console.log(data);
+function TableInfoProduct({
+  data,
+  total = 0,
+  tableStatus = "",
+  showTotalPrice,
+  title,
+  titleColor,
+  status,
+}) {
   return (
     <div>
       <div className={cx("box-title")}>
-        <h2 className={cx("title")}>Thông tin sản phẩm</h2>
-        <h2 className={cx("title")} style={{ color: "red" }}>
+        <h2 className={cx("title")}>{title}</h2>
+        <h2
+          className={cx("title")}
+          style={{ color: titleColor ? "red" : "green" }}
+        >
           {tableStatus}
         </h2>
       </div>
@@ -27,33 +37,56 @@ function TableInfoProduct({ data, total = 0, tableStatus = "" }) {
         <TableHead>
           <TableRow>
             <TableCell
-              style={{ width: "40%", fontSize: "19px", fontWeight: "600" }}
+              style={{
+                width: status ? "30%" : "40%",
+                fontSize: "19px",
+                fontWeight: "600",
+              }}
             >
               Item
             </TableCell>
             <TableCell
-              style={{ width: "30%", fontSize: "19px", fontWeight: "600" }}
+              style={{
+                width: status ? "15%" : "30%",
+                fontSize: "19px",
+                fontWeight: "600",
+              }}
               align="left"
             >
               Price
             </TableCell>
             <TableCell
-              style={{ width: "20%", fontSize: "19px", fontWeight: "600" }}
+              style={{
+                width: status ? "15%" : "20%",
+                fontSize: "19px",
+                fontWeight: "600",
+              }}
               align="left"
             >
               Quantity
             </TableCell>
             <TableCell
-              style={{ width: "10%", fontSize: "19px", fontWeight: "600" }}
+              style={{
+                width: "10%",
+                fontSize: "19px",
+                fontWeight: "600",
+              }}
               align="left"
             >
               Total
             </TableCell>
+            {status && (
+              <TableCell
+                style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
+                align="right"
+              >
+                Status
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
           {data?.map((item, index) => {
-            console.log(item, "item ne");
             if (item?.id === undefined) {
               return <></>;
             }
@@ -74,26 +107,33 @@ function TableInfoProduct({ data, total = 0, tableStatus = "" }) {
                 <TableCell align="left">
                   <TotalPrice data={item} />
                 </TableCell>
+                {status && (
+                  <TableCell align="right">
+                    <h2>Đã tạo</h2>
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-      <div
-        style={{
-          padding: "20px",
-          textAlign: "right",
-          width: "100%",
-          fontSize: "30px",
-          fontWeight: "600",
-        }}
-      >
-        <span>Tổng tiền: </span>
-        {data?.forEach((item) => {
-          total = total + (item?.price * item?.quantity);
-        })}
-        <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
-      </div>
+      {!showTotalPrice && (
+        <div
+          style={{
+            padding: "20px",
+            textAlign: "right",
+            width: "100%",
+            fontSize: "30px",
+            fontWeight: "600",
+          }}
+        >
+          <span>Tổng tiền: </span>
+          {data?.forEach((item) => {
+            total = total + item?.price * item?.quantity;
+          })}
+          <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
+        </div>
+      )}
     </div>
   );
 }

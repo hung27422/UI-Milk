@@ -1,15 +1,17 @@
 import classNames from "classnames/bind";
-import styles from "./WaitConfirm.module.scss";
-import ButtonCancelOrder from "./ButtonCancelOrder";
+import styles from "../WaitConfirm/WaitConfirm.module.scss";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
-import { TableInfoProductWrapperOrder } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import {
+  TableInfoAllOrderWrapper,
+  TableInfoProductWrapperOrder,
+} from "~/components/TableInfoProduct/TableInfoProductWrapper";
 const cx = classNames.bind(styles);
-function WaitConfirm() {
-  const apiTokenLocal = localStorage.getItem("apiToken");
+function ListAllOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  useEffect(() => setActiveStepOrder(1), [setActiveStepOrder]);
+  useEffect(() => setActiveStepOrder(0), [setActiveStepOrder]);
+  const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
     gql`
       query Orders($amount: Int!, $page: Int!) {
@@ -42,25 +44,22 @@ function WaitConfirm() {
       },
     }
   );
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     console.log(data);
-  //   }
-  // }, [data, error]);
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      console.log(data);
+    }
+  }, [data, error]);
 
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoProductWrapperOrder waitConfirm order={data?.orders} />
-      </div>
-      <div className={cx("btn-action")}>
-        <ButtonCancelOrder />
+        <TableInfoAllOrderWrapper order={data?.orders} />
       </div>
     </div>
   );
 }
 
-export default WaitConfirm;
+export default ListAllOrder;
