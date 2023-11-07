@@ -28,7 +28,7 @@ const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
     return (
       <TableInfoProduct
         titleColor
-        title={"Thông tin sản phẩm chờ xác nhận"}
+        title={"Thông tin sản phẩm "}
         data={statusWaitConfirm?.map((i) => i.items).flat()}
         tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
       />
@@ -41,9 +41,22 @@ const TableInfoConfirmWrapperOrder = ({ confirm, order }) => {
   if (Array.isArray(statusConfirm) && statusConfirm.length > 0) {
     return (
       <TableInfoProduct
-        title={"Thông tin sản phẩm đã xác nhận"}
+        title={"Thông tin sản phẩm "}
         data={statusConfirm?.map((i) => i.items).flat()}
         tableStatus={confirm ? "Đã xác nhận" : ""}
+      />
+    );
+  }
+};
+//Shipment
+const TableInfoShipment = ({ order, shipment }) => {
+  const statusShipment = order?.filter((item) => item.status === "SHIPPING");
+  if (Array.isArray(statusShipment) && statusShipment.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm"}
+        data={statusShipment?.map((i) => i.items).flat()}
+        tableStatus={shipment ? "Đang giao" : ""}
       />
     );
   }
@@ -65,4 +78,5 @@ export {
   TableInfoAllOrderWrapper,
   TableInfoConfirmWrapperOrder,
   TableInfoDoneOrderWrapperOrder,
+  TableInfoShipment,
 };

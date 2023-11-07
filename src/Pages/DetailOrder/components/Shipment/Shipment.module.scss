@@ -16,4 +16,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 40px;
+  border: 1px solid #ccc;
+}
+.info-product {
+  margin-top: 80px;
 }
