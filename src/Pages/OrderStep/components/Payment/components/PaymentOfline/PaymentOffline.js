@@ -5,8 +5,7 @@ import ButtonPayment from "../ButtonPayment/ButtonPayment";
 import { gql } from "@apollo/client";
 import { client } from "~/ApolloClient";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext } from "react";
-import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+
 const cx = classNames.bind(styles);
 const CREATE_ORDER = gql`
   mutation CreateOrder($input: orderCreateOrderInput!) {
@@ -19,10 +18,8 @@ const CREATE_ORDER = gql`
 `;
 function PaymentOffline() {
   const { user } = useAuth0();
-  const { cartItem } = useContext(MilkContext);
-  console.log("cart", cartItem);
+
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-  console.log("localStorage", localStorageCart);
   let total = 0;
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");

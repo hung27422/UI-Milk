@@ -36,6 +36,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     console.log("Email ở Button: " + emailUser);
+    let total = 0;
     for (const item of data) {
       const orderCreateOrderInput = {
         email: emailUser,
@@ -49,8 +50,9 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
           },
         ],
         shippingAddress: "HaNoi",
-        total: 100000,
+        total: (total += item.total),
         userId: "df5f68c5-ffa2-49f0-9537-984abed0f4e2",
+        status: "CONFIRMED",
       };
 
       try {
@@ -99,7 +101,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
             console.log(response);
             if (response.status === "COMPLETED") {
               handleCreateOrder();
-              handleDonePayment();
+              // handleDonePayment();
             }
           })
         }
@@ -120,6 +122,7 @@ export default function PayPal({ amount }) {
   }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+  console.log("123", localStorageCart);
   const productOrder = [];
   if (Array.isArray(cartItem)) {
     localStorageCart.forEach((item) => {
@@ -129,6 +132,7 @@ export default function PayPal({ amount }) {
         quantity: item.quantity,
         price: item.price,
         sku: item.sku,
+        total: item.total,
       };
       productOrder.push(productInfo);
     });

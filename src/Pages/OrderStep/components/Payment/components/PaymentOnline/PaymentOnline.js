@@ -13,7 +13,7 @@ function PaymentOnline() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const [showPayment, setShowPayment] = useState(false);
   const apiTokenLocal = localStorage.getItem("apiToken");
-  console.log(apiTokenLocal);
+  // console.log(apiTokenLocal);
   const { data } = useQuery(
     gql`
       query Orders {
