@@ -29,11 +29,15 @@ function ConfirmOrder() {
             sku
             subtotal
           }
+          shippingAddress
+          status
+          total
+          userId
         }
       }
     `,
     {
-      variables: { amount: 3, page: 1 },
+      variables: { amount: 10, page: 1 },
       context: {
         headers: {
           authorization: `Bearer ${apiTokenLocal}`,

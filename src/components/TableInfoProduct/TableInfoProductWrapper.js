@@ -13,6 +13,7 @@ const TableInfoAllOrderWrapper = ({ order }) => {
     <TableInfoProduct
       title={"Thông tin tất cả sản phẩm"}
       data={order?.map((i) => i.items).flat()}
+      dataOrder={order}
       showTotalPrice
       status
     />
@@ -20,24 +21,32 @@ const TableInfoAllOrderWrapper = ({ order }) => {
 };
 //WaitConfirm
 const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
-  return (
-    <TableInfoProduct
-      titleColor
-      title={"Thông tin sản phẩm chờ xác nhận"}
-      data={order?.map((i) => i.items).flat()}
-      tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
-    />
+  const statusWaitConfirm = order?.filter(
+    (items) => items.status === "CREATED"
   );
+  if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
+    return (
+      <TableInfoProduct
+        titleColor
+        title={"Thông tin sản phẩm chờ xác nhận"}
+        data={statusWaitConfirm?.map((i) => i.items).flat()}
+        tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
+      />
+    );
+  }
 };
 //ConfirmOrder
 const TableInfoConfirmWrapperOrder = ({ confirm, order }) => {
-  return (
-    <TableInfoProduct
-      title={"Thông tin sản phẩm đã xác nhận"}
-      data={order?.map((i) => i.items).flat()}
-      tableStatus={confirm ? "Đã xác nhận" : ""}
-    />
-  );
+  const statusConfirm = order?.filter((item) => item.status === "CONFIRMED");
+  if (Array.isArray(statusConfirm) && statusConfirm.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm đã xác nhận"}
+        data={statusConfirm?.map((i) => i.items).flat()}
+        tableStatus={confirm ? "Đã xác nhận" : ""}
+      />
+    );
+  }
 };
 //ConfirmOrder
 const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {

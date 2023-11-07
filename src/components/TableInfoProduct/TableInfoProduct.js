@@ -10,7 +10,7 @@ import ItemProduct from "../ItemCart/ItemProduct";
 import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
-
+import { v4 as uuidv4 } from "uuid";
 const cx = classNames.bind(styles);
 
 function TableInfoProduct({
@@ -21,6 +21,7 @@ function TableInfoProduct({
   title,
   titleColor,
   status,
+  dataOrder,
 }) {
   return (
     <div>
@@ -107,11 +108,26 @@ function TableInfoProduct({
                 <TableCell align="left">
                   <TotalPrice data={item} />
                 </TableCell>
-                {status && (
-                  <TableCell align="right">
-                    <h2>Đã tạo</h2>
-                  </TableCell>
-                )}
+                {status &&
+                  dataOrder.map((stt) => {
+                    if (stt.id === item.id && stt.status === "CREATED") {
+                      return (
+                        <TableCell key={stt.id} align="right">
+                          <h2>Đã tạo</h2>
+                        </TableCell>
+                      );
+                    } else if (
+                      stt.id === item.id &&
+                      stt.status === "CONFIRMED"
+                    ) {
+                      return (
+                        <TableCell key={stt.id} align="right">
+                          <h2>Đã xác nhận</h2>
+                        </TableCell>
+                      );
+                    }
+                    return <></>;
+                  })}
               </TableRow>
             );
           })}

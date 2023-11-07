@@ -101,7 +101,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
             console.log(response);
             if (response.status === "COMPLETED") {
               handleCreateOrder();
-              // handleDonePayment();
+              handleDonePayment();
             }
           })
         }

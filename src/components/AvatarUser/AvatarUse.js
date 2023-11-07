@@ -38,7 +38,7 @@ export default function AvatarUse() {
               </NavLink>
             </div>
             <div className={cx("box-item")}>
-              <span className={cx("box-link")}>Đơn mua</span>
+              <NavLink to={configs.routes.detailorder} className={cx("box-link")}>Đơn mua</NavLink>
             </div>
           </React.Fragment>
         }
