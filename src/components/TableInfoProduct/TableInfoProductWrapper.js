@@ -57,6 +57,7 @@ const TableInfoShipment = ({ order, shipment }) => {
         title={"Thông tin sản phẩm"}
         data={statusShipment?.map((i) => i.items).flat()}
         tableStatus={shipment ? "Đang giao" : ""}
+        isShowButton
       />
     );
   }

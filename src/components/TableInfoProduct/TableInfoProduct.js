@@ -11,6 +11,8 @@ import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "@mui/material";
+import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
 const cx = classNames.bind(styles);
 
 function TableInfoProduct({
@@ -22,6 +24,7 @@ function TableInfoProduct({
   titleColor,
   status,
   dataOrder,
+  isShowButton,
 }) {
   return (
     <div>
@@ -39,7 +42,7 @@ function TableInfoProduct({
           <TableRow>
             <TableCell
               style={{
-                width: status ? "30%" : "40%",
+                width: status ? "30%" : "40%" || isShowButton ? "30%" : "40%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -48,7 +51,7 @@ function TableInfoProduct({
             </TableCell>
             <TableCell
               style={{
-                width: status ? "15%" : "30%",
+                width: status ? "15%" : "30%" || isShowButton ? "15%" : "30%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -58,7 +61,7 @@ function TableInfoProduct({
             </TableCell>
             <TableCell
               style={{
-                width: status ? "15%" : "20%",
+                width: status ? "15%" : "20%" || isShowButton ? "15%" : "20%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -72,7 +75,7 @@ function TableInfoProduct({
                 fontSize: "19px",
                 fontWeight: "600",
               }}
-              align="left"
+              align= "left"
             >
               Total
             </TableCell>
@@ -82,6 +85,14 @@ function TableInfoProduct({
                 align="right"
               >
                 Status
+              </TableCell>
+            )}
+            {isShowButton && (
+              <TableCell
+                style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
+                align="center"
+              >
+                Action
               </TableCell>
             )}
           </TableRow>
@@ -109,7 +120,7 @@ function TableInfoProduct({
                   <TotalPrice data={item} />
                 </TableCell>
                 {status &&
-                  dataOrder.map((stt) => {
+                  dataOrder?.map((stt) => {
                     if (stt.id === item.id && stt.status === "CREATED") {
                       return (
                         <TableCell key={stt.id} align="right">
@@ -125,9 +136,23 @@ function TableInfoProduct({
                           <h2>Đã xác nhận</h2>
                         </TableCell>
                       );
+                    } else if (
+                      stt.id === item.id &&
+                      stt.status === "SHIPPING"
+                    ) {
+                      return (
+                        <TableCell key={stt.id} align="right">
+                          <h2>Đang giao hàng</h2>
+                        </TableCell>
+                      );
                     }
                     return <></>;
                   })}
+                {isShowButton && (
+                  <TableCell align="center">
+                    <ButtonDetailShipment data={item} />
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}

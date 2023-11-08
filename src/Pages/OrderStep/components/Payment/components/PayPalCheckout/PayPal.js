@@ -112,7 +112,6 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
 
 export default function PayPal({ amount }) {
   const { user } = useAuth0();
-
   const [emailUser, setEmailUser] = useState(null);
   useEffect(() => {
     if (user && user.email) {

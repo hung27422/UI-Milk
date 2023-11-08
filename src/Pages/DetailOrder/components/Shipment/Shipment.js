@@ -59,10 +59,10 @@ function Shipment() {
       <div className={cx("shipment")}>
         <div className={cx("container")}>
           <TableInfoDelivery hiddenButtonAddresses />
-          <div>
+          {/* <div>
             <h2 className={cx("title")}>Theo dõi đơn hàng</h2>
             <FollowShipment />
-          </div>
+          </div> */}
         </div>
         <div className={cx("info-product")}>
           <TableInfoShipment shipment order={data?.orders} />

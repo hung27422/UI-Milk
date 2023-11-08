@@ -4,8 +4,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
 const steps = [
@@ -14,12 +12,16 @@ const steps = [
     description: `Đơn đã đặt`,
   },
   {
-    label: "Nhân viên đang chuẩn bị đơn hàng",
+    label: "Nhân viên giao hàng đang trên đường tới kho lấy hàng",
     description: "Đang chuẩn bị",
   },
   {
-    label: "Đang vận chuyển",
+    label: "Nhân viên giao hàng đã lấy hàng",
     description: `Shipper đã lấy hàng và đang vận chuyển tới bạn`,
+  },
+  {
+    label: "Nhân viên giao hàng đang trên đường giao tới bạn",
+    description: `Vui lòng để ý số điện thoại`,
   },
   {
     label: "Đã giao",
@@ -30,18 +32,6 @@ const steps = [
 export default function FollowShipment() {
   const [activeStep, setActiveStep] = React.useState(2);
 
-  //   const handleNext = () => {
-  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   };
-
-  //   const handleBack = () => {
-  //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  //   };
-
-  //   const handleReset = () => {
-  //     setActiveStep(0);
-  //   };
-
   return (
     <Box sx={{ maxWidth: 400 }}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -50,26 +40,10 @@ export default function FollowShipment() {
             <StepLabel>{step.label}</StepLabel>
             <StepContent>
               <Typography>{step.description}</Typography>
-              {/* <Box sx={{ mb: 2 }}>
-                <div>
-                  <Button variant="contained" sx={{ mt: 1, mr: 1 }}>
-                    {index === steps.length - 1 ? "Finish" : "Continue"}
-                  </Button>
-                  <Button disabled={index === 0} sx={{ mt: 1, mr: 1 }}>
-                    Back
-                  </Button>
-                </div>
-              </Box> */}
             </StepContent>
           </Step>
         ))}
       </Stepper>
-      {/* {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button sx={{ mt: 1, mr: 1 }}>Reset</Button>
-        </Paper>
-      )} */}
     </Box>
   );
 }
