@@ -1,15 +1,12 @@
 import classNames from "classnames/bind";
 import styles from "./PaymentOnline.module.scss";
 import PriceContent from "./PriceContent";
-import { useContext, useEffect, useState } from "react";
-import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import { useEffect, useState } from "react";
 import PayPal from "../PayPalCheckout/PayPal";
-import { useAuth0 } from "@auth0/auth0-react";
 import { gql, useQuery } from "@apollo/client";
 
 const cx = classNames.bind(styles);
 function PaymentOnline() {
-  const { cartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const [showPayment, setShowPayment] = useState(false);
   const apiTokenLocal = localStorage.getItem("apiToken");

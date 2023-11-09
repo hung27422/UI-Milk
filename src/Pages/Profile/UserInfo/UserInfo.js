@@ -27,7 +27,8 @@ function UserInfo() {
         <TextField
           className={cx("input-data")}
           id="name"
-          label="Họ và tên"
+          label={user?.name}
+          placeholder="Nhập tên bạn muốn thay đổi"
           variant="outlined"
         />
         <TextField
