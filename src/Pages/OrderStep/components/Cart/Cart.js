@@ -31,12 +31,12 @@ function Cart() {
       <div className={cx("container")}>
         <div className={cx("discount")}>
           <div className={cx("discount-item")}>
-            <InfoPrice title={"Discount"} numberPrice={"- 5000"} />
+            <InfoPrice title={"Discount"} numberPrice={"0"} />
           </div>
           <ButtonDiscount />
         </div>
         <div className={cx("total-price")}>
-          {localStorageCart.forEach((item) => {
+          {localStorageCart?.forEach((item) => {
             total = total + item.total;
           })}
           <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>

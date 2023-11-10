@@ -21,7 +21,7 @@ function Navbar() {
   const { countQuantity, setCountQuantity } = useContext(MilkContext);
   const { isAuthenticated } = useAuth0();
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-  const countQuantity1 = localStorageCart.reduce((total, product) => {
+  const countQuantity1 = localStorageCart?.reduce((total, product) => {
     return total + product.quantity;
   }, 0);
   useEffect(() => {
@@ -36,7 +36,7 @@ function Navbar() {
       <div className={cx("btn-action")}>
         <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faCartShopping} />
-          <Quantity>{countQuantity}</Quantity>
+          <Quantity>{countQuantity ? countQuantity : 0}</Quantity>
         </NavLink>
         <div className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faBell} />

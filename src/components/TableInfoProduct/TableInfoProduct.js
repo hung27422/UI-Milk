@@ -10,9 +10,8 @@ import ItemProduct from "../ItemCart/ItemProduct";
 import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
-import { v4 as uuidv4 } from "uuid";
-import { Button } from "@mui/material";
 import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
+
 const cx = classNames.bind(styles);
 
 function TableInfoProduct({
@@ -75,7 +74,7 @@ function TableInfoProduct({
                 fontSize: "19px",
                 fontWeight: "600",
               }}
-              align= "left"
+              align="left"
             >
               Total
             </TableCell>
@@ -145,8 +144,16 @@ function TableInfoProduct({
                           <h2>Đang giao hàng</h2>
                         </TableCell>
                       );
+                    } else if (
+                      stt.id === item.id &&
+                      stt.status === "DELIVERED"
+                    ) {
+                      return (
+                        <TableCell key={stt.id} align="right">
+                          <h2>Đã giao</h2>
+                        </TableCell>
+                      );
                     }
-                    return <></>;
                   })}
                 {isShowButton && (
                   <TableCell align="center">

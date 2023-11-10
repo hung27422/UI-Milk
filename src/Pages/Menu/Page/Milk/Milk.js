@@ -9,26 +9,36 @@ const cx = classNames.bind(styles);
 
 function Milk() {
   const { products, setProducts } = useContext(MilkContext);
-  const { data } = useQuery(gql`
-    query Products {
-      products {
-        categoryId
-        description
-        id
-        images
-        name
-        price
-        sku
+  const { data, error } = useQuery(
+    gql`
+      query Products($amount: Int!, $page: Int!) {
+        products(amount: $amount, page: $page) {
+          categoryId
+          description
+          id
+          images
+          name
+          price
+          sku
+        }
       }
+    `,
+    {
+      variables: {
+        amount: 10,
+        page: 1,
+      },
     }
-  `);
+  );
 
   useEffect(() => {
-    if (data) {
+    if (error) {
+      console.log(error);
+    } else if (data) {
       setProducts(data.products);
       console.log(products);
     }
-  }, [data, setProducts, products]);
+  }, [data, setProducts, products, error]);
   return <MilkList products={products} />;
 }
 //Hiển thị

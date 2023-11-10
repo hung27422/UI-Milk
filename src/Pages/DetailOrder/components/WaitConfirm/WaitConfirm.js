@@ -41,7 +41,7 @@ function WaitConfirm() {
       variables: { amount: 10, page: 1 },
       context: {
         headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
+          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYW1lIjoibnVsbCIsImp0aSI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjk5NTg4NTYzLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.-CPSL6LvcH6h3EfYnE15reqBQ0qJxckC1nJ2-FR0ZckA2pl34pftHPqP_oT0yk5lakZcTY7vUo9BrTKRsakqDw`,
         },
       },
     }

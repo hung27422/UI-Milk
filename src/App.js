@@ -18,10 +18,10 @@ const LOGIN_USER = gql`
 function App() {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
   const { setApiToken } = useContext(MilkContext);
-
   const [loginUser] = useMutation(LOGIN_USER, {
     fetchPolicy: "network-only",
   });
+
   useEffect(() => {
     if (isAuthenticated) {
       const input = {
@@ -29,9 +29,9 @@ function App() {
           email: user?.email,
           imageURL: user?.picture, // 'picture' thay thế cho 'imageURL' nếu cần
           name: user?.name || "null",
+          phoneNumber: "0987654321",
           roleId: user?.roleId || 1,
           token: user?.token || "1",
-          phoneNumber: "0987654321",
         },
       };
       const getAPI = async () => {
@@ -45,7 +45,6 @@ function App() {
 
           // Lưu giá trị vào local storage
           localStorage.setItem("apiToken", token);
-          console.log("API Token: " + token); // Hiển thị giá trị mới
         } catch (error) {
           console.error("Lỗi tạo user:", error);
         } finally {
