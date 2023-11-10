@@ -39,6 +39,8 @@ function PaymentOffline() {
         total: (total += item.total),
         userId: "df5f68c5-ffa2-49f0-9537-984abed0f4e2",
         status: "CREATED",
+        phone: "null",
+        userName: "null",
       };
 
       try {

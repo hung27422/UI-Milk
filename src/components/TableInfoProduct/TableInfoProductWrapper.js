@@ -57,20 +57,24 @@ const TableInfoShipment = ({ order, shipment }) => {
         title={"Thông tin sản phẩm"}
         data={statusShipment?.map((i) => i.items).flat()}
         tableStatus={shipment ? "Đang giao" : ""}
-        isShowButton
+        isShowButtonDetailShipment
       />
     );
   }
 };
 //ConfirmOrder
 const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
-  return (
-    <TableInfoProduct
-      title={"Thông tin sản phẩm đã giao"}
-      data={order?.map((i) => i.items).flat()}
-      tableStatus={doneOrder ? "Đã giao" : ""}
-    />
-  );
+  const statusDone = order?.filter((item) => item.status === "SHIPPING");
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm"}
+        data={statusDone?.map((i) => i.items).flat()}
+        tableStatus={doneOrder ? "Đã giao" : ""}
+        isShowButtonDone
+      />
+    );
+  }
 };
 
 export {

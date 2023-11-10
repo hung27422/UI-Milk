@@ -11,6 +11,7 @@ import PriceProduct from "../ItemCart/PriceProduct";
 import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
+import ButtonDoneOrder from "~/Pages/DetailOrder/components/ConfirmDoneOrder/ButtonDoneOrder/ButtonDoneOrder";
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +24,8 @@ function TableInfoProduct({
   titleColor,
   status,
   dataOrder,
-  isShowButton,
+  isShowButtonDetailShipment,
+  isShowButtonDone,
 }) {
   return (
     <div>
@@ -41,7 +43,11 @@ function TableInfoProduct({
           <TableRow>
             <TableCell
               style={{
-                width: status ? "30%" : "40%" || isShowButton ? "30%" : "40%",
+                width: status
+                  ? "30%"
+                  : "40%" || isShowButtonDetailShipment
+                  ? "30%"
+                  : "40%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -50,7 +56,11 @@ function TableInfoProduct({
             </TableCell>
             <TableCell
               style={{
-                width: status ? "15%" : "30%" || isShowButton ? "15%" : "30%",
+                width: status
+                  ? "15%"
+                  : "30%" || isShowButtonDetailShipment
+                  ? "15%"
+                  : "30%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -60,7 +70,11 @@ function TableInfoProduct({
             </TableCell>
             <TableCell
               style={{
-                width: status ? "15%" : "20%" || isShowButton ? "15%" : "20%",
+                width: status
+                  ? "15%"
+                  : "20%" || isShowButtonDetailShipment
+                  ? "15%"
+                  : "20%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -86,7 +100,15 @@ function TableInfoProduct({
                 Status
               </TableCell>
             )}
-            {isShowButton && (
+            {isShowButtonDetailShipment && (
+              <TableCell
+                style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
+                align="center"
+              >
+                Action
+              </TableCell>
+            )}
+            {isShowButtonDone && (
               <TableCell
                 style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
                 align="center"
@@ -155,9 +177,14 @@ function TableInfoProduct({
                       );
                     }
                   })}
-                {isShowButton && (
+                {isShowButtonDetailShipment && (
                   <TableCell align="center">
                     <ButtonDetailShipment data={item} />
+                  </TableCell>
+                )}
+                {isShowButtonDone && (
+                  <TableCell align="center">
+                    <ButtonDoneOrder data={item} />
                   </TableCell>
                 )}
               </TableRow>

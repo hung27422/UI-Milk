@@ -53,6 +53,8 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
         total: (total += item.total),
         userId: "df5f68c5-ffa2-49f0-9537-984abed0f4e2",
         status: "CONFIRMED",
+        phone: "null",
+        userName: "null",
       };
 
       try {
@@ -101,7 +103,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
             console.log(response);
             if (response.status === "COMPLETED") {
               handleCreateOrder();
-              handleDonePayment();
+              // handleDonePayment();
             }
           })
         }
