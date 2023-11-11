@@ -7,6 +7,7 @@ import classNames from "classnames/bind";
 import styles from "./LocationUser.module.scss";
 import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
+import { useState } from "react";
 const cx = classNames.bind(styles);
 const style = {
   position: "absolute",
@@ -32,47 +33,46 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [value, setValue] = useState({});
   const [createAddress, { error }] = useMutation(CREATE_ADDRESS);
   useEffect(() => {
     if (error) {
       console.log(error);
     }
   }, [error]);
+  const handleAddInfoAddress = (id, value) => {
+    setValue((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
   const handleCreateAddress = async () => {
+    const userIdLocal = localStorage.getItem("userId");
     const userCreateAddressInput = {
       address: {
-        city: "TP.HCM1",
-        detail: "Đường Phạm Văn Đồng 2",
-        district: "Tp.Thủ Đức",
-        userId: "F88EDAE9-F78B-46A1-93F0-2A7C2D095B0C",
-        ward: "Phường Hiệp Bình Chánh",
-        name: "Hồ Tấn Hùng",
-        phone: "0989827175",
+        city: value?.city,
+        detail: value?.detail,
+        district: value?.district,
+        userId: userIdLocal,
+        ward: value?.ward,
+        name: value?.name,
+        phone: value?.phone,
       },
     };
-    try {
-      const result = await createAddress({
-        context: {
-          headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2OTk5NDY0MjMsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.6Ao_mmg8n9QoIZLRHsTOvC34BhFag1Txg5jJx7hcs8zxJvKRf-XWKoi5dRKnaXjwTdc3TPscq-oEvlzQcmpz1g`,
-          },
-        },
-        variables: {
-          address: userCreateAddressInput.address, // Pass the userCreateAddressInput object to the mutation
-        },
-      });
-      console.log("Đã tạo địa chỉ mới:", result);
-    } catch (error) {
-      console.error("Lỗi khi tạo địa chỉ mới:", error);
-    }
-  };
 
-  // if (error) {
-  //   console.log("Lỗi tạo địa chỉ", error);
-  // } else {
-  //   console.log("Tạo địa chỉ thành công:", result);
-  // }
+    const result = await createAddress({
+      context: {
+        headers: {
+          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2OTk5NDY0MjMsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.6Ao_mmg8n9QoIZLRHsTOvC34BhFag1Txg5jJx7hcs8zxJvKRf-XWKoi5dRKnaXjwTdc3TPscq-oEvlzQcmpz1g`,
+        },
+      },
+      variables: {
+        address: userCreateAddressInput.address, // Pass the userCreateAddressInput object to the mutation
+      },
+    });
+    console.log("Đã tạo địa chỉ mới:", result);
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -94,12 +94,14 @@ export default function BasicModal() {
               className={cx("input-user")}
               id="name"
               label="Nhập họ và tên"
+              onChange={(e) => handleAddInfoAddress("name", e.target.value)}
               variant="outlined"
             />
             <TextField
               className={cx("input-user")}
               id="phone"
               label="Nhập số điện thoại"
+              onChange={(e) => handleAddInfoAddress("phone", e.target.value)}
               variant="outlined"
             />
           </div>
@@ -108,24 +110,28 @@ export default function BasicModal() {
               className={cx("input-address")}
               id="city"
               label="Tỉnh/Thành phố"
+              onChange={(e) => handleAddInfoAddress("city", e.target.value)}
               variant="outlined"
             />
             <TextField
               className={cx("input-address")}
               id="district"
               label="Quận/Huyện"
+              onChange={(e) => handleAddInfoAddress("district", e.target.value)}
               variant="outlined"
             />{" "}
             <TextField
               className={cx("input-address")}
               id="ward"
               label="Phường/Xã"
+              onChange={(e) => handleAddInfoAddress("ward", e.target.value)}
               variant="outlined"
             />
             <TextField
               className={cx("input-address")}
               id="detail"
               label="Tên đường/Khu phố cụ thể"
+              onChange={(e) => handleAddInfoAddress("detail", e.target.value)}
               variant="outlined"
             />
           </div>
