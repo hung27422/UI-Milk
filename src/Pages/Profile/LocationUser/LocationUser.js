@@ -4,6 +4,9 @@ import Button from "~/components/Button";
 import ButtonAddress from "./ButtonAddress";
 import { gql, useQuery } from "@apollo/client";
 import { useEffect } from "react";
+import ButtonDeleteAddress from "./ButtonDeleteAddress";
+import ButtonUpdateAddress from "./ButtonUpdateAddress";
+import ButtonDefaultAddress from "./ButtonDefaultAddress";
 const cx = classNames.bind(styles);
 function LocationUser() {
   const userIdLocal = localStorage.getItem("userId");
@@ -61,10 +64,11 @@ function LocationUser() {
               </div>
               <div className={cx("content-action")}>
                 <div className={cx("btn-action")}>
-                  <Button updateAddress>Cập nhật</Button>
+                  <ButtonUpdateAddress />
+                  <ButtonDeleteAddress data={item?.id} />
                 </div>
                 <div className={cx("btn-action")}>
-                  <Button addressDefault>Mặc định</Button>
+                  <ButtonDefaultAddress />
                 </div>
               </div>
             </div>

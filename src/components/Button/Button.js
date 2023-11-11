@@ -15,8 +15,6 @@ function Button({
   orderDone,
   waitConfirm,
   confirmOrderDone,
-  updateAddress,
-  addressDefault,
   discount,
   userInfo,
   selectChoose,
@@ -52,8 +50,7 @@ function Button({
     payment,
     userInfo,
     selectChoose,
-    updateAddress,
-    addressDefault,
+   
   });
   return (
     <Comp className={classes} {...props}>
