@@ -15,11 +15,14 @@ function Button({
   orderDone,
   waitConfirm,
   confirmOrderDone,
+  updateAddress,
+  addressDefault,
   discount,
   userInfo,
   selectChoose,
   children,
   onClick,
+
   ...passProps
 }) {
   let Comp = "button";
@@ -49,6 +52,8 @@ function Button({
     payment,
     userInfo,
     selectChoose,
+    updateAddress,
+    addressDefault,
   });
   return (
     <Comp className={classes} {...props}>

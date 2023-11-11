@@ -13,6 +13,8 @@ function UserInfo() {
   const { user } = useAuth0();
   const [value, setValue] = useState("");
   const [formValues, setFormValues] = useState({});
+  const userIdLocal = localStorage.getItem("userId");
+
   const handleUpdateInfo = (id, value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -144,7 +146,7 @@ function UserInfo() {
                   className={cx("input-data")}
                   id="address"
                   label={item?.id}
-                  value={item?.id}
+                  value={userIdLocal}
                   variant="outlined"
                 />
                 <TextField

@@ -11,6 +11,7 @@ const LOGIN_USER = gql`
       userCreatedPayload {
         apiToken
         message
+        userId
       }
     }
   }
@@ -42,9 +43,11 @@ function App() {
           // Lấy giá trị apiToken từ phản hồi và lưu trữ nó trong local storage
           const token = userCreatedPayload.apiToken;
           setApiToken(token);
+          const userID = userCreatedPayload.userId;
 
           // Lưu giá trị vào local storage
           localStorage.setItem("apiToken", token);
+          localStorage.setItem("userId", userID);
         } catch (error) {
           console.error("Lỗi tạo user:", error);
         } finally {

@@ -35,6 +35,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
   }, [currency, showSpinner]);
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
+    const userIdLocal = localStorage.getItem("userId");
     console.log("Email ở Button: " + emailUser);
     let total = 0;
     for (const item of data) {
@@ -51,7 +52,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
         ],
         shippingAddress: "HaNoi",
         total: (total += item.total),
-        userId: "df5f68c5-ffa2-49f0-9537-984abed0f4e2",
+        userId: userIdLocal,
         status: "CONFIRMED",
         phone: "null",
         userName: "null",
@@ -123,7 +124,6 @@ export default function PayPal({ amount }) {
   }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-  console.log("123", localStorageCart);
   const productOrder = [];
   if (Array.isArray(cartItem)) {
     localStorageCart.forEach((item) => {

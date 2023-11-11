@@ -48,15 +48,14 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
       },
     }
   );
-  useEffect(() => {
-    if (error) {
-      console.log("Lỗi", error);
-    } else if (data) {
-      console.log("User", data);
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log("Lỗi", error);
+  //   } else if (data) {
+  //     console.log("User", data);
+  //   }
+  // }, [data, error]);
   const { isAuthenticated, user } = useAuth0();
-  console.log(isAuthenticated);
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>
@@ -92,7 +91,7 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      <span className={cx("user-name")}>{item?.name}</span>,
+                      <span className={cx("user-name")}>{item?.name}</span>
                     </TableCell>
                     <TableCell style={{ padding: "20px" }} align="left">
                       <span className={cx("user-phone")}>
