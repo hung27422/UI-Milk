@@ -36,6 +36,8 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
+    const storedData = JSON.parse(localStorage.getItem("addressesData"));
+
     console.log("Email ở Button: " + emailUser);
     let total = 0;
     for (const item of data) {
@@ -50,12 +52,12 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
             sku: item.sku,
           },
         ],
-        shippingAddress: "HaNoi",
+        shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
         total: (total += item.total),
         userId: userIdLocal,
         status: "CONFIRMED",
-        phone: "null",
-        userName: "null",
+        phone: storedData[0].phone,
+        userName: storedData[0].name,
       };
 
       try {
