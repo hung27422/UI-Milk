@@ -150,7 +150,7 @@ export default function BasicModal() {
               }}
               onClick={handleCreateAddress}
             >
-              Lưu
+              Tạo
             </Button>
           </div>
         </Box>

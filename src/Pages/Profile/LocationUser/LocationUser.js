@@ -64,7 +64,7 @@ function LocationUser() {
               </div>
               <div className={cx("content-action")}>
                 <div className={cx("btn-action")}>
-                  <ButtonUpdateAddress />
+                  <ButtonUpdateAddress idAddress={item?.id} />
                   <ButtonDeleteAddress data={item?.id} />
                 </div>
                 <div className={cx("btn-action")}>
