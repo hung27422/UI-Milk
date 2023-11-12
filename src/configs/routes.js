@@ -13,7 +13,6 @@ const routes = {
   detailorder: "/detailorder",
   shipment: "/shipment",
   confirmorderdone: "/confirmorderdone",
-  profile: "/profile",
   userinfo: "/userinfo",
   userlocation: "/userlocation",
 };

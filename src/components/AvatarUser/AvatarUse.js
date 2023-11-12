@@ -33,12 +33,17 @@ export default function AvatarUse() {
         title={
           <React.Fragment>
             <div className={cx("box-item")}>
-              <NavLink to={configs.routes.profile} className={cx("box-link")}>
+              <NavLink to={configs.routes.userinfo} className={cx("box-link")}>
                 Tài khoản của tôi
               </NavLink>
             </div>
             <div className={cx("box-item")}>
-              <NavLink to={configs.routes.detailorder} className={cx("box-link")}>Đơn mua</NavLink>
+              <NavLink
+                to={configs.routes.detailorder}
+                className={cx("box-link")}
+              >
+                Đơn mua
+              </NavLink>
             </div>
           </React.Fragment>
         }
