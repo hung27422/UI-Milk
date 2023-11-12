@@ -34,6 +34,7 @@ const UPDATE_ADDRESS = gql`
   }
 `;
 export default function ButtonUpdateAddress({ idAddress }) {
+  
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const [updateAddress, { error }] = useMutation(UPDATE_ADDRESS);
@@ -41,21 +42,14 @@ export default function ButtonUpdateAddress({ idAddress }) {
     console.log("Lỗi update địa chỉ", error);
   }
   const [value, setValue] = useState({});
-  const [label, setLabel] = useState({});
-  const handleUpdateAddress = (id, value, label) => {
+  const handleUpdateAddress = (id, value) => {
     setOpen(true);
     setValue((prev) => ({
       ...prev,
       [id]: value,
     }));
-    setLabel((prev) => ({
-      ...prev,
-      [id]: label,
-    }));
   };
   const handleSaveAddress = async (item) => {
-    // Check if each field is present in the value object and is different from the label
-
     const userUpdateAddressInput = {
       input: {
         city: value?.city || item?.city,
@@ -103,15 +97,14 @@ export default function ButtonUpdateAddress({ idAddress }) {
       },
     }
   );
-  useEffect(() => {
-    console.log(data?.addresses);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data?.addresses);
+  // }, [data]);
   return (
     <div>
       <Button onClick={handleUpdateAddress}>Cập nhật</Button>
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

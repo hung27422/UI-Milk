@@ -11,12 +11,10 @@ const DELETE_ADDRESS = gql`
   }
 `;
 function ButtonDeleteAddress({ data }) {
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
+
   const [deleteAddress, { error }] = useMutation(DELETE_ADDRESS);
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    }
-  });
+
   const handleDeleteAddress = async () => {
     const userDeleteAddressInput = {
       input: {
@@ -35,7 +33,14 @@ function ButtonDeleteAddress({ data }) {
     });
     console.log("Xóa địa chỉ thành công:", result);
   };
-  return <Button onClick={handleDeleteAddress}>Xóa</Button>;
+  return (
+    <Button
+      onClick={handleDeleteAddress}
+      disabled={storedData && storedData[0].id === data}
+    >
+      Xóa
+    </Button>
+  );
 }
 
 export default ButtonDeleteAddress;
