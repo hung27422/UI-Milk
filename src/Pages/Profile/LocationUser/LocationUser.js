@@ -38,10 +38,11 @@ function LocationUser() {
       console.log("error", error);
     } else if (data) {
       console.log(data.addresses);
-      setAddresses(data?.addresses);
       const storedData = JSON.parse(localStorage.getItem("addressesData"));
       if (storedData) {
-        setAddresses(storedData);
+        setAddresses([...data.addresses, ...storedData]);
+      } else {
+        setAddresses(data.addresses);
       }
     }
   }, [data, error]);
@@ -85,7 +86,6 @@ function LocationUser() {
             </div>
           );
         }
-        return <>Không có dữ liệu</>;
       })}
     </div>
   );

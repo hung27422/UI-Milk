@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-
+const userIdLocal = localStorage.getItem("userId");
 const { default: TableInfoProduct } = require("./TableInfoProduct");
-
 const TableInfoProductWrapper = () => {
   let total = 0;
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
@@ -9,10 +8,13 @@ const TableInfoProductWrapper = () => {
 };
 //ListAllOrder
 const TableInfoAllOrderWrapper = ({ order }) => {
+  const listOrders = order?.filter(
+    (items) => items.userId === userIdLocal.toLocaleLowerCase()
+  );
   return (
     <TableInfoProduct
       title={"Thông tin tất cả sản phẩm"}
-      data={order?.map((i) => i.items).flat()}
+      data={listOrders?.map((i) => i.items).flat()}
       dataOrder={order}
       showTotalPrice
       status
@@ -22,8 +24,13 @@ const TableInfoAllOrderWrapper = ({ order }) => {
 //WaitConfirm
 const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
   const statusWaitConfirm = order?.filter(
-    (items) => items.status === "CREATED"
+    (items) =>
+      items.status === "CREATED" &&
+      items.userId === userIdLocal.toLocaleLowerCase()
   );
+  console.log("Chờ xác nhận: ", statusWaitConfirm);
+  console.log("userId", userIdLocal.toLocaleLowerCase());
+
   if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
     return (
       <TableInfoProduct
@@ -37,7 +44,13 @@ const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
 };
 //ConfirmOrder
 const TableInfoConfirmWrapperOrder = ({ confirm, order }) => {
-  const statusConfirm = order?.filter((item) => item.status === "CONFIRMED");
+  const statusConfirm = order?.filter(
+    (item) =>
+      item.status === "CONFIRMED" &&
+      item.userId === userIdLocal.toLocaleLowerCase()
+  );
+  console.log("Xác nhận", statusConfirm);
+  console.log("userId", userIdLocal);
   if (Array.isArray(statusConfirm) && statusConfirm.length > 0) {
     return (
       <TableInfoProduct
@@ -50,7 +63,11 @@ const TableInfoConfirmWrapperOrder = ({ confirm, order }) => {
 };
 //Shipment
 const TableInfoShipment = ({ order, shipment }) => {
-  const statusShipment = order?.filter((item) => item.status === "SHIPPING");
+  const statusShipment = order?.filter(
+    (item) =>
+      item.status === "SHIPPING" &&
+      item.userId === userIdLocal.toLocaleLowerCase()
+  );
   if (Array.isArray(statusShipment) && statusShipment.length > 0) {
     return (
       <TableInfoProduct
@@ -64,7 +81,12 @@ const TableInfoShipment = ({ order, shipment }) => {
 };
 //ConfirmOrder
 const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
-  const statusDone = order?.filter((item) => item.status === "SHIPPING");
+  const statusDone = order?.filter(
+    (item) =>
+      item.status === "SHIPPING" &&
+      item.userId === userIdLocal.toLocaleLowerCase()
+  );
+  console.log("Done", statusDone);
   if (Array.isArray(statusDone) && statusDone.length > 0) {
     return (
       <TableInfoProduct

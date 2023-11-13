@@ -37,7 +37,6 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
-
     console.log("Email ở Button: " + emailUser);
     let total = 0;
     for (const item of data) {

@@ -15,6 +15,7 @@ import { useEffect } from "react";
 const cx = classNames.bind(styles);
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
   const { data, error } = useQuery(
     gql`
       query Users {
@@ -43,7 +44,7 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
     {
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2OTk4NTAzOTUsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.xxTUpAsxG5-y-Jv-6FAjYUPSK-iuYsxW2SOIkxxmY6RIW1GgS1SYjstm0bQJ__TGNUYlhAAo7RSbBNe9XE1NiQ`,
+          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDAxMTkxMDQsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.MymEQKYU0IV_fUYVdDrXQopzTNmW48TAK6zR9Bz4YSZf51pJr73x8uXeXppNTqSvR89rEK5LBchZt_xvt3ljMQ`,
         },
       },
     }
@@ -91,22 +92,30 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      <span className={cx("user-name")}>{item?.name}</span>
+                      <span className={cx("user-name")}>
+                        {storedData[0].name}
+                      </span>
                     </TableCell>
                     <TableCell style={{ padding: "20px" }} align="left">
                       <span className={cx("user-phone")}>
-                        {item?.phoneNumber}
+                        {storedData[0].phone}
                       </span>
                     </TableCell>
                     {hiddenButtonAddresses ? (
                       <TableCell align="left">
-                        <Address>QL 22, Tân Xuân, HoocMon, Tp.HCM</Address>
+                        <Address>
+                          {storedData[0].detail},{storedData[0].ward},
+                          {storedData[0].district},{storedData[0].city}
+                        </Address>
                       </TableCell>
                     ) : (
                       <TableCell align="left">
                         <span className={cx("address-content")}>
                           <span className={cx("address-content")}>
-                            <Address>QL 22, Tân Xuân, HoocMon, Tp.HCM</Address>
+                            <Address>
+                              {storedData[0].detail},{storedData[0].ward},
+                              {storedData[0].district},{storedData[0].city}
+                            </Address>
                             <ButtonChangeAddress />
                           </span>
                         </span>

@@ -33,6 +33,7 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
   const [value, setValue] = useState({});
   const [createAddress, { error }] = useMutation(CREATE_ADDRESS);
   useEffect(() => {
@@ -70,6 +71,13 @@ export default function BasicModal() {
         address: userCreateAddressInput.address, // Pass the userCreateAddressInput object to the mutation
       },
     });
+    const newAddress = {
+      id: result.data.createAddress.addressCreatedPayload.message, // Assuming the new address ID is returned from the server
+      ...userCreateAddressInput.address,
+    };
+
+    const updatedStoredData = [...(storedData || []), newAddress];
+    localStorage.setItem("addressesData", JSON.stringify(updatedStoredData));
     console.log("Đã tạo địa chỉ mới:", result);
     setOpen(false);
   };

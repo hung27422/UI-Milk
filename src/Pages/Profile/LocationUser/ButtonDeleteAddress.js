@@ -12,9 +12,12 @@ const DELETE_ADDRESS = gql`
 `;
 function ButtonDeleteAddress({ data }) {
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
-
+  console.log("123", storedData);
   const [deleteAddress, { error }] = useMutation(DELETE_ADDRESS);
-
+  const handleDeleteAllData = () => {
+    // Remove all data from localStorage
+    localStorage.removeItem("addressesData");
+  };
   const handleDeleteAddress = async () => {
     const userDeleteAddressInput = {
       input: {
@@ -31,15 +34,22 @@ function ButtonDeleteAddress({ data }) {
         input: userDeleteAddressInput.input, // Pass the userCreateAddressInput object to the mutation
       },
     });
+    const updatedStoredData = storedData.filter(
+      (address) => address.id !== data
+    );
+    localStorage.setItem("addressesData", JSON.stringify(updatedStoredData));
     console.log("Xóa địa chỉ thành công:", result);
   };
   return (
-    <Button
-      onClick={handleDeleteAddress}
-      disabled={storedData && storedData[0].id === data}
-    >
-      Xóa
-    </Button>
+    <div>
+      <Button
+        onClick={handleDeleteAddress}
+        disabled={storedData && storedData[0].id === data}
+      >
+        Xóa
+      </Button>
+      {/* <Button onClick={handleDeleteAllData}>123</Button> */}
+    </div>
   );
 }
 
