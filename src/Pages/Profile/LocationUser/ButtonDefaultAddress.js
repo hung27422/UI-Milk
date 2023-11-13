@@ -7,6 +7,7 @@ function ButtonDefaultAddress({ idAddress, addresses, setAddresses }) {
     const selectedAddress = addresses.find(
       (address) => address.id === idAddress
     );
+
     if (!selectedAddress) {
       return;
     }
@@ -17,15 +18,15 @@ function ButtonDefaultAddress({ idAddress, addresses, setAddresses }) {
     );
 
     if (indexToRemove !== -1) {
-      // Remove the address if it already exists
       updatedAddresses.splice(indexToRemove, 1);
     }
 
-    // Add the selected address to the beginning of the array
     updatedAddresses.unshift(selectedAddress);
 
-    // Cập nhật state
+    // Update state first
     setAddresses(updatedAddresses);
+
+    // Then update local storage
     localStorage.setItem("addressesData", JSON.stringify(updatedAddresses));
   };
   return (

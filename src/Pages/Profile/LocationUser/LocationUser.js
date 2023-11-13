@@ -37,21 +37,12 @@ function LocationUser() {
     if (error) {
       console.log("error", error);
     } else if (data) {
-      console.log(data.addresses);
+      setAddresses(data.addresses);
+
+      // Lấy từ localStorage (nếu có)
       const storedData = JSON.parse(localStorage.getItem("addressesData"));
       if (storedData) {
-        // Filter out duplicates based on the address ID
-        const combinedAddresses = [
-          ...data.addresses,
-          ...storedData.filter((storedAddress) =>
-            data.addresses.every(
-              (serverAddress) => serverAddress.id !== storedAddress.id
-            )
-          ),
-        ];
-        setAddresses(combinedAddresses);
-      } else {
-        setAddresses(data.addresses);
+        setAddresses(storedData);
       }
     }
   }, [data, error]);
