@@ -17,9 +17,11 @@ function ButtonDefaultAddress({ idAddress, addresses, setAddresses }) {
     );
 
     if (indexToRemove !== -1) {
+      // Remove the address if it already exists
       updatedAddresses.splice(indexToRemove, 1);
     }
 
+    // Add the selected address to the beginning of the array
     updatedAddresses.unshift(selectedAddress);
 
     // Cập nhật state

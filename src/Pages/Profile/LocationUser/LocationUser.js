@@ -40,7 +40,16 @@ function LocationUser() {
       console.log(data.addresses);
       const storedData = JSON.parse(localStorage.getItem("addressesData"));
       if (storedData) {
-        setAddresses([...data.addresses, ...storedData]);
+        // Filter out duplicates based on the address ID
+        const combinedAddresses = [
+          ...data.addresses,
+          ...storedData.filter((storedAddress) =>
+            data.addresses.every(
+              (serverAddress) => serverAddress.id !== storedAddress.id
+            )
+          ),
+        ];
+        setAddresses(combinedAddresses);
       } else {
         setAddresses(data.addresses);
       }
