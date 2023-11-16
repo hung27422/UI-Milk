@@ -3,15 +3,17 @@ import styles from "./LocationUser.module.scss";
 import Button from "~/components/Button";
 import ButtonAddress from "./ButtonAddress";
 import { gql, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ButtonDeleteAddress from "./ButtonDeleteAddress";
 import ButtonUpdateAddress from "./ButtonUpdateAddress";
 import ButtonDefaultAddress from "./ButtonDefaultAddress";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function LocationUser() {
   const userIdLocal = localStorage.getItem("userId");
-  const [addresses, setAddresses] = useState([]);
-  const { data, error } = useQuery(
+  const { indexAddress, setIndexAddress } = useContext(MilkContext);
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
+  const { data, refetch } = useQuery(
     gql`
       query Addresses($amount: Int!, $page: Int!) {
         addresses(amount: $amount, page: $page) {
@@ -28,24 +30,41 @@ function LocationUser() {
     `,
     {
       variables: {
-        amount: 12,
+        amount: 50,
         page: 1,
+      },
+      onCompleted: (data) => {
+        // const storedData = JSON.parse(localStorage.getItem("addressesData"));
+        setIndexAddress(data?.addresses);
       },
     }
   );
-  useEffect(() => {
-    if (error) {
-      console.log("error", error);
-    } else if (data) {
-      setAddresses(data.addresses);
-
-      // Lấy từ localStorage (nếu có)
-      const storedData = JSON.parse(localStorage.getItem("addressesData"));
-      if (storedData) {
-        setAddresses(storedData);
-      }
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   // Cập nhật danh sách địa chỉ mỗi khi có thay đổi trong data
+  //   const storedData = JSON.parse(localStorage.getItem("addressesData"));
+  //   console.log(storedData);
+  //   if (!storedData) {
+  //     setIndexAddress(data?.addresses);
+  //   }
+  //   if (storedData) {
+  //     setIndexAddress(storedData);
+  //   }
+  // }, [data, setIndexAddress]);
+  console.log("userID", userIdLocal);
+  console.log(indexAddress);
+  const newIndexAddress = [
+    ...indexAddress.filter((address) => {
+      console.log(
+        String(address?.id) === localStorage.getItem("defaultAddressID")
+      );
+      return String(address?.id) === localStorage.getItem("defaultAddressID");
+    }),...indexAddress.filter((address) => {
+      console.log(
+        String(address?.id) === localStorage.getItem("defaultAddressID")
+      );
+      return String(address?.id) !== localStorage.getItem("defaultAddressID");
+    }),
+  ];
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -53,7 +72,7 @@ function LocationUser() {
         <ButtonAddress />
       </div>
       <h2 style={{ padding: "12px 12px" }}>Địa chỉ</h2>
-      {addresses.map((item, index) => {
+      {newIndexAddress?.map((item, index) => {
         if (item?.userId === userIdLocal.toLocaleLowerCase()) {
           return (
             <div className={cx("content")} key={item.id}>
@@ -72,15 +91,10 @@ function LocationUser() {
               <div className={cx("content-action")}>
                 <div className={cx("btn-action")}>
                   <ButtonUpdateAddress idAddress={item?.id} />
-                  <ButtonDeleteAddress data={item?.id} />
+                  <ButtonDeleteAddress idAddress={item?.id} />
                 </div>
                 <div className={cx("btn-action")}>
-                  <ButtonDefaultAddress
-                    idAddress={item?.id}
-                    index={index}
-                    setAddresses={setAddresses}
-                    addresses={addresses}
-                  />
+                  <ButtonDefaultAddress idAddress={item?.id} index={index} />
                 </div>
               </div>
             </div>

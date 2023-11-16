@@ -17,7 +17,8 @@ function ContextMilk({ children }) {
   const [priceSize, setPriceSize] = useState();
   const [apiToken, setApiToken] = useState(null);
   const [countQuantity, setCountQuantity] = useState(0);
-
+  const [indexAddress, setIndexAddress] = useState([]);
+  const [addressRefetch, setAddressRefetch] = useState(null);
   return (
     <MilkContext.Provider
       value={{
@@ -51,6 +52,10 @@ function ContextMilk({ children }) {
         setApiToken,
         countQuantity,
         setCountQuantity,
+        indexAddress,
+        setIndexAddress,
+        addressRefetch,
+        setAddressRefetch,
       }}
     >
       {children}

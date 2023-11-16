@@ -20,48 +20,49 @@ function PaymentOffline() {
   const { user } = useAuth0();
 
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+  console.log("123", localStorageCart);
   let total = 0;
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
     console.log(userIdLocal);
-    for (const item of localStorageCart) {
-      const orderCreateOrderInput = {
-        email: user?.email,
-        items: [
-          {
-            name: item.name,
-            price: item.price,
-            productId: item.id,
-            quantity: item.quantity,
-            sku: item.sku,
-          },
-        ],
-        shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
-        total: (total += item.total),
-        userId: userIdLocal,
-        status: "CREATED",
-        phone: storedData[0].phone,
-        userName: storedData[0].name,
-      };
 
-      try {
-        const result = await client.mutate({
-          mutation: CREATE_ORDER,
-          context: {
-            headers: {
-              authorization: `Bearer ${apiTokenLocal}`,
-            },
+    const orderCreateOrderInput = {
+      email: user?.email,
+      items: [
+        ...localStorageCart.map((i) => ({
+          name: i?.name,
+          price: i?.price,
+          productId: i?.id,
+          quantity: i?.quantity,
+          sku: i?.sku,
+        })),
+       
+      ],
+      shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
+      total: 100,
+      userId: userIdLocal,
+      status: "CREATED",
+      phone: storedData[0].phone,
+      userName: storedData[0].name,
+    };
+
+    try {
+      const result = await client.mutate({
+        mutation: CREATE_ORDER,
+        context: {
+          headers: {
+            authorization: `Bearer ${apiTokenLocal}`,
           },
-          variables: {
-            input: orderCreateOrderInput,
-          },
-        });
-        console.log("Đã lưu đơn hàng:", result);
-      } catch (error) {
-        console.error("Lỗi khi lưu đơn hàng:", error);
-      }
+        },
+        variables: {
+          input: orderCreateOrderInput,
+        },
+      });
+      console.log("Đã lưu đơn hàng:", result);
+    } catch (error) {
+      console.error("Lỗi khi lưu đơn hàng:", error);
     }
   };
   return (

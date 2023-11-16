@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
 const DELETE_ADDRESS = gql`
@@ -10,18 +10,41 @@ const DELETE_ADDRESS = gql`
     }
   }
 `;
-function ButtonDeleteAddress({ data }) {
-  const storedData = JSON.parse(localStorage.getItem("addressesData"));
-  console.log("123", storedData);
+function ButtonDeleteAddress({ idAddress }) {
+  const { data, refetch: refetchDeleteAddress } = useQuery(
+    gql`
+      query Addresses($amount: Int!, $page: Int!) {
+        addresses(amount: $amount, page: $page) {
+          city
+          detail
+          district
+          id
+          name
+          phone
+          userId
+          ward
+        }
+      }
+    `,
+    {
+      variables: {
+        amount: 50,
+        page: 1,
+      },
+    }
+  );
+  useEffect(() => {
+    if (data) {
+      console.log(data?.addresses);
+    }
+  }, [data]);
+
   const [deleteAddress, { error }] = useMutation(DELETE_ADDRESS);
-  const handleDeleteAllData = () => {
-    // Remove all data from localStorage
-    localStorage.removeItem("addressesData");
-  };
+
   const handleDeleteAddress = async () => {
     const userDeleteAddressInput = {
       input: {
-        id: data,
+        id: idAddress,
       },
     };
     const result = await deleteAddress({
@@ -34,21 +57,24 @@ function ButtonDeleteAddress({ data }) {
         input: userDeleteAddressInput.input, // Pass the userCreateAddressInput object to the mutation
       },
     });
-    const updatedStoredData = storedData.filter(
-      (address) => address.id !== data
+    // Nếu mutation thành công, cập nhật trạng thái trong React
+    const updatedAddresses = data.addresses.filter(
+      (item) => item.id !== idAddress
     );
-    localStorage.setItem("addressesData", JSON.stringify(updatedStoredData));
+
+    // Cập nhật Local Storage với trạng thái mới của danh sách địa chỉ
+    localStorage.setItem("addressesData", JSON.stringify(updatedAddresses));
+    refetchDeleteAddress();
     console.log("Xóa địa chỉ thành công:", result);
   };
+  const hanldeDeleteLocal = () => {
+    localStorage.removeItem("addressesData");
+  };
+
   return (
     <div>
-      <Button
-        onClick={handleDeleteAddress}
-        disabled={storedData && storedData[0].id === data}
-      >
-        Xóa
-      </Button>
-      {/* <Button onClick={handleDeleteAllData}>123</Button> */}
+      <Button onClick={handleDeleteAddress}>Xóa</Button>
+      {/* <Button onClick={hanldeDeleteLocal}>123</Button> */}
     </div>
   );
 }

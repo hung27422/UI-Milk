@@ -5,9 +5,11 @@ import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./LocationUser.module.scss";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useContext } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 const style = {
   position: "absolute",
@@ -33,7 +35,8 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const storedData = JSON.parse(localStorage.getItem("addressesData"));
+  const { indexAddress, setIndexAddress } = useContext(MilkContext);
+  const { addressRefetch, setAddressRefetch } = useContext(MilkContext);
   const [value, setValue] = useState({});
   const [createAddress, { error }] = useMutation(CREATE_ADDRESS);
   useEffect(() => {
@@ -47,6 +50,37 @@ export default function BasicModal() {
       [id]: value,
     }));
   };
+  const { data: addressUser, refetch: refetchGetAddressUser } = useQuery(
+    gql`
+      query Addresses($amount: Int!, $page: Int!) {
+        addresses(amount: $amount, page: $page) {
+          city
+          detail
+          district
+          id
+          name
+          phone
+          userId
+          ward
+        }
+      }
+    `,
+    {
+      variables: {
+        amount: 50,
+        page: 1,
+      },
+    }
+  );
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("addressesData"));
+    console.log("!23", storedData);
+    setIndexAddress(storedData || addressUser?.addresses || []);
+  }, [addressUser, refetchGetAddressUser, setAddressRefetch, setIndexAddress]);
+  useEffect(() => {
+    setIndexAddress(addressUser?.addresses || []);
+    setAddressRefetch(refetchGetAddressUser);
+  }, [refetchGetAddressUser, setAddressRefetch, setIndexAddress, addressUser]);
   const handleCreateAddress = async () => {
     const userIdLocal = localStorage.getItem("userId");
     const userCreateAddressInput = {
@@ -71,14 +105,9 @@ export default function BasicModal() {
         address: userCreateAddressInput.address, // Pass the userCreateAddressInput object to the mutation
       },
     });
-    const newAddress = {
-      id: result.data.createAddress.addressCreatedPayload.message, // Assuming the new address ID is returned from the server
-      ...userCreateAddressInput.address,
-    };
 
-    const updatedStoredData = [...(storedData || []), newAddress];
-    localStorage.setItem("addressesData", JSON.stringify(updatedStoredData));
-    console.log("Đã tạo địa chỉ mới:", result);
+    setIndexAddress(() => [...addressUser?.addresses]);
+    refetchGetAddressUser();
     setOpen(false);
   };
 
