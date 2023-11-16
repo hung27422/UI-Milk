@@ -26,8 +26,6 @@ function PaymentOffline() {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
-    console.log(userIdLocal);
-
     const orderCreateOrderInput = {
       email: user?.email,
       items: [
@@ -38,7 +36,6 @@ function PaymentOffline() {
           quantity: i?.quantity,
           sku: i?.sku,
         })),
-       
       ],
       shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
       total: 100,
@@ -61,8 +58,14 @@ function PaymentOffline() {
         },
       });
       console.log("Đã lưu đơn hàng:", result);
+      localStorage.removeItem("cartItems");
     } catch (error) {
       console.error("Lỗi khi lưu đơn hàng:", error);
+    } finally {
+      //"Refetch"
+      const updatedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      console.log("Đã xóa giỏ hàng");
     }
   };
   return (

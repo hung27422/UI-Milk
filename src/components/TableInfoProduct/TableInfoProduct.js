@@ -14,7 +14,20 @@ import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
 import ButtonDoneOrder from "~/Pages/DetailOrder/components/ConfirmDoneOrder/ButtonDoneOrder/ButtonDoneOrder";
 
 const cx = classNames.bind(styles);
-
+const getStatusText = (status) => {
+  switch (status) {
+    case "CREATED":
+      return <h2 style={{ color: "violet" }}>Đã tạo</h2>;
+    case "CONFIRMED":
+      return <h2 style={{ color: "green" }}>Đã xác nhận</h2>;
+    case "SHIPPING":
+      return <h2 style={{ color: "orangered" }}>Đang giao hàng</h2>;
+    case "DELIVERED":
+      return <h2 style={{ color: "var(--primary)" }}>Đã giao</h2>;
+    default:
+      return null; // Hoặc xử lý trạng thái không xác định ở đây
+  }
+};
 function TableInfoProduct({
   data,
   total = 0,
@@ -141,41 +154,18 @@ function TableInfoProduct({
                   <TotalPrice data={item} />
                 </TableCell>
                 {status &&
-                  dataOrder?.map((stt) => {
-                    if (stt.id === item.id && stt.status === "CREATED") {
-                      return (
-                        <TableCell key={stt.id} align="right">
-                          <h2>Đã tạo</h2>
-                        </TableCell>
-                      );
-                    } else if (
-                      stt.id === item.id &&
-                      stt.status === "CONFIRMED"
-                    ) {
-                      return (
-                        <TableCell key={stt.id} align="right">
-                          <h2>Đã xác nhận</h2>
-                        </TableCell>
-                      );
-                    } else if (
-                      stt.id === item.id &&
-                      stt.status === "SHIPPING"
-                    ) {
-                      return (
-                        <TableCell key={stt.id} align="right">
-                          <h2>Đang giao hàng</h2>
-                        </TableCell>
-                      );
-                    } else if (
-                      stt.id === item.id &&
-                      stt.status === "DELIVERED"
-                    ) {
-                      return (
-                        <TableCell key={stt.id} align="right">
-                          <h2>Đã giao</h2>
-                        </TableCell>
-                      );
-                    }
+                  dataOrder?.map((stt, i) => {
+                    let statusCell = null;
+                    stt?.items.forEach((s) => {
+                      if (s.id === item.id) {
+                        statusCell = (
+                          <TableCell key={item.id} align="right">
+                            {getStatusText(stt.status)}
+                          </TableCell>
+                        );
+                      }
+                    });
+                    return statusCell;
                   })}
                 {isShowButtonDetailShipment && (
                   <TableCell align="center">

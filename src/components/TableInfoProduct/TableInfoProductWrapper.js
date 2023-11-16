@@ -11,11 +11,12 @@ const TableInfoAllOrderWrapper = ({ order }) => {
   const listOrders = order?.filter(
     (items) => items.userId === userIdLocal.toLocaleLowerCase()
   );
+  console.log("list", order?.map((o) => o).flat());
   return (
     <TableInfoProduct
       title={"Thông tin tất cả sản phẩm"}
       data={listOrders?.map((i) => i.items).flat()}
-      dataOrder={order}
+      dataOrder={order?.map((o) => o).flat()}
       showTotalPrice
       status
     />
