@@ -10,7 +10,11 @@ const cx = classNames.bind(styles);
 function Delivery() {
   const { setActiveStep } = useContext(MilkContext);
   useEffect(() => setActiveStep(1), [setActiveStep]);
-
+  const { guest, setGuest } = useContext(MilkContext);
+  const handleSaveInfoGuest = () => {
+    console.log(guest);
+    // setGuest(valueGuest);
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
@@ -24,7 +28,11 @@ function Delivery() {
           <Button to={configs.routes.orderstepper} delivery>
             Trở lại
           </Button>
-          <Button to={configs.routes.payment} delivery>
+          <Button
+            to={configs.routes.payment}
+            onClick={handleSaveInfoGuest}
+            delivery
+          >
             Tiếp tục
           </Button>
         </div>

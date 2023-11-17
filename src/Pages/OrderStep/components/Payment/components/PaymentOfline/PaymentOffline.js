@@ -5,6 +5,8 @@ import ButtonPayment from "../ButtonPayment/ButtonPayment";
 import { gql } from "@apollo/client";
 import { client } from "~/ApolloClient";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useContext } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);
 const CREATE_ORDER = gql`
@@ -17,8 +19,8 @@ const CREATE_ORDER = gql`
   }
 `;
 function PaymentOffline() {
-  const { user } = useAuth0();
-
+  const { user, isAuthenticated } = useAuth0();
+  const { guest, setGuest } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   console.log("123", localStorageCart);
   let total = 0;
@@ -26,8 +28,9 @@ function PaymentOffline() {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
+
     const orderCreateOrderInput = {
-      email: user?.email,
+      email: isAuthenticated ? user?.email : guest?.emailGuest,
       items: [
         ...localStorageCart.map((i) => ({
           name: i?.name,
@@ -37,12 +40,14 @@ function PaymentOffline() {
           sku: i?.sku,
         })),
       ],
-      shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
+      shippingAddress: isAuthenticated
+        ? `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`
+        : guest?.addressGuest,
       total: 100,
       userId: userIdLocal,
       status: "CREATED",
-      phone: storedData[0].phone,
-      userName: storedData[0].name,
+      phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
+      userName: isAuthenticated ? storedData[0].name : guest?.nameGuest,
     };
 
     try {
@@ -50,7 +55,7 @@ function PaymentOffline() {
         mutation: CREATE_ORDER,
         context: {
           headers: {
-            authorization: `Bearer ${apiTokenLocal}`,
+            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyMTJhZDFiOS0xYmJmLTRkODMtYmRiNy1hZTM4OGNlNGU2YjgiLCJuYW1lIjoibnVsbCIsImp0aSI6IjIxMkFEMUI5LTFCQkYtNEQ4My1CREI3LUFFMzg4Q0U0RTZCOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MDA0NjA2NzYsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.p6r6SIlnIDIyEMON7vftsoMDM41qw4anx_c5rhwiF081rM51FVSK3w-UZJqDbhTDA5d-mywWrwwaEnl0HF9SRA`,
           },
         },
         variables: {
@@ -58,6 +63,7 @@ function PaymentOffline() {
         },
       });
       console.log("Đã lưu đơn hàng:", result);
+      setGuest({});
       localStorage.removeItem("cartItems");
     } catch (error) {
       console.error("Lỗi khi lưu đơn hàng:", error);

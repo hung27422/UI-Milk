@@ -6,6 +6,7 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 function ButtonDefaultAddress({ idAddress }) {
   const { indexAddress, setIndexAddress } = useContext(MilkContext);
   const [addresses, setAddresses] = useState(indexAddress);
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
 
   useEffect(() => {
     setAddresses(indexAddress);
@@ -27,9 +28,11 @@ function ButtonDefaultAddress({ idAddress }) {
           return (
             <Button
               style={{
-                backgroundColor: "var(--secondary)",
+                backgroundColor:
+                  storedData[0].id === idAddress ? "#ccc" : "var(--secondary)",
                 color: "var(--white)",
               }}
+              disabled={storedData[0].id === idAddress}
               onClick={() => handleDefaultAddress(item?.id, item)}
             >
               Đặt làm mặc định
