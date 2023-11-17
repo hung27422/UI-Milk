@@ -3,10 +3,16 @@ import styles from "../WaitConfirm/WaitConfirm.module.scss";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
-import { TableInfoConfirmWrapperOrder } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import {
+  TableInfoConfirmWrapperOrder,
+  TableInfoConfirmWrapperOrderGuest,
+} from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function ConfirmOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
+  const { user, isAuthenticated } = useAuth0();
+
   useEffect(() => setActiveStepOrder(2), [setActiveStepOrder]);
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
@@ -16,11 +22,9 @@ function ConfirmOrder() {
           cancelReason
           date
           id
+          shippingAddress
           items {
             id
-            order {
-              id
-            }
             name
             orderId
             price
@@ -29,10 +33,11 @@ function ConfirmOrder() {
             sku
             subtotal
           }
-          shippingAddress
           status
           total
           userId
+          phone
+          userName
         }
       }
     `,
@@ -53,7 +58,9 @@ function ConfirmOrder() {
       console.log("data", data);
     }
   }, [data, error]);
-
+  if (!isAuthenticated) {
+    return <TableInfoConfirmWrapperOrderGuest order={data?.orders} />;
+  }
   return (
     <div className={cx("wrapper")}>
       <div>

@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { MilkContext } from "../ContextMilk/ContextMilk";
 const userIdLocal = localStorage.getItem("userId");
+
 const { default: TableInfoProduct } = require("./TableInfoProduct");
 const TableInfoProductWrapper = () => {
   let total = 0;
@@ -80,7 +82,7 @@ const TableInfoShipment = ({ order, shipment }) => {
     );
   }
 };
-//ConfirmOrder
+//DoneOrders ---> Chưa gán status
 const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
   const statusDone = order?.filter(
     (item) =>
@@ -99,7 +101,91 @@ const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
     );
   }
 };
+//ListOrder of Guest
+const TableInfoListAllOrderWrapperOrderGuest = ({ order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const listOrders = order?.filter((items) => items.phone === showOrderGuest);
+  return (
+    <TableInfoProduct
+      title={"Thông tin tất cả sản phẩm"}
+      data={listOrders?.map((i) => i.items).flat()}
+      dataOrder={order?.map((o) => o).flat()}
+      showTotalPrice
+      status
+    />
+  );
+};
+//WaitConfirm of Guest
+const TableInfoProductWrapperOrderGuest = ({ waitConfirm, order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusWaitConfirm = order?.filter(
+    (items) => items.status === "CREATED" && items.phone === showOrderGuest
+  );
 
+  if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
+    return (
+      <TableInfoProduct
+        titleColor
+        title={"Thông tin sản phẩm "}
+        data={statusWaitConfirm?.map((i) => i.items).flat()}
+        tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
+      />
+    );
+  }
+};
+//ConfirmOrder of Guest
+const TableInfoConfirmWrapperOrderGuest = ({ confirm, order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusConfirm = order?.filter(
+    (item) => item.status === "CONFIRMED" && item.phone === showOrderGuest
+  );
+  console.log("Xác nhận", statusConfirm);
+  console.log("userId", userIdLocal);
+  if (Array.isArray(statusConfirm) && statusConfirm.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm "}
+        data={statusConfirm?.map((i) => i.items).flat()}
+        tableStatus={confirm ? "Đã xác nhận" : ""}
+      />
+    );
+  }
+};
+//Shipment of Guest
+const TableInfoShipmentGuest = ({ order, shipment }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusShipment = order?.filter(
+    (item) => item.status === "SHIPPING" && item.phone === showOrderGuest
+  );
+  if (Array.isArray(statusShipment) && statusShipment.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm"}
+        data={statusShipment?.map((i) => i.items).flat()}
+        tableStatus={shipment ? "Đang giao" : ""}
+        isShowButtonDetailShipment
+      />
+    );
+  }
+};
+//DoneOrders of Guest ---> Chưa gán status
+const TableInfoDoneOrderWrapperOrderGuest = ({ doneOrder, order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusDone = order?.filter(
+    (item) => item.status === "SHIPPING" && item.phone === showOrderGuest
+  );
+
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin sản phẩm"}
+        data={statusDone?.map((i) => i.items).flat()}
+        tableStatus={doneOrder ? "Đã giao" : ""}
+        isShowButtonDone
+      />
+    );
+  }
+};
 export {
   TableInfoProductWrapper,
   TableInfoProductWrapperOrder,
@@ -107,4 +193,9 @@ export {
   TableInfoConfirmWrapperOrder,
   TableInfoDoneOrderWrapperOrder,
   TableInfoShipment,
+  TableInfoListAllOrderWrapperOrderGuest,
+  TableInfoProductWrapperOrderGuest,
+  TableInfoConfirmWrapperOrderGuest,
+  TableInfoShipmentGuest,
+  TableInfoDoneOrderWrapperOrderGuest,
 };

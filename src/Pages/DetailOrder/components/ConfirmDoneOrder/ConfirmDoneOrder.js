@@ -7,11 +7,12 @@ import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { TableInfoDoneOrderWrapperOrder } from "~/components/TableInfoProduct/TableInfoProductWrapper";
 import { gql, useQuery } from "@apollo/client";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function DoneOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
   useEffect(() => setActiveStepOrder(4), [setActiveStepOrder]);
-
+  const { user, isAuthenticated } = useAuth0();
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
     gql`
@@ -20,11 +21,9 @@ function DoneOrder() {
           cancelReason
           date
           id
+          shippingAddress
           items {
             id
-            order {
-              id
-            }
             name
             orderId
             price
@@ -33,10 +32,11 @@ function DoneOrder() {
             sku
             subtotal
           }
-          shippingAddress
           status
           total
           userId
+          phone
+          userName
         }
       }
     `,
@@ -49,7 +49,9 @@ function DoneOrder() {
       },
     }
   );
-
+  if (!isAuthenticated) {
+    return;
+  }
   return (
     <div className={cx("wrapper")}>
       <div className={cx("done-order")}>

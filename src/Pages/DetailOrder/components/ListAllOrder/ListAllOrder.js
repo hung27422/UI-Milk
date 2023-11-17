@@ -5,11 +5,13 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
 import {
   TableInfoAllOrderWrapper,
-  TableInfoProductWrapperOrder,
+  TableInfoListAllOrderWrapperOrderGuest,
 } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function ListAllOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
+  const { user, isAuthenticated } = useAuth0();
   useEffect(() => setActiveStepOrder(0), [setActiveStepOrder]);
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
@@ -19,11 +21,9 @@ function ListAllOrder() {
           cancelReason
           date
           id
+          shippingAddress
           items {
             id
-            order {
-              id
-            }
             name
             orderId
             price
@@ -32,10 +32,11 @@ function ListAllOrder() {
             sku
             subtotal
           }
-          shippingAddress
           status
           total
           userId
+          phone
+          userName
         }
       }
     `,
@@ -56,11 +57,17 @@ function ListAllOrder() {
   //     console.log(data);
   //   }
   // }, [data, error]);
-
+  if (!isAuthenticated) {
+    return (
+      <div className={cx("wrapper")}>
+        <TableInfoListAllOrderWrapperOrderGuest order={data?.orders} />
+      </div>
+    );
+  }
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoAllOrderWrapper order={data?.orders} />
+        {isAuthenticated && <TableInfoAllOrderWrapper order={data?.orders} />}
       </div>
     </div>
   );

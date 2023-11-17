@@ -5,13 +5,18 @@ import FollowShipment from "./FollowShipment";
 // import TableInfoDelivery from "~/Pages/OrderStep/components/Delivery/components/TableDelivery/TableInfoDelivery";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import { TableInfoShipment } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import {
+  TableInfoShipment,
+  TableInfoShipmentGuest,
+} from "~/components/TableInfoProduct/TableInfoProductWrapper";
 import { gql, useQuery } from "@apollo/client";
 import TableDelivery from "~/Pages/OrderStep/components/Delivery/components/TableDelivery/TableDelivery";
 import TableInfoDelivery from "~/Pages/OrderStep/components/Delivery/components/TableDelivery/TableInfoDelivery";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function Shipment() {
   const { setActiveStepOrder } = useContext(MilkContext);
+  const { user, isAuthenticated } = useAuth0();
   useEffect(() => setActiveStepOrder(3), [setActiveStepOrder]);
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data } = useQuery(
@@ -21,11 +26,9 @@ function Shipment() {
           cancelReason
           date
           id
+          shippingAddress
           items {
             id
-            order {
-              id
-            }
             name
             orderId
             price
@@ -34,10 +37,11 @@ function Shipment() {
             sku
             subtotal
           }
-          shippingAddress
           status
           total
           userId
+          phone
+          userName
         }
       }
     `,
@@ -50,7 +54,13 @@ function Shipment() {
       },
     }
   );
-
+  if (!isAuthenticated) {
+    return (
+      <div className={cx("shipment")}>
+        <TableInfoShipmentGuest order={data?.orders} />
+      </div>
+    );
+  }
   return (
     <div className={cx("wrapper")}>
       {/* <div className={cx("header")}>
@@ -59,10 +69,6 @@ function Shipment() {
       <div className={cx("shipment")}>
         <div className={cx("container")}>
           <TableInfoDelivery hiddenButtonAddresses />
-          {/* <div>
-            <h2 className={cx("title")}>Theo dõi đơn hàng</h2>
-            <FollowShipment />
-          </div> */}
         </div>
         <div className={cx("info-product")}>
           <TableInfoShipment shipment order={data?.orders} />
