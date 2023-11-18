@@ -8,11 +8,11 @@ import StepLabel from "@mui/material/StepLabel";
 import {
   WaitIcon,
   ShipIcon,
-  ShipDoneIcon,
-  EvaluateIcon,
   ListOrder,
   DoneOrder,
   ConfirmOrder,
+  DoneIcon,
+  CancelIcon,
 } from "~/components/Icons/Icons";
 import StepConnector, {
   stepConnectorClasses,
@@ -76,6 +76,8 @@ function ColorlibStepIcon(props) {
     3: <ConfirmOrder />,
     4: <ShipIcon />,
     5: <DoneOrder />,
+    6: <DoneIcon />,
+    7: <CancelIcon />,
   };
 
   return (
@@ -112,6 +114,8 @@ const steps = [
   "Đã xác nhận",
   "Đang giao hàng",
   "Xác nhận đơn hàng",
+  "Hoàn thành",
+  "Đơn hàng hủy",
 ];
 
 export default function DetailOrderStep() {

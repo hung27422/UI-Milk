@@ -52,3 +52,14 @@
   font-weight: 700;
   color: var(--text-color);
 }
+.show-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.reason-cancel {
+  font-size: 20px;
+  font-weight: 600;
+  color: red;
+}

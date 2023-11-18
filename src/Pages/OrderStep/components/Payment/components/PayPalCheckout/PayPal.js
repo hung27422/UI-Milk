@@ -67,7 +67,7 @@ const ButtonWrapper = ({
         : guest?.addressGuest,
       total: total,
       userId: userIdLocal,
-      status: "CREATED",
+      status: "CONFIRMED",
       phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
       userName: isAuthenticated ? storedData[0].name : guest?.nameGuest,
     };

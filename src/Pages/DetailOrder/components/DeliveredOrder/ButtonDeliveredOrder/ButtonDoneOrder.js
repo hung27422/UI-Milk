@@ -1,9 +1,8 @@
-import classNames from "classnames/bind";
-import styles from "./WaitConfirm.module.scss";
-import Button from "~/components/Button";
 import { useState } from "react";
+import classNames from "classnames/bind";
+import styles from "../ConfirmDoneOrder.module.scss";
+import Button from "~/components/Button";
 import { gql, useMutation } from "@apollo/client";
-import { dark } from "@mui/material/styles/createPalette";
 const cx = classNames.bind(styles);
 
 const UPDATE_ORDER = gql`
@@ -15,41 +14,23 @@ const UPDATE_ORDER = gql`
     }
   }
 `;
-const reasons = [
-  {
-    id: 1,
-    name: "Tôi muốn thay đổi địa chỉ",
-  },
-  {
-    id: 2,
-    name: "Không muốn đặt hàng nữa",
-  },
-  {
-    id: 3,
-    name: "Lí do khác",
-  },
-];
-function ReasonCancel({ data, handleClose }) {
-  const [nameReason, setNameReason] = useState("");
-  const [updateOrder] = useMutation(UPDATE_ORDER);
-
-  const handleValue = (value) => {
-    setNameReason(value);
-  };
-  const handleCancelOrder = () => {
-    console.log(data);
+function ButtonDoneOrder({ data }) {
+  const [showButton, setShowButton] = useState(false);
+  const [update_order] = useMutation(UPDATE_ORDER);
+  const handleConfirmOrderDone = () => {
+    setShowButton(true);
     const orderUpdateOrderInput = {
       updateOrderId: data?.id,
       input: {
-        cancelReason: nameReason,
+        cancelReason: null,
         phone: data?.phone,
         shippingAddress: data?.shippingAddress,
-        status: "CANCELLED",
+        status: "DONE",
         userName: data?.userName,
       },
     };
     try {
-      const result = updateOrder({
+      const result = update_order({
         context: {
           headers: {
             authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDAzODY1MDYsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.JKWzPcwZIjmehF8A-7QuaVE_hOhP_WkwRTIUXFpHE_vVqQZNzhPYwbynRy1DqbfQPo9BDYwP0fbHbYIsIPnYkg`,
@@ -60,32 +41,34 @@ function ReasonCancel({ data, handleClose }) {
           input: orderUpdateOrderInput.input,
         },
       });
-      console.log("Đã hủy đơn hàng:", result);
+      console.log("Đã update đơn hàng:", result);
     } catch (error) {
-      console.error("Lỗi khi hủy đơn hàng:", error);
-    } finally {
-      handleClose();
+      console.error("Lỗi khi update đơn hàng:", error);
     }
   };
+
   return (
-    <div className={cx("reason-cancel")}>
-      {reasons.map((item) => (
-        <div key={item.id} className={cx("form-reason")}>
-          <input
-            id={item.id}
-            type="radio"
-            name="name"
-            value={item.name}
-            onChange={(e) => handleValue(e.target.value)}
-          />
-          <span className={cx("reason")}>{item.name}</span>
+    <div>
+      {!showButton && (
+        <div className={cx("action-btn")}>
+          <Button confirmOrderDone onClick={handleConfirmOrderDone}>
+            Đã nhận được hàng
+          </Button>
         </div>
-      ))}
-      <Button selectChoose onClick={handleCancelOrder}>
-        Chọn
-      </Button>
+      )}
+
+      {showButton && (
+        <div className={cx("action-btn")}>
+          <Button confirmOrderDone>Mua lại</Button>
+        </div>
+      )}
+      {showButton && (
+        <div className={cx("action-btn")}>
+          <Button confirmOrderDone>Đánh giá sản phẩm</Button>
+        </div>
+      )}
     </div>
   );
 }
 
-export default ReasonCancel;
+export default ButtonDoneOrder;

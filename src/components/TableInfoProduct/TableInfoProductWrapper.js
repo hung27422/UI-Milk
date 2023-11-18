@@ -13,10 +13,9 @@ const TableInfoAllOrderWrapper = ({ order }) => {
   const listOrders = order?.filter(
     (items) => items.userId === userIdLocal.toLocaleLowerCase()
   );
-
   return (
     <TableInfoProduct
-      title={"Thông tin tất cả sản phẩm"}
+      title={"Thông tin tất cả đơn hàng"}
       data={listOrders?.map((i) => i).flat()}
       dataOrder={order?.map((o) => o).flat()}
       showTotalPrice
@@ -31,16 +30,15 @@ const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
       items.status === "CREATED" &&
       items.userId === userIdLocal.toLocaleLowerCase()
   );
-  console.log("Chờ xác nhận: ", statusWaitConfirm);
-  console.log("userId", userIdLocal.toLocaleLowerCase());
 
   if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
     return (
       <TableInfoProduct
         titleColor
-        title={"Thông tin sản phẩm "}
-        data={statusWaitConfirm?.map((i) => i.items).flat()}
+        title={"Thông tin đơn hàng "}
+        data={statusWaitConfirm?.map((i) => i).flat()}
         tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
+        isShowButtonCancel
       />
     );
   }
@@ -52,13 +50,12 @@ const TableInfoConfirmWrapperOrder = ({ confirm, order }) => {
       item.status === "CONFIRMED" &&
       item.userId === userIdLocal.toLocaleLowerCase()
   );
-  console.log("Xác nhận", statusConfirm);
-  console.log("userId", userIdLocal);
+
   if (Array.isArray(statusConfirm) && statusConfirm.length > 0) {
     return (
       <TableInfoProduct
-        title={"Thông tin sản phẩm "}
-        data={statusConfirm?.map((i) => i.items).flat()}
+        title={"Thông tin đơn hàng "}
+        data={statusConfirm?.map((i) => i).flat()}
         tableStatus={confirm ? "Đã xác nhận" : ""}
       />
     );
@@ -74,29 +71,66 @@ const TableInfoShipment = ({ order, shipment }) => {
   if (Array.isArray(statusShipment) && statusShipment.length > 0) {
     return (
       <TableInfoProduct
-        title={"Thông tin sản phẩm"}
-        data={statusShipment?.map((i) => i.items).flat()}
+        title={"Thông tin đơn hàng"}
+        data={statusShipment?.map((i) => i).flat()}
         tableStatus={shipment ? "Đang giao" : ""}
         isShowButtonDetailShipment
       />
     );
   }
 };
-//DoneOrders ---> Chưa gán status
-const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
+//DELIVEREDOrders
+const TableInfoDeliveryOrderWrapperOrder = ({ doneOrder, order }) => {
   const statusDone = order?.filter(
     (item) =>
-      item.status === "SHIPPING" &&
+      item.status === "DELIVERED" &&
       item.userId === userIdLocal.toLocaleLowerCase()
   );
   console.log("Done", statusDone);
   if (Array.isArray(statusDone) && statusDone.length > 0) {
     return (
       <TableInfoProduct
-        title={"Thông tin sản phẩm"}
-        data={statusDone?.map((i) => i.items).flat()}
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
         tableStatus={doneOrder ? "Đã giao" : ""}
         isShowButtonDone
+        showTotalPrice
+      />
+    );
+  }
+};
+//DONEOrders
+const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
+  const statusDone = order?.filter(
+    (item) =>
+      item.status === "DONE" && item.userId === userIdLocal.toLocaleLowerCase()
+  );
+
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
+        tableStatus={doneOrder ? "Hoàn thành" : ""}
+        showTotalPrice
+      />
+    );
+  }
+};
+//CANCELLEDOrders
+const TableInfoCancelOrderWrapperOrder = ({ cancelOrder, order }) => {
+  const statusDone = order?.filter(
+    (item) =>
+      item.status === "CANCELLED" &&
+      item.userId === userIdLocal.toLocaleLowerCase()
+  );
+
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
+        tableStatus={cancelOrder ? "Đã hủy" : ""}
       />
     );
   }
@@ -108,7 +142,7 @@ const TableInfoListAllOrderWrapperOrderGuest = ({ order }) => {
   return (
     <TableInfoProduct
       title={"Thông tin tất cả sản phẩm"}
-      data={listOrders?.map((i) => i.items).flat()}
+      data={listOrders?.map((i) => i).flat()}
       dataOrder={order?.map((o) => o).flat()}
       showTotalPrice
       status
@@ -127,7 +161,7 @@ const TableInfoProductWrapperOrderGuest = ({ waitConfirm, order }) => {
       <TableInfoProduct
         titleColor
         title={"Thông tin sản phẩm "}
-        data={statusWaitConfirm?.map((i) => i.items).flat()}
+        data={statusWaitConfirm?.map((i) => i).flat()}
         tableStatus={waitConfirm ? "Chờ xác nhận" : ""}
       />
     );
@@ -145,7 +179,7 @@ const TableInfoConfirmWrapperOrderGuest = ({ confirm, order }) => {
     return (
       <TableInfoProduct
         title={"Thông tin sản phẩm "}
-        data={statusConfirm?.map((i) => i.items).flat()}
+        data={statusConfirm?.map((i) => i).flat()}
         tableStatus={confirm ? "Đã xác nhận" : ""}
       />
     );
@@ -161,27 +195,62 @@ const TableInfoShipmentGuest = ({ order, shipment }) => {
     return (
       <TableInfoProduct
         title={"Thông tin sản phẩm"}
-        data={statusShipment?.map((i) => i.items).flat()}
+        data={statusShipment?.map((i) => i).flat()}
         tableStatus={shipment ? "Đang giao" : ""}
         isShowButtonDetailShipment
       />
     );
   }
 };
-//DoneOrders of Guest ---> Chưa gán status
-const TableInfoDoneOrderWrapperOrderGuest = ({ doneOrder, order }) => {
+//DELIVEREDOrders of Guest
+const TableInfoDeliveryOrderWrapperOrderGuest = ({ doneOrder, order }) => {
   const { showOrderGuest } = useContext(MilkContext);
   const statusDone = order?.filter(
-    (item) => item.status === "SHIPPING" && item.phone === showOrderGuest
+    (item) => item.status === "DELIVERED" && item.phone === showOrderGuest
   );
-
+  console.log("Done", statusDone);
   if (Array.isArray(statusDone) && statusDone.length > 0) {
     return (
       <TableInfoProduct
-        title={"Thông tin sản phẩm"}
-        data={statusDone?.map((i) => i.items).flat()}
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
         tableStatus={doneOrder ? "Đã giao" : ""}
         isShowButtonDone
+        showTotalPrice
+      />
+    );
+  }
+};
+//DONEOrders of Guest
+const TableInfoDoneOrderWrapperOrderGuest = ({ doneOrder, order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusDone = order?.filter(
+    (item) => item.status === "DONE" && item.phone === showOrderGuest
+  );
+  console.log("Done", statusDone);
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
+        tableStatus={doneOrder ? "Hoàn thành" : ""}
+        showTotalPrice
+      />
+    );
+  }
+};
+//CANCELLEDOrders of Guest
+const TableInfoCancelOrderWrapperOrderGuest = ({ cancelOrder, order }) => {
+  const { showOrderGuest } = useContext(MilkContext);
+  const statusDone = order?.filter(
+    (item) => item.status === "CANCELLED" && item.phone === showOrderGuest
+  );
+  if (Array.isArray(statusDone) && statusDone.length > 0) {
+    return (
+      <TableInfoProduct
+        title={"Thông tin đơn hàng"}
+        data={statusDone?.map((i) => i).flat()}
+        tableStatus={cancelOrder ? "Đã hủy" : ""}
       />
     );
   }
@@ -191,11 +260,15 @@ export {
   TableInfoProductWrapperOrder,
   TableInfoAllOrderWrapper,
   TableInfoConfirmWrapperOrder,
-  TableInfoDoneOrderWrapperOrder,
+  TableInfoDeliveryOrderWrapperOrder,
   TableInfoShipment,
+  TableInfoDoneOrderWrapperOrder,
+  TableInfoCancelOrderWrapperOrder,
   TableInfoListAllOrderWrapperOrderGuest,
   TableInfoProductWrapperOrderGuest,
   TableInfoConfirmWrapperOrderGuest,
   TableInfoShipmentGuest,
+  TableInfoDeliveryOrderWrapperOrderGuest,
   TableInfoDoneOrderWrapperOrderGuest,
+  TableInfoCancelOrderWrapperOrderGuest,
 };

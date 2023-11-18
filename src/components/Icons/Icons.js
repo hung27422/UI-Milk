@@ -118,3 +118,13 @@ export function LocationIcon() {
     />
   );
 }
+export function DoneIcon() {
+  return (
+    <img style={{ width: "30px", height: "30px" }} src={images.done} alt="" />
+  );
+}
+export function CancelIcon() {
+  return (
+    <img style={{ width: "30px", height: "30px" }} src={images.cancel} alt="" />
+  );
+}

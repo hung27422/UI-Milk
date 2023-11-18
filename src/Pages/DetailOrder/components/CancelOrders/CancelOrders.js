@@ -1,20 +1,22 @@
 import classNames from "classnames/bind";
-import styles from "./WaitConfirm.module.scss";
-import ButtonCancelOrder from "./ButtonCancelOrder";
+import styles from "../WaitConfirm/WaitConfirm.module.scss";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
 import {
-  TableInfoProductWrapperOrder,
-  TableInfoProductWrapperOrderGuest,
+  TableInfoCancelOrderWrapperOrder,
+  TableInfoCancelOrderWrapperOrderGuest,
+  TableInfoConfirmWrapperOrder,
+  TableInfoConfirmWrapperOrderGuest,
 } from "~/components/TableInfoProduct/TableInfoProductWrapper";
 import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
-function WaitConfirm() {
-  const apiTokenLocal = localStorage.getItem("apiToken");
-  const { user, isAuthenticated } = useAuth0();
+function CancelOrders() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  useEffect(() => setActiveStepOrder(1), [setActiveStepOrder]);
+  const { isAuthenticated } = useAuth0();
+
+  useEffect(() => setActiveStepOrder(6), [setActiveStepOrder]);
+  const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
     gql`
       query FindOrders(
@@ -48,7 +50,7 @@ function WaitConfirm() {
     {
       variables: {
         query: {
-          status: "CREATED",
+          status: "CANCELLED",
         },
         page: 1,
         amount: 10,
@@ -60,30 +62,35 @@ function WaitConfirm() {
       },
     }
   );
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     console.log(data?.findOrders);
-  //   }
-  // }, [data, error]);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      console.log("data", data);
+    }
+  }, [data, error]);
   if (!isAuthenticated) {
     return (
       <div className={cx("wrapper")}>
-        <div>
-          <TableInfoProductWrapperOrderGuest order={data?.findOrders} />
-        </div>
+        <TableInfoCancelOrderWrapperOrderGuest
+          cancelOrder
+          order={data?.findOrders}
+        />
       </div>
     );
   }
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoProductWrapperOrder waitConfirm order={data?.findOrders} />
+        <TableInfoCancelOrderWrapperOrder
+          cancelOrder
+          order={data?.findOrders}
+        />
       </div>
     </div>
   );
 }
 
-export default WaitConfirm;
+export default CancelOrders;

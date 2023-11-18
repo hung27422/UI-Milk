@@ -4,15 +4,15 @@ import DetailOrderStep from "./DetailOrderStep/DetailOrderStep";
 import WaitConfirm from "./components/WaitConfirm/WaitConfirm";
 import MenuDetailOrder from "./components/MenuDetailOrder/MenuDetailOrder";
 import ListAllOrder from "./components/ListAllOrder/ListAllOrder";
-import DoneOrder from "./components/ConfirmDoneOrder/ConfirmDoneOrder";
 import { useContext, useEffect, useState } from "react";
 import Shipment from "./components/Shipment/Shipment";
 import ConfirmOrder from "./components/ConfirmOrder/ConfirmOrder";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, TextField } from "@mui/material";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import configs from "~/configs";
-import { useLocation } from "react-router-dom";
+import DeliveredOrder from "./components/DeliveredOrder/DeliveredOrder";
+import { TextField } from "@mui/material";
+import DoneOrders from "./components/DoneOrders/DoneOrders";
+import CancelOrders from "./components/CancelOrders/CancelOrders";
 const cx = classNames.bind(styles);
 function DetailOrder() {
   const [activeID, setActiveId] = useState("1");
@@ -45,14 +45,6 @@ function DetailOrder() {
             variant="outlined"
             onChange={(e) => handleShowOrderGuest(e.target.value)}
           />
-          {/* <Button
-            style={{
-              backgroundColor: "var(--secondary)",
-              color: "var(--white)",
-            }}
-          >
-            Xem đơn hàng
-          </Button> */}
         </div>
       )}
       <div className={cx("menu")}>
@@ -83,7 +75,19 @@ function DetailOrder() {
         <MenuDetailOrder
           id={"5"}
           active={activeID}
+          title={"Đã giao"}
+          onClick={(e) => handleNextPageOrder(e.currentTarget.id)}
+        />
+        <MenuDetailOrder
+          id={"6"}
+          active={activeID}
           title={"Hoàn thành"}
+          onClick={(e) => handleNextPageOrder(e.currentTarget.id)}
+        />
+        <MenuDetailOrder
+          id={"7"}
+          active={activeID}
+          title={"Đã hủy"}
           onClick={(e) => handleNextPageOrder(e.currentTarget.id)}
         />
       </div>
@@ -92,7 +96,9 @@ function DetailOrder() {
         {activeID === "2" && <WaitConfirm />}
         {activeID === "3" && <ConfirmOrder />}
         {activeID === "4" && <Shipment />}
-        {activeID === "5" && <DoneOrder />}
+        {activeID === "5" && <DeliveredOrder />}
+        {activeID === "6" && <DoneOrders />}
+        {activeID === "7" && <CancelOrders />}
       </div>
     </div>
   );

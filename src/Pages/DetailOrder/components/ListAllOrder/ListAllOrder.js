@@ -69,7 +69,7 @@ function ListAllOrder() {
   return (
     <div className={cx("wrapper")}>
       <div>
-       <TableInfoAllOrderWrapper order={data?.orders} />
+        <TableInfoAllOrderWrapper order={data?.orders} />
       </div>
     </div>
   );

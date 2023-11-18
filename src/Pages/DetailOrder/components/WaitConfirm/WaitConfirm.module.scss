@@ -13,12 +13,16 @@
 //Reason Cancel
 .reason-cancel {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   border-bottom: 1px solid #ccc;
   padding-bottom: 12px;
 }
 .reason {
   font-size: 18px;
   font-family: var(--font-primary);
+  margin-left: 12px;
+}
+.form-reason {
+  display: flex;
+  margin-bottom: 8px;
 }

@@ -1,20 +1,19 @@
 import classNames from "classnames/bind";
-import styles from "./WaitConfirm.module.scss";
-import ButtonCancelOrder from "./ButtonCancelOrder";
-import { useContext, useEffect } from "react";
+import styles from "../DeliveredOrder/ConfirmDoneOrder.module.scss";
+import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import { gql, useQuery } from "@apollo/client";
 import {
-  TableInfoProductWrapperOrder,
-  TableInfoProductWrapperOrderGuest,
+  TableInfoDoneOrderWrapperOrder,
+  TableInfoDoneOrderWrapperOrderGuest,
 } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import { gql, useQuery } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
-function WaitConfirm() {
-  const apiTokenLocal = localStorage.getItem("apiToken");
-  const { user, isAuthenticated } = useAuth0();
+function DoneOrders() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  useEffect(() => setActiveStepOrder(1), [setActiveStepOrder]);
+  useEffect(() => setActiveStepOrder(5), [setActiveStepOrder]);
+  const { isAuthenticated } = useAuth0();
+  const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
     gql`
       query FindOrders(
@@ -48,7 +47,7 @@ function WaitConfirm() {
     {
       variables: {
         query: {
-          status: "CREATED",
+          status: "DONE",
         },
         page: 1,
         amount: 10,
@@ -60,30 +59,30 @@ function WaitConfirm() {
       },
     }
   );
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     console.log(data?.findOrders);
-  //   }
-  // }, [data, error]);
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  });
   if (!isAuthenticated) {
     return (
       <div className={cx("wrapper")}>
-        <div>
-          <TableInfoProductWrapperOrderGuest order={data?.findOrders} />
+        <div className={cx("done-order")}>
+          <TableInfoDoneOrderWrapperOrderGuest
+            doneOrder
+            order={data?.findOrders}
+          />
         </div>
       </div>
     );
   }
   return (
     <div className={cx("wrapper")}>
-      <div>
-        <TableInfoProductWrapperOrder waitConfirm order={data?.findOrders} />
+      <div className={cx("done-order")}>
+        <TableInfoDoneOrderWrapperOrder doneOrder order={data?.findOrders} />
       </div>
     </div>
   );
 }
 
-export default WaitConfirm;
+export default DoneOrders;

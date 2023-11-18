@@ -17,12 +17,15 @@ function ConfirmOrder() {
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
     gql`
-      query Orders($amount: Int!, $page: Int!) {
-        orders(amount: $amount, page: $page) {
+      query FindOrders(
+        $query: orderGetOrderInput!
+        $amount: Int!
+        $page: Int!
+      ) {
+        findOrders(query: $query, amount: $amount, page: $page) {
           cancelReason
           date
           id
-          shippingAddress
           items {
             id
             name
@@ -33,23 +36,35 @@ function ConfirmOrder() {
             sku
             subtotal
           }
+          phone
+          shippingAddress
           status
           total
           userId
-          phone
           userName
         }
       }
     `,
     {
-      variables: { amount: 10, page: 1 },
+      variables: {
+        query: {
+          status: "CONFIRMED",
+        },
+        page: 1,
+        amount: 10,
+      },
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDA0NTI5NzcsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.GnwW0BAQZUY9C_HeA2O-3j9jjhKfSMGG4rVG7qgpD0miyvVB40_Ui72RCZuppObcXPgNg4Yd2cxTvTY2_wUUYA`,
+          authorization: `Bearer ${apiTokenLocal}`,
         },
       },
     }
   );
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  });
   useEffect(() => {
     if (error) {
       console.log(error);
@@ -59,12 +74,16 @@ function ConfirmOrder() {
     }
   }, [data, error]);
   if (!isAuthenticated) {
-    return <TableInfoConfirmWrapperOrderGuest order={data?.orders} />;
+    return (
+      <div className={cx("wrapper")}>
+        <TableInfoConfirmWrapperOrderGuest order={data?.findOrders} />
+      </div>
+    );
   }
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoConfirmWrapperOrder confirm order={data?.orders} />
+        <TableInfoConfirmWrapperOrder confirm order={data?.findOrders} />
       </div>
     </div>
   );

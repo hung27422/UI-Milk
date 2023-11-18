@@ -11,10 +11,10 @@ import Delivery from "~/Pages/OrderStep/components/Delivery/Delivery";
 import OrderDone from "~/Pages/OrderStep/components/OrderDone/OrderDone";
 import DetailOrder from "~/Pages/DetailOrder/DetailOrder";
 import Shipment from "~/Pages/DetailOrder/components/Shipment/Shipment";
-import DoneOrder from "~/Pages/DetailOrder/components/ConfirmDoneOrder/ConfirmDoneOrder";
 import LayoutProfile from "~/Layouts/LayoutProfile/LayoutProfile";
 import UserInfo from "~/Pages/Profile/UserInfo/UserInfo";
 import LocationUser from "~/Pages/Profile/LocationUser/LocationUser";
+import DeliveredOrder from "~/Pages/DetailOrder/components/DeliveredOrder/DeliveredOrder";
 const publicRoutes = [
   { path: configs.routes.product, component: Product },
   { path: configs.routes.detailproduct, component: DetailProduct },
@@ -28,7 +28,7 @@ const publicRoutes = [
   { path: configs.routes.orderdone, component: OrderDone },
   { path: configs.routes.detailorder, component: DetailOrder },
   { path: configs.routes.shipment, component: Shipment },
-  { path: configs.routes.confirmorderdone, component: DoneOrder },
+  { path: configs.routes.confirmorderdone, component: DeliveredOrder },
   { path: configs.routes.userinfo, component: UserInfo, layout: LayoutProfile },
   {
     path: configs.routes.userlocation,

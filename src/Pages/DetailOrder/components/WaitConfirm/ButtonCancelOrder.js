@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function ButtonCancelOrder() {
+export default function ButtonCancelOrder({ data }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -30,8 +30,6 @@ export default function ButtonCancelOrder() {
         style={{
           backgroundColor: "var(--secondary)",
           color: "var(--white)",
-          fontSize: "18px",
-          fontWeight: "bold",
         }}
         onClick={handleOpen}
       >
@@ -66,7 +64,7 @@ export default function ButtonCancelOrder() {
               Hủy đơn hàng với lí do:
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              <ReasonCancel />
+              <ReasonCancel data={data} handleClose={handleClose} />
             </Typography>
           </Box>
         </Fade>

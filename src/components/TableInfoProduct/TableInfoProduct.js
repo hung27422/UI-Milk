@@ -2,21 +2,16 @@ import classNames from "classnames/bind";
 import styles from "./TableInfoProduct.module.scss";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import ItemProduct from "../ItemCart/ItemProduct";
-import PriceProduct from "../ItemCart/PriceProduct";
-import QuantityProduct from "../ItemCart/QuantityProduct";
-import TotalPrice from "../ItemCart/TotalPrice";
 import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
-import ButtonDoneOrder from "~/Pages/DetailOrder/components/ConfirmDoneOrder/ButtonDoneOrder/ButtonDoneOrder";
-import { Button } from "@mui/material";
 import ButtonShowInfoOrders from "~/Pages/DetailOrder/components/ButtonShowInfoOrders/ButtonShowInfoOrders";
 import NameUserOrders from "~/Pages/DetailOrder/components/NameUserOrders/NameUserOrders";
 import PhoneUserOrders from "~/Pages/DetailOrder/components/PhoneUserOrders/PhoneUserOrders";
 import DateOrders from "~/Pages/DetailOrder/components/DateOrders/DateOrders";
+import ButtonDoneOrder from "~/Pages/DetailOrder/components/DeliveredOrder/ButtonDeliveredOrder/ButtonDoneOrder";
+import ButtonCancelOrder from "~/Pages/DetailOrder/components/WaitConfirm/ButtonCancelOrder";
 
 const cx = classNames.bind(styles);
 const getStatusText = (status) => {
@@ -29,6 +24,10 @@ const getStatusText = (status) => {
       return <h2 style={{ color: "orangered" }}>Đang giao hàng</h2>;
     case "DELIVERED":
       return <h2 style={{ color: "var(--primary)" }}>Đã giao</h2>;
+    case "DONE":
+      return <h2 style={{ color: "goldenrod" }}>Hoàn thành</h2>;
+    case "CANCELLED":
+      return <h2 style={{ color: "red" }}>Đã hủy</h2>;
     default:
       return null; // Hoặc xử lý trạng thái không xác định ở đây
   }
@@ -44,6 +43,7 @@ function TableInfoProduct({
   dataOrder,
   isShowButtonDetailShipment,
   isShowButtonDone,
+  isShowButtonCancel,
 }) {
   return (
     <div>
@@ -62,10 +62,10 @@ function TableInfoProduct({
             <TableCell
               style={{
                 width: status
+                  ? "20%"
+                  : "0" || isShowButtonDetailShipment
                   ? "30%"
-                  : "20%" || isShowButtonDetailShipment
-                  ? "30%"
-                  : "40%",
+                  : "0%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
@@ -76,7 +76,7 @@ function TableInfoProduct({
               style={{
                 width: status
                   ? "15%"
-                  : "20%" || isShowButtonDetailShipment
+                  : "25%" || isShowButtonDetailShipment
                   ? "15%"
                   : "30%",
                 fontSize: "19px",
@@ -90,7 +90,7 @@ function TableInfoProduct({
               style={{
                 width: status
                   ? "15%"
-                  : "20%" || isShowButtonDetailShipment
+                  : "25%" || isShowButtonDetailShipment
                   ? "15%"
                   : "20%",
                 fontSize: "19px",
@@ -156,21 +156,28 @@ function TableInfoProduct({
                   {/* Date */}
                   <DateOrders data={item} />
                 </TableCell>
-                <TableCell align="center">
-                  <ButtonShowInfoOrders data={item} />
+                <TableCell className={cx("list-item-order")} align="center">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <ButtonShowInfoOrders data={item} />
+                    {isShowButtonCancel && <ButtonCancelOrder data={item} />}
+                  </div>
                 </TableCell>
                 {status &&
                   dataOrder?.map((stt, i) => {
                     let statusCell = null;
-                    stt?.items.forEach((s) => {
-                      if (s.id === item.id) {
-                        statusCell = (
-                          <TableCell key={item.id} align="right">
-                            {getStatusText(stt.status)}
-                          </TableCell>
-                        );
-                      }
-                    });
+                    if (stt.id === item.id) {
+                      statusCell = (
+                        <TableCell key={item.id} align="right">
+                          {getStatusText(stt.status)}
+                        </TableCell>
+                      );
+                    }
                     return statusCell;
                   })}
                 {isShowButtonDetailShipment && (
@@ -188,7 +195,7 @@ function TableInfoProduct({
           })}
         </TableBody>
       </Table>
-      {!showTotalPrice && (
+      {/* {!showTotalPrice && (
         <div
           style={{
             padding: "20px",
@@ -199,12 +206,14 @@ function TableInfoProduct({
           }}
         >
           <span>Tổng tiền: </span>
-          {data?.forEach((item) => {
-            total = total + item?.price * item?.quantity;
-          })}
+          {data?.map((item) =>
+            item?.items.forEach((i) => {
+              total += i.price * i.quantity;
+            })
+          )}
           <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

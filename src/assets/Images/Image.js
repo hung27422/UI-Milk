@@ -23,6 +23,8 @@ import user from "./images/user.png";
 import location from "./images/location.png";
 import list from "./images/list.png";
 import confirm from "./images/confirm.png";
+import done from "./images/done.png";
+import cancel from "./images/cancel.png";
 const images = {
   logo,
   menusidebar,
@@ -49,5 +51,7 @@ const images = {
   user,
   list,
   confirm,
+  done,
+  cancel,
 };
 export default images;

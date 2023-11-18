@@ -59,7 +59,7 @@ function PaymentOffline() {
         mutation: CREATE_ORDER,
         context: {
           headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyMTJhZDFiOS0xYmJmLTRkODMtYmRiNy1hZTM4OGNlNGU2YjgiLCJuYW1lIjoibnVsbCIsImp0aSI6IjIxMkFEMUI5LTFCQkYtNEQ4My1CREI3LUFFMzg4Q0U0RTZCOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MDA0NjA2NzYsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.p6r6SIlnIDIyEMON7vftsoMDM41qw4anx_c5rhwiF081rM51FVSK3w-UZJqDbhTDA5d-mywWrwwaEnl0HF9SRA`,
+            authorization: `Bearer ${apiTokenLocal}`,
           },
         },
         variables: {

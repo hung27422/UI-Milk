@@ -24,7 +24,12 @@ export default function ButtonShowInfoOrders({ data }) {
   let total = 0;
   return (
     <div>
-      <Button onClick={handleOpen}>Xem thông tin</Button>
+      <Button
+        style={{ backgroundColor: "var(--secondary)", color: "var(--white)" }}
+        onClick={handleOpen}
+      >
+        Xem thông tin
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -41,7 +46,10 @@ export default function ButtonShowInfoOrders({ data }) {
               <h3 className={cx("status")}>Đã xác nhận</h3>
             )}
             {data?.status === "SHIPPING" && (
-              <h3 className={cx("status")}>Đang giao</h3>
+              <h3 className={cx("status")}>Đang giao hàng</h3>
+            )}
+            {data?.status === "DELIVERED" && (
+              <h3 className={cx("status")}>Đã giao</h3>
             )}
           </div>
           {data?.items?.map((item, i) => (
@@ -64,6 +72,26 @@ export default function ButtonShowInfoOrders({ data }) {
             total += element.subtotal;
           })}
           <div className={cx("total-price")}>Tổng tiền: {total} VNĐ</div>
+          <div className={cx("show-action")}>
+            {data?.cancelReason && (
+              <span className={cx("reason-cancel")}>
+                Hủy với lí do: {data?.cancelReason}
+              </span>
+            )}
+
+            <div className={cx("btn-action")}>
+              <Button
+                style={{
+                  backgroundColor: "var(--secondary)",
+                  color: "var(--white)",
+                  textAlign: "right",
+                }}
+                onClick={handleClose}
+              >
+                Ok
+              </Button>
+            </div>
+          </div>
         </Box>
       </Modal>
     </div>
