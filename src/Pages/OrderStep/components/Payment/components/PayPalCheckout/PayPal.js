@@ -22,7 +22,15 @@ const CREATE_ORDER = gql`
   }
 `;
 // Custom component to wrap the PayPalButtons and show loading spinner
-const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
+const ButtonWrapper = ({
+  showSpinner,
+  currency,
+  amount,
+  data,
+  emailUser,
+  guest,
+  isAuthenticated,
+}) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
     dispatch({
@@ -37,44 +45,48 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
+
     console.log("Email ở Button: " + emailUser);
     let total = 0;
-    for (const item of data) {
-      const orderCreateOrderInput = {
-        email: emailUser,
-        items: [
-          {
-            name: item.productName,
-            price: item.price,
-            productId: item.productId,
-            quantity: item.quantity,
-            sku: item.sku,
-          },
-        ],
-        shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
-        total: (total += item.total),
-        userId: userIdLocal,
-        status: "CONFIRMED",
-        phone: storedData[0].phone,
-        userName: storedData[0].name,
-      };
+    data.forEach((item) => {
+      total += item.total;
+    });
+    const orderCreateOrderInput = {
+      email: isAuthenticated ? emailUser : guest?.emailGuest,
+      items: [
+        ...data.map((i) => ({
+          name: i?.productName,
+          price: i?.price,
+          productId: i?.productId,
+          quantity: i?.quantity,
+          sku: i?.sku,
+        })),
+      ],
+      shippingAddress: isAuthenticated
+        ? `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`
+        : guest?.addressGuest,
+      total: total,
+      userId: userIdLocal,
+      status: "CREATED",
+      phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
+      userName: isAuthenticated ? storedData[0].name : guest?.nameGuest,
+    };
 
-      try {
-        const result = await client.mutate({
-          mutation: CREATE_ORDER,
-          context: {
-            headers: {
-              authorization: `Bearer ${apiTokenLocal}`,
-            },
+    try {
+      const result = await client.mutate({
+        mutation: CREATE_ORDER,
+        context: {
+          headers: {
+            authorization: `Bearer ${apiTokenLocal}`,
           },
-          variables: {
-            input: orderCreateOrderInput,
-          },
-        });
-        console.log("Đã lưu đơn hàng:", result);
-      } catch (error) {
-        console.error("Lỗi khi lưu đơn hàng:", error);
-      }
+        },
+        variables: {
+          input: orderCreateOrderInput,
+        },
+      });
+      console.log("Đã lưu đơn hàng:", result);
+    } catch (error) {
+      console.error("Lỗi khi lưu đơn hàng:", error);
     }
   };
   const { setActiveStep } = useContext(MilkContext);
@@ -105,7 +117,7 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
             console.log(response);
             if (response.status === "COMPLETED") {
               handleCreateOrder();
-              handleDonePayment();
+              // handleDonePayment();
             }
           })
         }
@@ -115,12 +127,15 @@ const ButtonWrapper = ({ showSpinner, currency, amount, data, emailUser }) => {
 };
 
 export default function PayPal({ amount }) {
-  const { user } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const [emailUser, setEmailUser] = useState(null);
+  const { guest, setGuest } = useContext(MilkContext);
   useEffect(() => {
     if (user && user.email) {
       setEmailUser(user.email);
       console.log("Email ở PayPal \n" + emailUser);
+    } else if (guest) {
+      console.log(guest);
     }
   }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);
@@ -152,13 +167,15 @@ export default function PayPal({ amount }) {
           currency: "USD",
         }}
       >
-        {emailUser !== null ? ( // Kiểm tra xem emailUser đã có giá trị
+        {emailUser || guest !== null ? ( // Kiểm tra xem emailUser đã có giá trị
           <ButtonWrapper
             currency={"USD"}
             amount={amount}
             showSpinner={false}
             data={productOrder}
             emailUser={emailUser}
+            guest={guest}
+            isAuthenticated={isAuthenticated}
           />
         ) : (
           // hiển thị một spinner hoặc thông báo "Loading" ở đây

@@ -28,7 +28,11 @@ function PaymentOffline() {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
-
+    let total = 0;
+    localStorageCart.forEach((item) => {
+      total += item.total;
+    });
+    console.log(total);
     const orderCreateOrderInput = {
       email: isAuthenticated ? user?.email : guest?.emailGuest,
       items: [
@@ -43,7 +47,7 @@ function PaymentOffline() {
       shippingAddress: isAuthenticated
         ? `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`
         : guest?.addressGuest,
-      total: 100,
+      total: total,
       userId: userIdLocal,
       status: "CREATED",
       phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
