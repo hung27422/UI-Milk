@@ -12,10 +12,12 @@ import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import DeleteProduct from "../ItemCart/DeleteProduct";
 
-export default function TableCart() {
+export default function TableCart({ showDelete, title, total }) {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+
   return (
     <TableContainer sx={{ backgroundColor: "var(--white)" }} component={Paper}>
+      <h2>{title}</h2>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -29,9 +31,11 @@ export default function TableCart() {
             <TableCell style={{ width: "20%" }} align="left">
               Total
             </TableCell>
-            <TableCell style={{ width: "5%" }} align="left">
-              Delete
-            </TableCell>
+            {!showDelete && (
+              <TableCell style={{ width: "5%" }} align="left">
+                Delete
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,14 +59,25 @@ export default function TableCart() {
                 <TableCell align="left">
                   <TotalPrice data={item} />
                 </TableCell>
-                <TableCell align="left">
-                  <DeleteProduct data={item} />
-                </TableCell>
+                {!showDelete && (
+                  <TableCell align="left">
+                    <DeleteProduct data={item} />
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
+
+      {!total && (
+        <div style={{ textAlign: "right", width: "100%", padding: "20px" }}>
+          {localStorageCart?.forEach((item) => {
+            total = total + item.total;
+          })}
+          <h2 style={{ color: "var(--text-color)" }}>Tổng tiền: {total} VNĐ</h2>
+        </div>
+      )}
     </TableContainer>
   );
 }

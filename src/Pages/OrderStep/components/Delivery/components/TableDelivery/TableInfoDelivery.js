@@ -119,7 +119,7 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                     key={index}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell align="center" component="th" scope="row">
                       <span className={cx("user-name")}>
                         {storedData[0].name}
                       </span>
@@ -130,14 +130,14 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                       </span>
                     </TableCell>
                     {hiddenButtonAddresses ? (
-                      <TableCell align="left">
+                      <TableCell align="center">
                         <Address>
                           {storedData[0].detail},{storedData[0].ward},
                           {storedData[0].district},{storedData[0].city}
                         </Address>
                       </TableCell>
                     ) : (
-                      <TableCell align="left">
+                      <TableCell align="center">
                         <span className={cx("address-content")}>
                           <span className={cx("address-content")}>
                             <Address>

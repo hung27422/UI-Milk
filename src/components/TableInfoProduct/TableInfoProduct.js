@@ -12,6 +12,11 @@ import QuantityProduct from "../ItemCart/QuantityProduct";
 import TotalPrice from "../ItemCart/TotalPrice";
 import ButtonDetailShipment from "../ItemCart/ButtonDetailShipment";
 import ButtonDoneOrder from "~/Pages/DetailOrder/components/ConfirmDoneOrder/ButtonDoneOrder/ButtonDoneOrder";
+import { Button } from "@mui/material";
+import ButtonShowInfoOrders from "~/Pages/DetailOrder/components/ButtonShowInfoOrders/ButtonShowInfoOrders";
+import NameUserOrders from "~/Pages/DetailOrder/components/NameUserOrders/NameUserOrders";
+import PhoneUserOrders from "~/Pages/DetailOrder/components/PhoneUserOrders/PhoneUserOrders";
+import DateOrders from "~/Pages/DetailOrder/components/DateOrders/DateOrders";
 
 const cx = classNames.bind(styles);
 const getStatusText = (status) => {
@@ -58,20 +63,20 @@ function TableInfoProduct({
               style={{
                 width: status
                   ? "30%"
-                  : "40%" || isShowButtonDetailShipment
+                  : "20%" || isShowButtonDetailShipment
                   ? "30%"
                   : "40%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
             >
-              Item
+              Tên người nhận
             </TableCell>
             <TableCell
               style={{
                 width: status
                   ? "15%"
-                  : "30%" || isShowButtonDetailShipment
+                  : "20%" || isShowButtonDetailShipment
                   ? "15%"
                   : "30%",
                 fontSize: "19px",
@@ -79,7 +84,7 @@ function TableInfoProduct({
               }}
               align="left"
             >
-              Price
+              Số diện thoại
             </TableCell>
             <TableCell
               style={{
@@ -91,19 +96,19 @@ function TableInfoProduct({
                 fontSize: "19px",
                 fontWeight: "600",
               }}
-              align="left"
+              align="center"
             >
-              Quantity
+              Date
             </TableCell>
             <TableCell
               style={{
-                width: "10%",
+                width: "20%",
                 fontSize: "19px",
                 fontWeight: "600",
               }}
-              align="left"
+              align="center"
             >
-              Total
+              Thông tin sản phẩm
             </TableCell>
             {status && (
               <TableCell
@@ -142,16 +147,17 @@ function TableInfoProduct({
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <ItemProduct data={item} />
+                  <NameUserOrders data={item} />
                 </TableCell>
                 <TableCell style={{ padding: "20px" }} align="left">
-                  <PriceProduct data={item} />
+                  <PhoneUserOrders data={item} />
                 </TableCell>
-                <TableCell align="left">
-                  <QuantityProduct data={item} />
+                <TableCell align="center">
+                  {/* Date */}
+                  <DateOrders data={item} />
                 </TableCell>
-                <TableCell align="left">
-                  <TotalPrice data={item} />
+                <TableCell align="center">
+                  <ButtonShowInfoOrders data={item} />
                 </TableCell>
                 {status &&
                   dataOrder?.map((stt, i) => {

@@ -12,6 +12,8 @@ const cx = classNames.bind(styles);
 function ListAllOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
   const { user, isAuthenticated } = useAuth0();
+  const { showOrderGuest, setShowOrderGuest } = useContext(MilkContext);
+
   useEffect(() => setActiveStepOrder(0), [setActiveStepOrder]);
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error } = useQuery(
@@ -67,7 +69,7 @@ function ListAllOrder() {
   return (
     <div className={cx("wrapper")}>
       <div>
-        {isAuthenticated && <TableInfoAllOrderWrapper order={data?.orders} />}
+       <TableInfoAllOrderWrapper order={data?.orders} />
       </div>
     </div>
   );
