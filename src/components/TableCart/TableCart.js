@@ -14,7 +14,7 @@ import DeleteProduct from "../ItemCart/DeleteProduct";
 
 export default function TableCart({ showDelete, title, total }) {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-
+  // console.log("nan", localStorageCart);
   return (
     <TableContainer sx={{ backgroundColor: "var(--white)" }} component={Paper}>
       <h2>{title}</h2>
@@ -69,15 +69,6 @@ export default function TableCart({ showDelete, title, total }) {
           })}
         </TableBody>
       </Table>
-
-      {!total && (
-        <div style={{ textAlign: "right", width: "100%", padding: "20px" }}>
-          {localStorageCart?.forEach((item) => {
-            total = total + item.total;
-          })}
-          <h2 style={{ color: "var(--text-color)" }}>Tổng tiền: {total} VNĐ</h2>
-        </div>
-      )}
     </TableContainer>
   );
 }

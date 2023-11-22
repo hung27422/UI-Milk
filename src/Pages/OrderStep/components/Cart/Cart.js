@@ -18,7 +18,6 @@ const InfoPrice = ({ numberPrice, title }) => {
 };
 function Cart() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-
   const { setActiveStep } = useContext(MilkContext);
   useEffect(() => setActiveStep(0), [setActiveStep]);
   let total = 0;

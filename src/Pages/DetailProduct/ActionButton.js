@@ -13,14 +13,27 @@ function ActionButton({ product }) {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(product.price);
   const handleAddToCart = () => {
-    const cartItem = {
-      ...product,
-      quantity,
-      total,
-    };
     const existingCartItems =
       JSON.parse(localStorage.getItem("cartItems")) || [];
-    existingCartItems.push(cartItem);
+
+    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    const existingItemIndex = existingCartItems.findIndex(
+      (item) => item.id === product.id
+    );
+
+    if (existingItemIndex !== -1) {
+      // Nếu đã có trong giỏ hàng, tăng số lượng
+      existingCartItems[existingItemIndex].quantity += quantity;
+      existingCartItems[existingItemIndex].total += total;
+    } else {
+      // Nếu chưa có, thêm một mục mới vào giỏ hàng
+      const cartItem = {
+        ...product,
+        quantity,
+        total,
+      };
+      existingCartItems.push(cartItem);
+    }
 
     // Lưu danh sách các mục giỏ hàng vào Local Storage dưới dạng chuỗi JSON
     localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
@@ -28,7 +41,8 @@ function ActionButton({ product }) {
     // Cập nhật state hoặc hiển thị thông báo thành công
     setCartItem(existingCartItems);
     setShowSuccessModal(true);
-    console.log(cartItem);
+    // console.log(existingCartItems);
+    // console.log(existingItemIndex);
   };
   setTimeout(() => {
     setShowSuccessModal(false);

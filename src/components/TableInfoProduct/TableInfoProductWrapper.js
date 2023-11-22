@@ -208,7 +208,7 @@ const TableInfoDeliveryOrderWrapperOrderGuest = ({ doneOrder, order }) => {
   const statusDone = order?.filter(
     (item) => item.status === "DELIVERED" && item.phone === showOrderGuest
   );
-  console.log("Done", statusDone);
+
   if (Array.isArray(statusDone) && statusDone.length > 0) {
     return (
       <TableInfoProduct
@@ -227,7 +227,7 @@ const TableInfoDoneOrderWrapperOrderGuest = ({ doneOrder, order }) => {
   const statusDone = order?.filter(
     (item) => item.status === "DONE" && item.phone === showOrderGuest
   );
-  console.log("Done", statusDone);
+
   if (Array.isArray(statusDone) && statusDone.length > 0) {
     return (
       <TableInfoProduct
