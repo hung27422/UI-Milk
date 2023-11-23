@@ -24,14 +24,14 @@ function ActionButton({ product }) {
 
     if (existingItemIndex !== -1) {
       // Nếu đã có trong giỏ hàng, tăng số lượng
-      existingCartItems[existingItemIndex].quantity += quantity;
+      existingCartItems[existingItemIndex].quantity += parseInt(quantity, 10);
       existingCartItems[existingItemIndex].total += total;
     } else {
       // Nếu chưa có, thêm một mục mới vào giỏ hàng
       const cartItem = {
         ...product,
-        quantity,
-        total,
+        quantity: parseInt(quantity, 10),
+        total: parseInt(total, 10),
       };
       existingCartItems.push(cartItem);
     }
@@ -48,24 +48,35 @@ function ActionButton({ product }) {
   setTimeout(() => {
     setShowSuccessModal(false);
   }, 5000);
-  // useEffect(() => {
-  //   console.log(quantity);
-  // }, [quantity]);
-  const handleInputQuantityChange = (e) => {
-    setQuantity(e.target.value);
+  const updateTotalPrice = (newQuantity) => {
+    const newTotal = product.price * newQuantity;
+    setTotal(newTotal);
+    setShowTotal(true);
   };
-  const handleQuantityMinus = () => {
-    if (quantity <= 1) {
-      return;
+  const handleInputQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value, 10);
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity);
+      updateTotalPrice(newQuantity);
+    } else {
+      // Nếu giá trị không hợp lệ, đặt giá trị mặc định là 1
+      setQuantity(1);
+      updateTotalPrice(1);
     }
-    setQuantity(quantity - 1);
-    setTotal(total - product.price);
+  };
+
+  const handleQuantityMinus = () => {
+    if (quantity > 1) {
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      updateTotalPrice(newQuantity);
+    }
   };
 
   const handleQuantityAdd = () => {
-    const newQuantity = parseInt(quantity, 10) + 1;
+    const newQuantity = quantity + 1;
     setQuantity(newQuantity);
-    setTotal(product.price * newQuantity);
+    updateTotalPrice(newQuantity);
     setShowTotal(true);
   };
 

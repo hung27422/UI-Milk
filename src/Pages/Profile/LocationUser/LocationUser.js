@@ -8,10 +8,12 @@ import ButtonDeleteAddress from "./ButtonDeleteAddress";
 import ButtonUpdateAddress from "./ButtonUpdateAddress";
 import ButtonDefaultAddress from "./ButtonDefaultAddress";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function LocationUser() {
   const userIdLocal = localStorage.getItem("userId");
   const { indexAddress, setIndexAddress } = useContext(MilkContext);
+  const { user, isAuthenticated } = useAuth0();
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
   const { data, refetch } = useQuery(
     gql`
@@ -58,13 +60,17 @@ function LocationUser() {
         String(address?.id) === localStorage.getItem("defaultAddressID")
       );
       return String(address?.id) === localStorage.getItem("defaultAddressID");
-    }),...indexAddress.filter((address) => {
+    }),
+    ...indexAddress.filter((address) => {
       console.log(
         String(address?.id) === localStorage.getItem("defaultAddressID")
       );
       return String(address?.id) !== localStorage.getItem("defaultAddressID");
     }),
   ];
+  if (!isAuthenticated) {
+    return <></>;
+  }
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>

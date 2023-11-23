@@ -4,6 +4,17 @@
   margin-right: auto;
   margin-top: 20px;
 }
+.no-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+.img-cart {
+  width: 400px;
+  height: 300px;
+}
 .header {
   width: 1200px;
   margin-left: auto;

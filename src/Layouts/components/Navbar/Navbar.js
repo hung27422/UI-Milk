@@ -22,10 +22,11 @@ function Navbar() {
   const { isAuthenticated } = useAuth0();
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const countQuantity1 = localStorageCart?.reduce((total, product) => {
-    return total + product.quantity;
+    return total + parseInt(product?.quantity, 10);
   }, 0);
   useEffect(() => {
-    setCountQuantity(countQuantity1);
+    const newCountQuantity = parseInt(countQuantity1, 10);
+    setCountQuantity(newCountQuantity);
   }, [countQuantity1, setCountQuantity]);
   return (
     <div className={cx("wrapper")}>

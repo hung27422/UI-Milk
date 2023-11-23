@@ -117,7 +117,7 @@ const ButtonWrapper = ({
             console.log(response);
             if (response.status === "COMPLETED") {
               handleCreateOrder();
-              // handleDonePayment();
+              handleDonePayment();
             }
           })
         }
@@ -129,13 +129,16 @@ const ButtonWrapper = ({
 export default function PayPal({ amount }) {
   const { user, isAuthenticated } = useAuth0();
   const [emailUser, setEmailUser] = useState(null);
-  const { guest, setGuest } = useContext(MilkContext);
+  const [guest, setGuest] = useState({});
+  const storedGuest = JSON.parse(localStorage.getItem("guest"));
+
   useEffect(() => {
     if (user && user.email) {
       setEmailUser(user.email);
       console.log("Email ở PayPal \n" + emailUser);
-    } else if (guest) {
-      console.log(guest);
+    } else if (storedGuest) {
+      setGuest(storedGuest);
+      console.log("guest ở PayPal \n" + storedGuest);
     }
   }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);
@@ -167,14 +170,14 @@ export default function PayPal({ amount }) {
           currency: "USD",
         }}
       >
-        {emailUser || guest !== null ? ( // Kiểm tra xem emailUser đã có giá trị
+        {emailUser || guest ? ( // Kiểm tra xem emailUser đã có giá trị
           <ButtonWrapper
             currency={"USD"}
             amount={amount}
             showSpinner={false}
             data={productOrder}
             emailUser={emailUser}
-            guest={guest}
+            guest={storedGuest}
             isAuthenticated={isAuthenticated}
           />
         ) : (

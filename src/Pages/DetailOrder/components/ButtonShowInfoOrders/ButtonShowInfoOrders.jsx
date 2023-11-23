@@ -52,22 +52,24 @@ export default function ButtonShowInfoOrders({ data }) {
               <h3 className={cx("status")}>Đã giao</h3>
             )}
           </div>
-          {data?.items?.map((item, i) => (
-            <div key={item?.id + i} className={cx("box-product")}>
-              <img
-                className={cx("img-product")}
-                src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"
-                alt=""
-              />
-              <div className={cx("info-product")}>
-                <span className={cx("name-product")}>{item?.name}</span>
-                <span className={cx("quantity-product")}>
-                  x {item?.quantity}
-                </span>
-                <span className={cx("price-product")}>{item?.price} VNĐ</span>
+          <div className={cx("content")}>
+            {data?.items?.map((item, i) => (
+              <div key={item?.id + i} className={cx("box-product")}>
+                <img
+                  className={cx("img-product")}
+                  src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"
+                  alt=""
+                />
+                <div className={cx("info-product")}>
+                  <span className={cx("name-product")}>{item?.name}</span>
+                  <span className={cx("quantity-product")}>
+                    x {item?.quantity}
+                  </span>
+                  <span className={cx("price-product")}>{item?.price} VNĐ</span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           {data?.items?.forEach((element) => {
             total += element.subtotal;
           })}

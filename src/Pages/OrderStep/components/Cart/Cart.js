@@ -21,7 +21,18 @@ function Cart() {
   const { setActiveStep } = useContext(MilkContext);
   useEffect(() => setActiveStep(0), [setActiveStep]);
   let total = 0;
-
+  if (localStorageCart.length === 0) {
+    return (
+      <div className={cx("wrapper", "no-cart")}>
+        <h3>Bạn chưa có sản phẩm nào trong giỏ hàng</h3>
+        <img
+          className={cx("img-cart")}
+          src="https://bizweb.dktcdn.net/100/320/202/themes/714916/assets/empty-cart.png?1650292912948"
+          alt=""
+        />
+      </div>
+    );
+  }
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>

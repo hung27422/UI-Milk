@@ -12,8 +12,11 @@ function Delivery() {
   useEffect(() => setActiveStep(1), [setActiveStep]);
   const { guest, setGuest } = useContext(MilkContext);
   const handleSaveInfoGuest = () => {
-    console.log(guest);
-    // setGuest(valueGuest);
+    // Lưu thông tin guest vào localStorage khi có sự thay đổi
+    localStorage.setItem("guest", JSON.stringify(guest));
+    const storedGuest = JSON.parse(localStorage.getItem("guest"));
+    console.log("guest", storedGuest);
+    // localStorage.removeItem("guest");
   };
   return (
     <div className={cx("wrapper")}>

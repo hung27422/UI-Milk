@@ -74,7 +74,6 @@ export default function BasicModal() {
   );
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
-    console.log("!23", storedData);
     setIndexAddress(storedData || addressUser?.addresses || []);
   }, [addressUser, refetchGetAddressUser, setAddressRefetch, setIndexAddress]);
   useEffect(() => {
@@ -98,14 +97,14 @@ export default function BasicModal() {
     const result = await createAddress({
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDAzODgwMDUsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.cPo-rSqvJUZ_LJUZbqI5bziD9g2hPUeRw_Wp389xqqf7i4Cc8XTbgQ-1nOcaD3-ln2izKlvJW_3sG7ovJyp3Eg`,
+          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDA5ODQyNjIsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.pDLWrxWy-v2ndh5jn-8oCy8AjdfLA17UMhcHR8r7OBMPhNBee6u2Ed1S7m2dGkbZAm06WioMyFNhi9pcI_ENSg`,
         },
       },
       variables: {
         address: userCreateAddressInput.address, // Pass the userCreateAddressInput object to the mutation
       },
     });
-
+    console.log("Thêm địa chỉ thành công", result);
     setIndexAddress(() => [...addressUser?.addresses]);
     refetchGetAddressUser();
     setOpen(false);

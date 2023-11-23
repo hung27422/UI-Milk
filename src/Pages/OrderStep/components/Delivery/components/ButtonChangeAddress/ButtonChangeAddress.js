@@ -17,10 +17,11 @@ const style = {
   p: 3,
 };
 
-export default function ButtonChangeAddress() {
+export default function ButtonChangeAddress({ data }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const storedData = JSON.parse(localStorage.getItem("addressesData"));
 
   return (
     <div>
@@ -41,12 +42,13 @@ export default function ButtonChangeAddress() {
             Địa chỉ của tôi
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Address border selectAddress>
-              828 Sư Vạn Hạnh, Phường 11, Quận 10
-            </Address>
-            <Address border selectAddress>
-              18 Phạm Văn Đồng , Hiệp Bình Chánh, Thủ Đức
-            </Address>
+            {storedData?.map((item) => {
+              return (
+                <Address data={item} border selectAddress>
+                  {item.detail},{item.ward},{item.district},{item.city}
+                </Address>
+              );
+            })}
           </Typography>
         </Box>
       </Modal>

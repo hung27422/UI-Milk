@@ -30,7 +30,7 @@ function PaymentOffline() {
     const userIdLocal = localStorage.getItem("userId");
     let total = 0;
     localStorageCart.forEach((item) => {
-      total += item.total;
+      total = item?.price * item?.quantity;
     });
     console.log(total);
     const orderCreateOrderInput = {

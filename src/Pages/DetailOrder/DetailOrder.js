@@ -15,8 +15,8 @@ import DoneOrders from "./components/DoneOrders/DoneOrders";
 import CancelOrders from "./components/CancelOrders/CancelOrders";
 const cx = classNames.bind(styles);
 function DetailOrder() {
-  const [activeID, setActiveId] = useState("1");
   const { isAuthenticated } = useAuth0();
+  const [activeID, setActiveId] = useState("1");
   const { showOrderGuest, setShowOrderGuest } = useContext(MilkContext);
   // const [locationPage, setLocation] = useLocation();
   const handleNextPageOrder = (id) => {
@@ -31,12 +31,33 @@ function DetailOrder() {
   //     setShowOrderGuest(null);
   //   }
   // }, [setShowOrderGuest]);
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          height: "80vh",
+          fontSize: "25px",
+          color: "var(--text-color)",
+        }}
+        className={cx("wrapper")}
+      >
+        <h3>
+          Bạn cần phải đăng ký tài khoản mới có thể xem thông tin đơn hàng
+        </h3>
+        <span>(Đăng ký bằng email bạn vừa nhập để mua hàng)</span>
+      </div>
+    );
+  }
   return (
     <div className={cx("wrapper")}>
       <div className={cx("header")}>
         <DetailOrderStep />
       </div>
-      {!isAuthenticated && (
+      {/* {!isAuthenticated && (
         <div className={cx("check-email-guest")}>
           <TextField
             style={{ width: "500px", marginRight: "10px" }}
@@ -46,7 +67,7 @@ function DetailOrder() {
             onChange={(e) => handleShowOrderGuest(e.target.value)}
           />
         </div>
-      )}
+      )} */}
       <div className={cx("menu")}>
         <MenuDetailOrder
           id={"1"}

@@ -18,8 +18,7 @@ const cx = classNames.bind(styles);
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
-  const [valueGuest, setValueGuest] = useState({});
-  const { guest, setGuest } = useContext(MilkContext);
+  const { setGuest } = useContext(MilkContext);
   const { data, error } = useQuery(
     gql`
       query Users {
@@ -53,25 +52,37 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
       },
     }
   );
-  const handleGuestInfo = (id, value) => {
-    setValueGuest((prev) => ({
+  const handleGuestNameChange = (value) => {
+    setGuest((prev) => ({
       ...prev,
-      [id]: value,
+      nameGuest: value,
     }));
-    setGuest(valueGuest);
   };
-  // const handleSaveInfoGuest = () => {
-  //   console.log(valueGuest);
-  //   // setGuest(valueGuest);
-  // };
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log("Lỗi", error);
-  //   } else if (data) {
-  //     console.log("User", data);
-  //   }
-  // }, [data, error]);
+
+  const handleGuestPhoneChange = (value) => {
+    setGuest((prev) => ({
+      ...prev,
+      phoneGuest: value,
+    }));
+  };
+
+  const handleGuestEmailChange = (value) => {
+    setGuest((prev) => ({
+      ...prev,
+      emailGuest: value,
+    }));
+  };
+
+  const handleGuestAddressChange = (value) => {
+    setGuest((prev) => ({
+      ...prev,
+      addressGuest: value,
+    }));
+  };
+
   const { isAuthenticated, user } = useAuth0();
+  const storedGuest = JSON.parse(localStorage.getItem("guest"));
+
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>
@@ -144,7 +155,7 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                               {storedData[0].detail},{storedData[0].ward},
                               {storedData[0].district},{storedData[0].city}
                             </Address>
-                            <ButtonChangeAddress />
+                            <ButtonChangeAddress data={item} />
                           </span>
                         </span>
                       </TableCell>
@@ -163,44 +174,46 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                 <TableCell component="th" scope="row">
                   <TextField
                     id="guest-name"
-                    label="Mời nhập tên"
+                    label={storedGuest ? storedGuest.nameGuest : "Mời nhập tên"}
                     variant="outlined"
-                    onChange={(e) =>
-                      handleGuestInfo("nameGuest", e.target.value)
-                    }
+                    onChange={(e) => handleGuestNameChange(e.target.value)}
                   />
                 </TableCell>
                 <TableCell style={{ padding: "20px" }} align="left">
                   <TextField
                     id="guest-phone"
-                    label="Mời nhập số điện thoại"
-                    variant="outlined"
-                    onChange={(e) =>
-                      handleGuestInfo("phoneGuest", e.target.value)
+                    label={
+                      storedGuest
+                        ? storedGuest.phoneGuest
+                        : "Mời nhập số điện thoại"
                     }
+                    variant="outlined"
+                    onChange={(e) => handleGuestPhoneChange(e.target.value)}
                   />
                 </TableCell>
                 <TableCell align="center">
                   <TextField
                     id="guest-email"
-                    label="Mời nhập email"
-                    variant="outlined"
-                    onChange={(e) =>
-                      handleGuestInfo("emailGuest", e.target.value)
+                    label={
+                      storedGuest ? storedGuest.emailGuest : "Mời nhập email"
                     }
+                    variant="outlined"
+                    onChange={(e) => handleGuestEmailChange(e.target.value)}
                   />
                 </TableCell>
                 <TableCell align="left">
                   <TextField
                     style={{ width: "500px" }}
                     id="guest-address"
-                    label="Mời nhập địa chỉ"
-                    variant="outlined"
-                    onChange={(e) =>
-                      handleGuestInfo("addressGuest", e.target.value)
+                    label={
+                      storedGuest
+                        ? storedGuest.addressGuest
+                        : "Mời nhập địa chỉ"
                     }
+                    variant="outlined"
+                    onChange={(e) => handleGuestAddressChange(e.target.value)}
                   />
-                </TableCell>{" "}
+                </TableCell>
               </TableRow>
             </TableBody>
           </>
