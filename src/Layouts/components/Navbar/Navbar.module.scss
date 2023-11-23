@@ -47,13 +47,13 @@
 .quantity {
   position: absolute;
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  top: -5px;
-  right: -5px;
+  width: 30px;
+  height: 30px;
+  top: -8px;
+  right: -18px;
   border-radius: 50%;
   text-align: center;
-  line-height: 20px;
+  line-height: 30px;
   background-color: #f2b13f;
   color: var(--white);
   font-weight: 600;
@@ -65,4 +65,3 @@
 .list-box {
   padding: 2px 0px;
 }
-

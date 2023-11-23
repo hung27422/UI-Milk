@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 function ActionButton({ product }) {
   const { setCartItem, setShowTotal } = useContext(MilkContext);
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(product.price);
@@ -47,7 +48,12 @@ function ActionButton({ product }) {
   setTimeout(() => {
     setShowSuccessModal(false);
   }, 5000);
-
+  // useEffect(() => {
+  //   console.log(quantity);
+  // }, [quantity]);
+  const handleInputQuantityChange = (e) => {
+    setQuantity(e.target.value);
+  };
   const handleQuantityMinus = () => {
     if (quantity <= 1) {
       return;
@@ -57,7 +63,7 @@ function ActionButton({ product }) {
   };
 
   const handleQuantityAdd = () => {
-    const newQuantity = quantity + 1;
+    const newQuantity = parseInt(quantity, 10) + 1;
     setQuantity(newQuantity);
     setTotal(product.price * newQuantity);
     setShowTotal(true);
@@ -69,7 +75,11 @@ function ActionButton({ product }) {
         <button className={cx("btn-minus")} onClick={handleQuantityMinus}>
           -
         </button>
-        <span className={cx("current-quantity")}>{quantity}</span>
+        <input
+          className={cx("current-quantity")}
+          value={quantity}
+          onChange={(e) => handleInputQuantityChange(e)}
+        />
         <button className={cx("btn-add")} onClick={handleQuantityAdd}>
           +
         </button>

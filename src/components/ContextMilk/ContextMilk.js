@@ -21,6 +21,7 @@ function ContextMilk({ children }) {
   const [addressRefetch, setAddressRefetch] = useState(null);
   const [guest, setGuest] = useState(null);
   const [showOrderGuest, setShowOrderGuest] = useState(null);
+  const [buttonQuantity, setButtonQuantity] = useState();
   return (
     <MilkContext.Provider
       value={{
@@ -62,6 +63,8 @@ function ContextMilk({ children }) {
         setGuest,
         showOrderGuest,
         setShowOrderGuest,
+        buttonQuantity,
+        setButtonQuantity,
       }}
     >
       {children}
