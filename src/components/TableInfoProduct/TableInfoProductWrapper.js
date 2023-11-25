@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
+import { useAuth0 } from "@auth0/auth0-react";
 const userIdLocal = localStorage.getItem("userId");
-
 const { default: TableInfoProduct } = require("./TableInfoProduct");
 const TableInfoProductWrapper = () => {
   let total = 0;
@@ -25,12 +25,18 @@ const TableInfoAllOrderWrapper = ({ order }) => {
 };
 //WaitConfirm
 const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
-  const statusWaitConfirm = order?.filter(
-    (items) =>
-      items.status === "CREATED" &&
-      items.userId === userIdLocal.toLocaleLowerCase()
-  );
-
+  const { user, isAuthenticated } = useAuth0();
+  console.log(order);
+  let statusWaitConfirm = null;
+  console.log(userIdLocal);
+  if (isAuthenticated) {
+    statusWaitConfirm = order?.filter(
+      (items) =>
+        items.status === "CREATED" &&
+        items.userId === userIdLocal.toLocaleLowerCase()
+    );
+  }
+  console.log(statusWaitConfirm);
   if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
     return (
       <TableInfoProduct

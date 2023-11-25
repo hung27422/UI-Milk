@@ -1,4 +1,4 @@
-import { gql, useApolloClient, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   PayPalScriptProvider,
@@ -21,7 +21,15 @@ const CREATE_ORDER = gql`
     }
   }
 `;
-// Custom component to wrap the PayPalButtons and show loading spinner
+const CREATE_ORDER_GUEST = gql`
+  mutation CreateGuestOrder($input: orderCreateGuestOrderInput!) {
+    createGuestOrder(input: $input) {
+      orderCreatedPayload {
+        message
+      }
+    }
+  }
+`;
 const ButtonWrapper = ({
   showSpinner,
   currency,
@@ -52,7 +60,7 @@ const ButtonWrapper = ({
       total += item.total;
     });
     const orderCreateOrderInput = {
-      email: isAuthenticated ? emailUser : guest?.emailGuest,
+      email: emailUser,
       items: [
         ...data.map((i) => ({
           name: i?.productName,
@@ -62,14 +70,12 @@ const ButtonWrapper = ({
           sku: i?.sku,
         })),
       ],
-      shippingAddress: isAuthenticated
-        ? `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`
-        : guest?.addressGuest,
+      shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
       total: total,
       userId: userIdLocal,
       status: "CONFIRMED",
-      phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
-      userName: isAuthenticated ? storedData[0].name : guest?.nameGuest,
+      phone: storedData[0].phone,
+      userName: storedData[0].name,
     };
 
     try {
@@ -89,6 +95,41 @@ const ButtonWrapper = ({
       console.error("Lỗi khi lưu đơn hàng:", error);
     }
   };
+  const handleCreateOrderGuest = async () => {
+    let total = 0;
+    data.forEach((item) => {
+      total += item.total;
+    });
+    const orderCreateOrderInput = {
+      email: guest?.emailGuest,
+      items: [
+        ...data.map((i) => ({
+          name: i?.productName,
+          price: i?.price,
+          productId: i?.productId,
+          quantity: i?.quantity,
+          sku: i?.sku,
+        })),
+      ],
+      shippingAddress: guest?.addressGuest,
+      total: total,
+      status: "CONFIRMED",
+      phone: guest?.phoneGuest,
+      userName: guest?.nameGuest,
+    };
+
+    try {
+      const result = await client.mutate({
+        mutation: CREATE_ORDER_GUEST,
+        variables: {
+          input: orderCreateOrderInput,
+        },
+      });
+      console.log("Đã tạo đơn hàng Guest:", result);
+    } catch (error) {
+      console.error("Lỗi khi tạo đơn hàng guest:", error);
+    }
+  };
   const { setActiveStep } = useContext(MilkContext);
   const handleDonePayment = () => {
     setActiveStep(3);
@@ -102,7 +143,6 @@ const ButtonWrapper = ({
         disabled={false}
         forceReRender={[style]}
         fundingSource={undefined}
-        // onClick={handleCreateOrder}
         createOrder={(data, actions) => {
           return actions.order
             .create({
@@ -116,8 +156,12 @@ const ButtonWrapper = ({
           actions.order.capture().then(async (response) => {
             console.log(response);
             if (response.status === "COMPLETED") {
-              handleCreateOrder();
-              handleDonePayment();
+              if (isAuthenticated) {
+                handleCreateOrder();
+              } else if (!isAuthenticated) {
+                handleCreateOrderGuest();
+              }
+              // handleDonePayment();
             }
           })
         }

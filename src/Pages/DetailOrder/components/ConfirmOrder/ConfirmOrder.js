@@ -61,11 +61,7 @@ function ConfirmOrder() {
       fetchPolicy: "no-cache",
     }
   );
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  });
+
   useEffect(() => {
     if (error) {
       console.log(error);
