@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./PaymentOffline.module.scss";
 import PriceContent from "../PaymentOnline/PriceContent";
 import ButtonPayment from "../ButtonPayment/ButtonPayment";
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { client } from "~/ApolloClient";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext } from "react";
@@ -18,9 +18,21 @@ const CREATE_ORDER = gql`
     }
   }
 `;
+const CREATE_ORDER_GUEST = gql`
+  mutation CreateGuestOrder($input: orderCreateGuestOrderInput!) {
+    createGuestOrder(input: $input) {
+      orderCreatedPayload {
+        message
+      }
+    }
+  }
+`;
 function PaymentOffline() {
   const { user, isAuthenticated } = useAuth0();
   const { guest, setGuest } = useContext(MilkContext);
+  console.log(guest);
+  const [createGuestOrder, { error }] = useMutation(CREATE_ORDER_GUEST);
+  if (error) console.log("Lỗi tạo đơn hàng guest", error);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   console.log("123", localStorageCart);
   let total = 0;
@@ -29,14 +41,14 @@ function PaymentOffline() {
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
     let total = 0;
-    localStorageCart.forEach((item) => {
+    localStorageCart?.forEach((item) => {
       total = item?.price * item?.quantity;
     });
     console.log(total);
     const orderCreateOrderInput = {
       email: isAuthenticated ? user?.email : guest?.emailGuest,
       items: [
-        ...localStorageCart.map((i) => ({
+        ...localStorageCart?.map((i) => ({
           name: i?.name,
           price: i?.price,
           productId: i?.id,
@@ -78,6 +90,31 @@ function PaymentOffline() {
       console.log("Đã xóa giỏ hàng");
     }
   };
+  const handleCreateOrderGuest = async () => {
+    const orderCreateGuestOrderInput = {
+      input: {
+        email: guest?.emailGuest,
+        items: [
+          ...localStorageCart?.map((i) => ({
+            name: i?.name,
+            price: i?.price,
+            productId: i?.id,
+            quantity: i?.quantity,
+            sku: i?.sku,
+          })),
+        ],
+        phone: guest?.phoneGuest,
+        shippingAddress: guest?.addressGuest,
+        status: "CREATED",
+        total: total,
+        userName: guest?.nameGuest,
+      },
+    };
+    const result = await createGuestOrder({
+      variables: { input: orderCreateGuestOrderInput.input },
+    });
+    console.log("Tạo đơn hàng guest thành công",result);
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("content")}>
@@ -96,7 +133,11 @@ function PaymentOffline() {
         </div>
       </div>
       <div className={cx("btn-action")}>
-        <ButtonPayment onClick={handleCreateOrder} />
+        {isAuthenticated ? (
+          <ButtonPayment onClick={handleCreateOrder} />
+        ) : (
+          <ButtonPayment onClick={handleCreateOrderGuest}></ButtonPayment>
+        )}
       </div>
     </div>
   );

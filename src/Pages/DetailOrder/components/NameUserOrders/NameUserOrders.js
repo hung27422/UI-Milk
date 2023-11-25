@@ -5,7 +5,7 @@ function NameUserOrders({ data }) {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("info-product")}>
-        <span className={cx("name-product")}>{data?.userName}</span>
+        <span className={cx("name-product")}>{data?.id}</span>
       </div>
     </div>
   );

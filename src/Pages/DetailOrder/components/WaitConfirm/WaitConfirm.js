@@ -58,6 +58,7 @@ function WaitConfirm() {
           authorization: `Bearer ${apiTokenLocal}`,
         },
       },
+      fetchPolicy: "no-cache",
     }
   );
   // useEffect(() => {

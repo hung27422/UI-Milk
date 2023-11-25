@@ -51,13 +51,14 @@ function ConfirmOrder() {
           status: "CONFIRMED",
         },
         page: 1,
-        amount: 10,
+        amount: 50,
       },
       context: {
         headers: {
           authorization: `Bearer ${apiTokenLocal}`,
         },
       },
+      fetchPolicy: "no-cache",
     }
   );
   useEffect(() => {

@@ -129,7 +129,7 @@ const ButtonWrapper = ({
 export default function PayPal({ amount }) {
   const { user, isAuthenticated } = useAuth0();
   const [emailUser, setEmailUser] = useState(null);
-  const [guest, setGuest] = useState({});
+  const [guest, setGuest] = useState();
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
 
   useEffect(() => {
@@ -138,7 +138,6 @@ export default function PayPal({ amount }) {
       console.log("Email ở PayPal \n" + emailUser);
     } else if (storedGuest) {
       setGuest(storedGuest);
-      console.log("guest ở PayPal \n" + storedGuest);
     }
   }, [emailUser, user]);
   const { cartItem } = useContext(MilkContext);

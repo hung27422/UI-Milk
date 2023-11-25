@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
-  const { setGuest } = useContext(MilkContext);
+  const { guest, setGuest } = useContext(MilkContext);
   const { data, error } = useQuery(
     gql`
       query Users {
@@ -79,7 +79,11 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
       addressGuest: value,
     }));
   };
-
+  useEffect(() => {
+    localStorage.setItem("guest", JSON.stringify(guest));
+    // const storedGuest = JSON.parse(localStorage.getItem("guest"));
+    // console.log("guest", storedGuest);
+  }, [guest]);
   const { isAuthenticated, user } = useAuth0();
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
 

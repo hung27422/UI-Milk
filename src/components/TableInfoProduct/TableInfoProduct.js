@@ -70,7 +70,7 @@ function TableInfoProduct({
                 fontWeight: "600",
               }}
             >
-              Tên người nhận
+              ID Orders
             </TableCell>
             <TableCell
               style={{
