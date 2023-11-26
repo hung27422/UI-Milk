@@ -3,16 +3,11 @@ import styles from "../WaitConfirm/WaitConfirm.module.scss";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
-import {
-  TableInfoAllOrderWrapper,
-  TableInfoListAllOrderWrapperOrderGuest,
-} from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import { TableInfoAllOrderWrapper } from "~/components/TableInfoProduct/TableInfoProductWrapper";
 import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function ListAllOrder() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  const { user, isAuthenticated } = useAuth0();
-  const { showOrderGuest, setShowOrderGuest } = useContext(MilkContext);
 
   useEffect(() => setActiveStepOrder(0), [setActiveStepOrder]);
   const apiTokenLocal = localStorage.getItem("apiToken");
@@ -59,13 +54,7 @@ function ListAllOrder() {
   //     console.log(data);
   //   }
   // }, [data, error]);
-  if (!isAuthenticated) {
-    return (
-      <div className={cx("wrapper")}>
-        <TableInfoListAllOrderWrapperOrderGuest order={data?.orders} />
-      </div>
-    );
-  }
+
   return (
     <div className={cx("wrapper")}>
       <div>
