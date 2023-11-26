@@ -45,6 +45,7 @@ function TableInfoProduct({
   isShowButtonDone,
   isShowButtonCancel,
 }) {
+  console.log(data);
   return (
     <div>
       <div className={cx("box-title")}>

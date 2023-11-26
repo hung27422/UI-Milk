@@ -13,64 +13,21 @@ import { gql, useQuery } from "@apollo/client";
 import TableDelivery from "~/Pages/OrderStep/components/Delivery/components/TableDelivery/TableDelivery";
 import TableInfoDelivery from "~/Pages/OrderStep/components/Delivery/components/TableDelivery/TableInfoDelivery";
 import { useAuth0 } from "@auth0/auth0-react";
+import useQueryFindOrder from "~/hooks/useQueryFindOrder";
 const cx = classNames.bind(styles);
 function Shipment() {
   const { setActiveStepOrder } = useContext(MilkContext);
-  const { user, isAuthenticated } = useAuth0();
   useEffect(() => setActiveStepOrder(3), [setActiveStepOrder]);
-  const apiTokenLocal = localStorage.getItem("apiToken");
-  const { data, error } = useQuery(
-    gql`
-      query FindOrders(
-        $query: orderGetOrderInput!
-        $amount: Int!
-        $page: Int!
-      ) {
-        findOrders(query: $query, amount: $amount, page: $page) {
-          cancelReason
-          date
-          id
-          items {
-            id
-            name
-            orderId
-            price
-            productId
-            quantity
-            sku
-            subtotal
-          }
-          phone
-          shippingAddress
-          status
-          total
-          userId
-          userName
-        }
-      }
-    `,
-    {
-      variables: {
-        query: {
-          status: "SHIPPING",
-        },
-        page: 1,
-        amount: 10,
-      },
-      context: {
-        headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
-        },
-      },
+  const { data, error, refetch } = useQueryFindOrder({ status: "SHIPPING" });
+  useEffect(() => {
+    if (error) {
+      console.log(error);
     }
-  );
-  if (!isAuthenticated) {
-    return (
-      <div className={cx("shipment")}>
-        <TableInfoShipmentGuest order={data?.findOrders} />
-      </div>
-    );
-  }
+    if (data) {
+      console.log("data", data);
+      refetch();
+    }
+  }, [data, error, refetch]);
   return (
     <div className={cx("wrapper")}>
       <div className={cx("shipment")}>

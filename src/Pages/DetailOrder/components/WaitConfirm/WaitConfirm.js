@@ -1,83 +1,20 @@
 import classNames from "classnames/bind";
 import styles from "./WaitConfirm.module.scss";
-import ButtonCancelOrder from "./ButtonCancelOrder";
-import { useContext, useEffect } from "react";
-import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import { gql, useQuery } from "@apollo/client";
-import {
-  TableInfoProductWrapperOrder,
-  TableInfoProductWrapperOrderGuest,
-} from "~/components/TableInfoProduct/TableInfoProductWrapper";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
+import { TableInfoProductWrapperOrder } from "~/components/TableInfoProduct/TableInfoProductWrapper";
+import useQueryFindOrder from "~/hooks/useQueryFindOrder";
 const cx = classNames.bind(styles);
 function WaitConfirm() {
-  const apiTokenLocal = localStorage.getItem("apiToken");
-  const { user, isAuthenticated } = useAuth0();
-  const { setActiveStepOrder } = useContext(MilkContext);
-  useEffect(() => setActiveStepOrder(1), [setActiveStepOrder]);
-  const { data, error } = useQuery(
-    gql`
-      query FindOrders(
-        $query: orderGetOrderInput!
-        $amount: Int!
-        $page: Int!
-      ) {
-        findOrders(query: $query, amount: $amount, page: $page) {
-          cancelReason
-          date
-          id
-          items {
-            id
-            name
-            orderId
-            price
-            productId
-            quantity
-            sku
-            subtotal
-          }
-          phone
-          shippingAddress
-          status
-          total
-          userId
-          userName
-        }
-      }
-    `,
-    {
-      variables: {
-        query: {
-          status: "CREATED",
-        },
-        page: 1,
-        amount: 10,
-      },
-      context: {
-        headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
-        },
-      },
-      fetchPolicy: "no-cache",
+  const { data, error, refetch } = useQueryFindOrder({ status: "CREATED" });
+  useEffect(() => {
+    if (error) {
+      console.log(error);
     }
-  );
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     console.log(data?.findOrders);
-  //   }
-  // }, [data, error]);
-  if (!isAuthenticated) {
-    return (
-      <div className={cx("wrapper")}>
-        <div>
-          <TableInfoProductWrapperOrderGuest order={data?.findOrders} />
-        </div>
-      </div>
-    );
-  }
+    if (data) {
+      console.log("data", data);
+      refetch();
+    }
+  }, [data, error, refetch]);
   return (
     <div className={cx("wrapper")}>
       <div>

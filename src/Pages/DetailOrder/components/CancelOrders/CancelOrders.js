@@ -10,77 +10,24 @@ import {
   TableInfoConfirmWrapperOrderGuest,
 } from "~/components/TableInfoProduct/TableInfoProductWrapper";
 import { useAuth0 } from "@auth0/auth0-react";
+import useQueryFindOrder from "~/hooks/useQueryFindOrder";
 const cx = classNames.bind(styles);
 function CancelOrders() {
   const { setActiveStepOrder } = useContext(MilkContext);
   const { isAuthenticated } = useAuth0();
 
   useEffect(() => setActiveStepOrder(6), [setActiveStepOrder]);
-  const apiTokenLocal = localStorage.getItem("apiToken");
-  const { data, error } = useQuery(
-    gql`
-      query FindOrders(
-        $query: orderGetOrderInput!
-        $amount: Int!
-        $page: Int!
-      ) {
-        findOrders(query: $query, amount: $amount, page: $page) {
-          cancelReason
-          date
-          id
-          items {
-            id
-            name
-            orderId
-            price
-            productId
-            quantity
-            sku
-            subtotal
-          }
-          phone
-          shippingAddress
-          status
-          total
-          userId
-          userName
-        }
-      }
-    `,
-    {
-      variables: {
-        query: {
-          status: "CANCELLED",
-        },
-        page: 1,
-        amount: 10,
-      },
-      context: {
-        headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
-        },
-      },
-    }
-  );
-
+  const { data, error, refetch } = useQueryFindOrder({ status: "CANCELLED" });
   useEffect(() => {
     if (error) {
       console.log(error);
     }
     if (data) {
       console.log("data", data);
+      refetch();
     }
-  }, [data, error]);
-  if (!isAuthenticated) {
-    return (
-      <div className={cx("wrapper")}>
-        <TableInfoCancelOrderWrapperOrderGuest
-          cancelOrder
-          order={data?.findOrders}
-        />
-      </div>
-    );
-  }
+  }, [data, error, refetch]);
+
   return (
     <div className={cx("wrapper")}>
       <div>
