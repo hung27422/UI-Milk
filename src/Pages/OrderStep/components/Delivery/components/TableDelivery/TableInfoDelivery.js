@@ -18,26 +18,32 @@ const cx = classNames.bind(styles);
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
+  console.log(storedData[0]);
   const { guest, setGuest } = useContext(MilkContext);
+  const { isAuthenticated, user } = useAuth0();
   const { data, error } = useQuery(
     gql`
-      query Users {
-        users {
+      query Users($amount: Int!, $page: Int!) {
+        users(amount: $amount, page: $page) {
           email
           id
           imageURL
           name
           phoneNumber
-          token
           role {
             description
             id
             name
           }
+          token
           address {
             city
             detail
             district
+            id
+            isDefault
+            name
+            phone
             userId
             ward
           }
@@ -50,8 +56,13 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
           authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDA0NTI5NzcsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.GnwW0BAQZUY9C_HeA2O-3j9jjhKfSMGG4rVG7qgpD0miyvVB40_Ui72RCZuppObcXPgNg4Yd2cxTvTY2_wUUYA`,
         },
       },
+      variables: {
+        amount: 50,
+        page: 1,
+      },
     }
   );
+  if (error) console.log(error);
   const handleGuestNameChange = (value) => {
     setGuest((prev) => ({
       ...prev,
@@ -81,12 +92,9 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
   };
   useEffect(() => {
     localStorage.setItem("guest", JSON.stringify(guest));
-    // const storedGuest = JSON.parse(localStorage.getItem("guest"));
-    // console.log("guest", storedGuest);
   }, [guest]);
-  const { isAuthenticated, user } = useAuth0();
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
-
+  console.log("ss", data);
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>

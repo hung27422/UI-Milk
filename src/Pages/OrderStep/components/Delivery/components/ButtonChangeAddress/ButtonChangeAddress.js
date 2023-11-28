@@ -44,7 +44,7 @@ export default function ButtonChangeAddress({ data }) {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {storedData?.map((item) => {
               return (
-                <Address data={item} border selectAddress>
+                <Address key={item?.id} data={item} border selectAddress>
                   {item.detail},{item.ward},{item.district},{item.city}
                 </Address>
               );

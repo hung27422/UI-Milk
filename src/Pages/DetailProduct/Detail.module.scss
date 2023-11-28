@@ -159,3 +159,13 @@
   font-size: 18px;
   margin-bottom: 20px;
 }
+.info-product {
+  display: flex;
+  flex-direction: column;
+}
+.quantity-inventories {
+  margin-top: 10px;
+  font-size: 18px;
+  font-family: var(--font-primary);
+  color: var(--text-color);
+}

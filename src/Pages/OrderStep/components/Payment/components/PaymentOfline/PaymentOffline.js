@@ -7,6 +7,7 @@ import { client } from "~/ApolloClient";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import useQueryInventories from "~/hooks/useQueryInventories";
 
 const cx = classNames.bind(styles);
 const CREATE_ORDER = gql`
@@ -30,6 +31,8 @@ const CREATE_ORDER_GUEST = gql`
 function PaymentOffline() {
   const { user, isAuthenticated } = useAuth0();
   const { guest, setGuest } = useContext(MilkContext);
+  const { inventory } = useContext(MilkContext);
+  const { refetch } = useQueryInventories();
   console.log(guest);
   const [createGuestOrder, { error }] = useMutation(CREATE_ORDER_GUEST);
   if (error) console.log("Lỗi tạo đơn hàng guest", error);
@@ -78,16 +81,26 @@ function PaymentOffline() {
           input: orderCreateOrderInput,
         },
       });
-      console.log("Đã lưu đơn hàng:", result);
+      localStorageCart?.forEach((item) => {
+        const inventoryItem = inventory?.find(
+          (inventory) => inventory.id === item.idInventory
+        );
+        if (inventoryItem) {
+          const updatedQuantity = inventoryItem.quantity - item.quantity;
+          inventoryItem.quantity = updatedQuantity;
+        }
+      });
+      console.log("Đã tạo đơn hàng:", result);
       setGuest({});
       localStorage.removeItem("cartItems");
     } catch (error) {
-      console.error("Lỗi khi lưu đơn hàng:", error);
+      console.error("Lỗi khi tạo đơn hàng:", error);
     } finally {
       //"Refetch"
       const updatedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
       localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       console.log("Đã xóa giỏ hàng");
+      refetch();
     }
   };
   const handleCreateOrderGuest = async () => {
@@ -113,7 +126,16 @@ function PaymentOffline() {
     const result = await createGuestOrder({
       variables: { input: orderCreateGuestOrderInput.input },
     });
-    console.log("Tạo đơn hàng guest thành công",result);
+    localStorageCart?.forEach((item) => {
+      const inventoryItem = inventory?.find(
+        (inventory) => inventory.id === item.idInventory
+      );
+      if (inventoryItem) {
+        const updatedQuantity = inventoryItem.quantity - item.quantity;
+        inventoryItem.quantity = updatedQuantity;
+      }
+    });
+    console.log("Tạo đơn hàng guest thành công", result);
   };
   return (
     <div className={cx("wrapper")}>

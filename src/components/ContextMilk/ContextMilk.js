@@ -22,6 +22,9 @@ function ContextMilk({ children }) {
   const [guest, setGuest] = useState(null);
   const [showOrderGuest, setShowOrderGuest] = useState(null);
   const [buttonQuantity, setButtonQuantity] = useState();
+  const [inventory, setInventory] = useState();
+  const [idInventory, setIdInventory] = useState();
+
   return (
     <MilkContext.Provider
       value={{
@@ -65,6 +68,10 @@ function ContextMilk({ children }) {
         setShowOrderGuest,
         buttonQuantity,
         setButtonQuantity,
+        inventory,
+        setInventory,
+        idInventory,
+        setIdInventory,
       }}
     >
       {children}

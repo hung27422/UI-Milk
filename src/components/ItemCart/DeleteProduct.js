@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function DeleteProduct({ data }) {
-  const { cartItem, setCartItem } = useContext(MilkContext);
+  const { setCartItem } = useContext(MilkContext);
 
   const handleDeleteItemCart = () => {
     const itemIdToDelete = data.id;

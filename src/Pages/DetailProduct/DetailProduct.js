@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./Detail.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import DescriptionProduct from "./DescriptionProduct";
 import ManualProduct from "./ManualProduct";
@@ -11,8 +11,8 @@ const cx = classNames.bind(styles);
 
 function DetailProduct() {
   const { products } = useContext(MilkContext);
-  const { idProduct } = useContext(MilkContext);
-
+  const { idProduct, idInventory } = useContext(MilkContext);
+  // console.log("idInventory", idInventory);
   return (
     <div>
       {products?.map(
@@ -27,8 +27,8 @@ function DetailProduct() {
                 />
               </div>
               <div className={cx("detail-product")}>
-                <InfoProduct product={product} />
-                <ActionButton product={product} />
+                <InfoProduct product={product} idInventory={idInventory} />
+                <ActionButton product={product} idInventory={idInventory} />
                 <DescriptionProduct />
                 <ManualProduct />
                 <ProductIngredient />

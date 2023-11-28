@@ -2,14 +2,27 @@ import classNames from "classnames/bind";
 import styles from "./WaitConfirm.module.scss";
 import Button from "~/components/Button";
 import { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
-import { dark } from "@mui/material/styles/createPalette";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import useQueryInventories from "~/hooks/useQueryInventories";
+import { client } from "~/ApolloClient";
 const cx = classNames.bind(styles);
 
 const UPDATE_ORDER = gql`
   mutation UpdateOrder($updateOrderId: Int!, $input: orderUpdateOrderInput!) {
     updateOrder(id: $updateOrderId, input: $input) {
-      orderCreatedPayload {
+      orderUpdatedPayload {
+        message
+      }
+    }
+  }
+`;
+const UPDATE_INVENTORY = gql`
+  mutation UpdateInventory(
+    $updateInventoryId: Int!
+    $input: inventoryUpdateInventoryInput!
+  ) {
+    updateInventory(id: $updateInventoryId, input: $input) {
+      inventoryUpdatedPayload {
         message
       }
     }
@@ -30,14 +43,28 @@ const reasons = [
   },
 ];
 function ReasonCancel({ data, handleClose }) {
-  const [nameReason, setNameReason] = useState("");
+  const [nameReason, setNameReason] = useState();
   const [updateOrder] = useMutation(UPDATE_ORDER);
+  const [updateInventory] = useMutation(UPDATE_INVENTORY);
+  const [reasonId, setReasonId] = useState(1);
 
-  const handleValue = (value) => {
+  const { data: dataInventory, refetch } = useQueryInventories();
+  const handleCancelReason = (value, id) => {
     setNameReason(value);
-  };
-  const handleCancelOrder = () => {
+    setReasonId(id);
     console.log(data);
+    const inventoryItem = dataInventory?.inventories?.find((inventory) =>
+      data.items.find((item) => inventory.productId === item.productId)
+    );
+    const dataQuantity = data?.items?.find((item) =>
+      dataInventory?.inventories?.find(
+        (inventory) => item.productId === inventory.productId
+      )
+    );
+    console.log("inventoryItem", inventoryItem.quantity);
+    console.log("quantity", dataQuantity);
+  };
+  const handleCancelOrder = async () => {
     const orderUpdateOrderInput = {
       updateOrderId: data?.id,
       input: {
@@ -49,10 +76,10 @@ function ReasonCancel({ data, handleClose }) {
       },
     };
     try {
-      const result = updateOrder({
+      const result = await updateOrder({
         context: {
           headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI3MWE5NTM0NS03YmYwLTQwMDYtYjBhNi05YmYwODdiZTA4Y2YiLCJuYW1lIjoiSOG7kyBU4bqlbiBIw7luZyIsImp0aSI6IjcxQTk1MzQ1LTdCRjAtNDAwNi1CMEE2LTlCRjA4N0JFMDhDRiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxMDU0NjMxLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.b8bvU_whCazN5PktrXMXiitOD-ggE7bXqB7xag_7E2QwNP2qnk_fv9eTSCVmEUY1EiyNlNcXMsjm8QSA74Hr0g`,
+            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxNDI0MTQ3LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.CKLeKzIf2wbQJchx-L285WcBrT6lVRjIlQ76IOMfsSNYZT9zuiZQe48XeDHz7_4m1yx9OS3OQB0ZuksihMtPkg`,
           },
         },
         variables: {
@@ -60,11 +87,39 @@ function ReasonCancel({ data, handleClose }) {
           input: orderUpdateOrderInput.input,
         },
       });
+      await Promise.all(
+        dataInventory?.inventories?.map(async (inventory) => {
+          const item = data.items.find(
+            (item) => inventory.productId === item.productId
+          );
+
+          if (item) {
+            const updatedQuantity = inventory.quantity + item.quantity;
+
+            await updateInventory({
+              variables: {
+                updateInventoryId: inventory.id,
+                input: {
+                  availability: true,
+                  quantity: updatedQuantity,
+                  // ... other fields you may need to update
+                },
+              },
+              context: {
+                headers: {
+                  authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxNDI0MTQ3LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.CKLeKzIf2wbQJchx-L285WcBrT6lVRjIlQ76IOMfsSNYZT9zuiZQe48XeDHz7_4m1yx9OS3OQB0ZuksihMtPkg`,
+                },
+              },
+            });
+          }
+        })
+      );
       console.log("Đã hủy đơn hàng:", result);
     } catch (error) {
       console.error("Lỗi khi hủy đơn hàng:", error);
     } finally {
       handleClose();
+      refetch();
     }
   };
   return (
@@ -72,12 +127,14 @@ function ReasonCancel({ data, handleClose }) {
       {reasons.map((item) => (
         <div key={item.id} className={cx("form-reason")}>
           <input
-            id={item.id}
-            type="radio"
+            className={cx("input-cancel")}
             name="name"
-            value={item.name}
-            onChange={(e) => handleValue(e.target.value)}
-          />
+            type="radio"
+            id={item.id}
+            checked={item.id === reasonId}
+            value={item?.name}
+            onChange={(e) => handleCancelReason(e.target.value, item.id)}
+          ></input>
           <span className={cx("reason")}>{item.name}</span>
         </div>
       ))}

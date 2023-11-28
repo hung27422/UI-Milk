@@ -3,9 +3,11 @@ import styles from "./Cart.module.scss";
 import TableCart from "~/components/TableCart/TableCart";
 import Button from "~/components/Button";
 import configs from "~/configs";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import ButtonDiscount from "./ButtonDiscount";
+import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
+import useQueryInventories from "~/hooks/useQueryInventories";
 const cx = classNames.bind(styles);
 
 const InfoPrice = ({ numberPrice, title }) => {
@@ -19,8 +21,47 @@ const InfoPrice = ({ numberPrice, title }) => {
 function Cart() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const { setActiveStep } = useContext(MilkContext);
+  console.log("123", localStorageCart);
+  const { data } = useQueryInventories();
+  const [quantityInventory, setQuantityInventory] = useState();
+  const [nameInventory, setNameInventory] = useState();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [stock, setStock] = useState(false);
   useEffect(() => setActiveStep(0), [setActiveStep]);
   let total = 0;
+  const handleBuyOrder = async () => {
+    if (localStorageCart && data) {
+      let hasInsufficientStock = false;
+
+      for (const item of localStorageCart) {
+        const inventoryItem = data.inventories.find(
+          (inv) => inv.productId === item.id
+        );
+        console.log("000", item);
+        if (inventoryItem && item.quantity > inventoryItem.quantity) {
+          hasInsufficientStock = true;
+          setQuantityInventory(inventoryItem.quantity);
+          setNameInventory(item?.name);
+          break; // Exit the loop once you find a product with insufficient stock
+        } else {
+          total += item.total;
+        }
+      }
+
+      if (hasInsufficientStock) {
+        setStock(true);
+        setShowSuccessModal(true);
+      } else {
+        window.location.href = `${configs.routes.delivery}`;
+      }
+    }
+  };
+  // console.log(nameInventory);
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+  };
+
   if (localStorageCart?.length === 0) {
     return (
       <div className={cx("wrapper", "no-cart")}>
@@ -35,6 +76,15 @@ function Cart() {
   }
   return (
     <div className={cx("wrapper")}>
+      {stock && (
+        <ModalSuccessAddCart
+          open={showSuccessModal} // Pass the open prop
+          onClose={handleCloseModal}
+          showStock={stock}
+          quantityInventory={quantityInventory}
+          nameInventory={nameInventory}
+        />
+      )}
       <div className={cx("header")}>
         <TableCart />
       </div>
@@ -52,7 +102,7 @@ function Cart() {
           <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>
         </div>
         <div className={cx("btn-action")}>
-          <Button checkout to={configs.routes.delivery}>
+          <Button checkout onClick={handleBuyOrder}>
             Mua hàng
           </Button>
         </div>

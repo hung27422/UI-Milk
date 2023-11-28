@@ -7,20 +7,34 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
 const cx = classNames.bind(styles);
 
-function ActionButton({ product }) {
+function ActionButton({ product, idInventory }) {
   const { setCartItem, setShowTotal } = useContext(MilkContext);
-
+  const { inventory } = useContext(MilkContext);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(product.price);
+  const [showStock, setShowStock] = useState(false);
+  const [quantityInventory, setQuantityInventory] = useState();
   const handleAddToCart = () => {
     const existingCartItems =
       JSON.parse(localStorage.getItem("cartItems")) || [];
-
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     const existingItemIndex = existingCartItems.findIndex(
       (item) => item.id === product.id
     );
+    if (idInventory) {
+      const inventoryItem = inventory.find((item) => item.id === idInventory);
+
+      if (inventoryItem && existingItemIndex === -1) {
+        // If the product is not already in the cart, check the inventory
+        if (quantity > inventoryItem.quantity) {
+          setShowStock(true);
+          setQuantityInventory(inventoryItem?.quantity);
+          setShowSuccessModal(true);
+          return;
+        }
+      }
+    }
 
     if (existingItemIndex !== -1) {
       // Nếu đã có trong giỏ hàng, tăng số lượng
@@ -35,19 +49,19 @@ function ActionButton({ product }) {
       };
       existingCartItems.push(cartItem);
     }
-
     // Lưu danh sách các mục giỏ hàng vào Local Storage dưới dạng chuỗi JSON
     localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
-
     // Cập nhật state hoặc hiển thị thông báo thành công
     setCartItem(existingCartItems);
     setShowSuccessModal(true);
-    // console.log(existingCartItems);
-    // console.log(existingItemIndex);
   };
-  setTimeout(() => {
-    setShowSuccessModal(false);
-  }, 5000);
+  useEffect(() => {
+    const close = setInterval(() => {
+      setShowSuccessModal(false);
+    }, 20000);
+
+    return () => clearInterval(close);
+  }, []);
   const updateTotalPrice = (newQuantity) => {
     const newTotal = product.price * newQuantity;
     setTotal(newTotal);
@@ -59,7 +73,6 @@ function ActionButton({ product }) {
       setQuantity(newQuantity);
       updateTotalPrice(newQuantity);
     } else {
-      // Nếu giá trị không hợp lệ, đặt giá trị mặc định là 1
       setQuantity(1);
       updateTotalPrice(1);
     }
@@ -105,6 +118,8 @@ function ActionButton({ product }) {
       </div>
       <ModalSuccessAddCart
         open={showSuccessModal}
+        showStock={showStock}
+        quantityInventory={quantityInventory}
         onClose={() => setShowSuccessModal(false)}
       />
     </div>

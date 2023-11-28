@@ -56,15 +56,15 @@ function LocationUser() {
   console.log(indexAddress);
   const newIndexAddress = [
     ...indexAddress.filter((address) => {
-      console.log(
-        String(address?.id) === localStorage.getItem("defaultAddressID")
-      );
+      // console.log(
+      //   String(address?.id) === localStorage.getItem("defaultAddressID")
+      // );
       return String(address?.id) === localStorage.getItem("defaultAddressID");
     }),
     ...indexAddress.filter((address) => {
-      console.log(
-        String(address?.id) === localStorage.getItem("defaultAddressID")
-      );
+      // console.log(
+      //   String(address?.id) === localStorage.getItem("defaultAddressID")
+      // );
       return String(address?.id) !== localStorage.getItem("defaultAddressID");
     }),
   ];

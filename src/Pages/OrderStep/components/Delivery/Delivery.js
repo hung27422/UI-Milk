@@ -6,11 +6,13 @@ import Button from "~/components/Button";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
+import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
 const cx = classNames.bind(styles);
 function Delivery() {
   const { setActiveStep } = useContext(MilkContext);
   useEffect(() => setActiveStep(1), [setActiveStep]);
   const { guest, setGuest } = useContext(MilkContext);
+  const { stock, setStock } = useContext(MilkContext);
   const handleSaveInfoGuest = () => {
     // // Lưu thông tin guest vào localStorage khi có sự thay đổi
     // localStorage.setItem("guest", JSON.stringify(guest));
@@ -20,28 +22,34 @@ function Delivery() {
   };
 
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("header")}>
-        <OrderSteps />
-      </div>
-      <div className={cx("delivery")}>
-        <div className={cx("info-delivery")}>
-          <TableDelivery />
+    <>
+      {stock ? (
+        <ModalSuccessAddCart showStock={stock} />
+      ) : (
+        <div className={cx("wrapper")}>
+          <div className={cx("header")}>
+            <OrderSteps />
+          </div>
+          <div className={cx("delivery")}>
+            <div className={cx("info-delivery")}>
+              <TableDelivery />
+            </div>
+            <div className={cx("btn-action")}>
+              <Button to={configs.routes.orderstepper} delivery>
+                Trở lại
+              </Button>
+              <Button
+                to={configs.routes.payment}
+                onClick={handleSaveInfoGuest}
+                delivery
+              >
+                Tiếp tục
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className={cx("btn-action")}>
-          <Button to={configs.routes.orderstepper} delivery>
-            Trở lại
-          </Button>
-          <Button
-            to={configs.routes.payment}
-            onClick={handleSaveInfoGuest}
-            delivery
-          >
-            Tiếp tục
-          </Button>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

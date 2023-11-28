@@ -7,10 +7,12 @@ import { useContext } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);
-function ProductItem({ hidden, data }) {
-  const { setIdProduct } = useContext(MilkContext);
+function ProductItem({ hidden, data, inventoryId }) {
+  const { setIdProduct, setIdInventory } = useContext(MilkContext);
+
   const handleDetailProduct = () => {
     setIdProduct(data.id);
+    setIdInventory(inventoryId);
   };
   return (
     <NavLink

@@ -38,6 +38,7 @@ const ButtonWrapper = ({
   emailUser,
   guest,
   isAuthenticated,
+  inventory,
 }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
@@ -53,7 +54,7 @@ const ButtonWrapper = ({
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
     const storedData = JSON.parse(localStorage.getItem("addressesData"));
-
+    console.log("Inventory paypal", inventory);
     console.log("Email ở Button: " + emailUser);
     let total = 0;
     data.forEach((item) => {
@@ -90,6 +91,15 @@ const ButtonWrapper = ({
           input: orderCreateOrderInput,
         },
       });
+      data?.forEach((item) => {
+        const inventoryItem = inventory?.find(
+          (inventory) => inventory.id === item.idInventory
+        );
+        if (inventoryItem) {
+          const updatedQuantity = inventoryItem.quantity - item.quantity;
+          inventoryItem.quantity = updatedQuantity;
+        }
+      });
       console.log("Đã lưu đơn hàng:", result);
     } catch (error) {
       console.error("Lỗi khi lưu đơn hàng:", error);
@@ -124,6 +134,15 @@ const ButtonWrapper = ({
         variables: {
           input: orderCreateOrderInput,
         },
+      });
+      data?.forEach((item) => {
+        const inventoryItem = inventory?.find(
+          (inventory) => inventory.id === item.idInventory
+        );
+        if (inventoryItem) {
+          const updatedQuantity = inventoryItem.quantity - item.quantity;
+          inventoryItem.quantity = updatedQuantity;
+        }
       });
       console.log("Đã tạo đơn hàng Guest:", result);
     } catch (error) {
@@ -161,7 +180,7 @@ const ButtonWrapper = ({
               } else if (!isAuthenticated) {
                 handleCreateOrderGuest();
               }
-              // handleDonePayment();
+              handleDonePayment();
             }
           })
         }
@@ -174,6 +193,7 @@ export default function PayPal({ amount }) {
   const { user, isAuthenticated } = useAuth0();
   const [emailUser, setEmailUser] = useState(null);
   const [guest, setGuest] = useState();
+  const { inventory } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
 
   useEffect(() => {
@@ -200,7 +220,6 @@ export default function PayPal({ amount }) {
       productOrder.push(productInfo);
     });
   } else {
-    // Xử lý trường hợp `cartItem` không phải là mảng
     console.error("cartItem is not an array");
   }
 
@@ -222,6 +241,7 @@ export default function PayPal({ amount }) {
             emailUser={emailUser}
             guest={storedGuest}
             isAuthenticated={isAuthenticated}
+            inventory={inventory}
           />
         ) : (
           // hiển thị một spinner hoặc thông báo "Loading" ở đây
