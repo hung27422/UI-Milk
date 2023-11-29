@@ -18,7 +18,7 @@ function WaitConfirm() {
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoProductWrapperOrder waitConfirm order={data?.findOrders} />
+        <TableInfoProductWrapperOrder waitConfirm order={data?.findOrdersByStatus} />
       </div>
     </div>
   );

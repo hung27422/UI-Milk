@@ -27,7 +27,10 @@ function DoneOrders() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("done-order")}>
-        <TableInfoDoneOrderWrapperOrder doneOrder order={data?.findOrders} />
+        <TableInfoDoneOrderWrapperOrder
+          doneOrder
+          order={data?.findOrdersByStatus}
+        />
       </div>
     </div>
   );

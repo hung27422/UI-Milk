@@ -5,9 +5,10 @@ import ButtonPayment from "../ButtonPayment/ButtonPayment";
 import { gql, useMutation } from "@apollo/client";
 import { client } from "~/ApolloClient";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import useQueryInventories from "~/hooks/useQueryInventories";
+import useQueryAddress from "~/hooks/useQueryAddress";
 
 const cx = classNames.bind(styles);
 const CREATE_ORDER = gql`
@@ -30,18 +31,26 @@ const CREATE_ORDER_GUEST = gql`
 `;
 function PaymentOffline() {
   const { user, isAuthenticated } = useAuth0();
+  const { data: dataAddress } = useQueryAddress();
+  const [address, setAddress] = useState();
+
   const { guest, setGuest } = useContext(MilkContext);
   const { inventory } = useContext(MilkContext);
   const { refetch } = useQueryInventories();
-  console.log(guest);
   const [createGuestOrder, { error }] = useMutation(CREATE_ORDER_GUEST);
   if (error) console.log("Lỗi tạo đơn hàng guest", error);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-  console.log("123", localStorageCart);
+  useEffect(() => {
+    if (dataAddress && dataAddress.addresses.length > 0) {
+      const defaultAddress = dataAddress.addresses.find(
+        (item) => item.isDefault === true
+      );
+      setAddress(defaultAddress);
+    }
+  }, [address, dataAddress]);
   let total = 0;
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
-    const storedData = JSON.parse(localStorage.getItem("addressesData"));
     const userIdLocal = localStorage.getItem("userId");
     let total = 0;
     localStorageCart?.forEach((item) => {
@@ -49,7 +58,7 @@ function PaymentOffline() {
     });
     console.log(total);
     const orderCreateOrderInput = {
-      email: isAuthenticated ? user?.email : guest?.emailGuest,
+      email: user?.email,
       items: [
         ...localStorageCart?.map((i) => ({
           name: i?.name,
@@ -59,14 +68,12 @@ function PaymentOffline() {
           sku: i?.sku,
         })),
       ],
-      shippingAddress: isAuthenticated
-        ? `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`
-        : guest?.addressGuest,
+      shippingAddress: `${address?.detail},${address?.ward},${address?.district},${address?.city}`,
       total: total,
       userId: userIdLocal,
       status: "CREATED",
-      phone: isAuthenticated ? storedData[0].phone : guest?.phoneGuest,
-      userName: isAuthenticated ? storedData[0].name : guest?.nameGuest,
+      phone: address?.phone,
+      userName: address?.name,
     };
 
     try {

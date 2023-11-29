@@ -26,23 +26,27 @@ function UserInfo() {
   }, [value]);
   const { data, error } = useQuery(
     gql`
-      query Users {
-        users {
+      query Users($amount: Int!, $page: Int!) {
+        users(amount: $amount, page: $page) {
           email
           id
           imageURL
           name
           phoneNumber
-          token
           role {
             description
             id
             name
           }
+          token
           address {
             city
             detail
             district
+            id
+            isDefault
+            name
+            phone
             userId
             ward
           }
@@ -54,6 +58,10 @@ function UserInfo() {
         headers: {
           authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiIyMTJhZDFiOS0xYmJmLTRkODMtYmRiNy1hZTM4OGNlNGU2YjgiLCJuYW1lIjoibnVsbCIsImp0aSI6IjIxMkFEMUI5LTFCQkYtNEQ4My1CREI3LUFFMzg4Q0U0RTZCOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE2OTk4NjE4OTEsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.tj9uDf8rqO-cotHtmFgV0wW6WfLu-nSQ8NShmI4AyzkJGngKelxIxxTMDZANWz4-8l5HudShCa-SFa3kHZoQpA`,
         },
+      },
+      variables: {
+        amount: 50,
+        page: 1,
       },
     }
   );

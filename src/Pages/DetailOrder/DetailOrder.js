@@ -10,7 +10,6 @@ import ConfirmOrder from "./components/ConfirmOrder/ConfirmOrder";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import DeliveredOrder from "./components/DeliveredOrder/DeliveredOrder";
-import { TextField } from "@mui/material";
 import DoneOrders from "./components/DoneOrders/DoneOrders";
 import CancelOrders from "./components/CancelOrders/CancelOrders";
 const cx = classNames.bind(styles);
@@ -57,17 +56,6 @@ function DetailOrder() {
       <div className={cx("header")}>
         <DetailOrderStep />
       </div>
-      {/* {!isAuthenticated && (
-        <div className={cx("check-email-guest")}>
-          <TextField
-            style={{ width: "500px", marginRight: "10px" }}
-            id="check-phone"
-            label="Nhập số điện thoại để theo dõi đơn hàng"
-            variant="outlined"
-            onChange={(e) => handleShowOrderGuest(e.target.value)}
-          />
-        </div>
-      )} */}
       <div className={cx("menu")}>
         <MenuDetailOrder
           id={"1"}

@@ -4,29 +4,25 @@ function useQueryFindOrder({ status }) {
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error, refetch } = useQuery(
     gql`
-      query FindOrders(
+      query FindOrdersByStatus(
         $query: orderGetOrderInput!
         $amount: Int!
         $page: Int!
       ) {
-        findOrders(query: $query, amount: $amount, page: $page) {
+        findOrdersByStatus(query: $query, amount: $amount, page: $page) {
           cancelReason
           date
+          email
           id
           items {
+            sku
             id
             name
             orderId
             price
             productId
             quantity
-            sku
             subtotal
-            order {
-              cancelReason
-              date
-              id
-            }
           }
           phone
           shippingAddress
@@ -34,7 +30,6 @@ function useQueryFindOrder({ status }) {
           total
           userId
           userName
-          email
         }
       }
     `,

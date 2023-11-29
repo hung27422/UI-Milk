@@ -1,39 +1,73 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Button } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 
+const DEFAULT_ADDRESS = gql`
+  mutation UpdateDefaultAddress($input: userUpdateDefaultAddressInput!) {
+    updateDefaultAddress(input: $input) {
+      addressUpdatedPayload {
+        message
+      }
+    }
+  }
+`;
 function ButtonDefaultAddress({ idAddress }) {
-  const { indexAddress, setIndexAddress } = useContext(MilkContext);
-  const [addresses, setAddresses] = useState(indexAddress);
+  const { data, refetch } = useQuery(
+    gql`
+      query Addresses($amount: Int!, $page: Int!) {
+        addresses(amount: $amount, page: $page) {
+          city
+          detail
+          district
+          id
+          name
+          phone
+          userId
+          ward
+          isDefault
+        }
+      }
+    `,
+    {
+      variables: {
+        amount: 50,
+        page: 1,
+      },
+    }
+  );
+  const [defaultAddress] = useMutation(DEFAULT_ADDRESS);
   const storedData = JSON.parse(localStorage.getItem("addressesData"));
 
-  useEffect(() => {
-    setAddresses(indexAddress);
-  }, [indexAddress]);
-
-  const handleDefaultAddress = (id, item) => {
-    localStorage.setItem("defaultAddressID", id);
-    const updatedAddresses = [item, ...addresses.filter((a) => a !== item)];
-    setAddresses(updatedAddresses);
-    localStorage.setItem("addressesData", JSON.stringify(updatedAddresses));
-    const storedData = JSON.parse(localStorage.getItem("addressesData"));
-    setIndexAddress(storedData);
+  const handleDefaultAddress = async (id) => {
+    const userUpdateDefaultAddressInput = {
+      input: {
+        id: id,
+      },
+    };
+    const result = await defaultAddress({
+      variables: {
+        input: userUpdateDefaultAddressInput.input,
+      },
+    });
+    console.log("UpdateDefaultAddress Success", result);
+    refetch();
   };
 
   return (
     <div>
-      {indexAddress.map((item) => {
+      {data?.addresses.map((item) => {
         if (item?.id === idAddress) {
           return (
             <Button
+              key={item?.id}
               style={{
                 backgroundColor:
-                  storedData[0].id === idAddress ? "#ccc" : "var(--secondary)",
+                  item?.isDefault === true ? "#ccc" : "var(--secondary)",
                 color: "var(--white)",
               }}
-              disabled={storedData[0].id === idAddress}
-              onClick={() => handleDefaultAddress(item?.id, item)}
+              disabled={item?.isDefault === true}
+              onClick={() => handleDefaultAddress(item?.id)}
             >
               Đặt làm mặc định
             </Button>

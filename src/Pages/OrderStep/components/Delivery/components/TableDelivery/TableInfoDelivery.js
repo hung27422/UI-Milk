@@ -14,54 +14,26 @@ import { gql, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import useQueryUsers from "~/hooks/useQueryUsers";
+import useQueryAddress from "~/hooks/useQueryAddress";
 const cx = classNames.bind(styles);
 
 function TableInfoDelivery({ hiddenButtonAddresses }) {
-  const storedData = JSON.parse(localStorage.getItem("addressesData"));
-  console.log(storedData[0]);
   const { guest, setGuest } = useContext(MilkContext);
   const { isAuthenticated, user } = useAuth0();
-  const { data, error } = useQuery(
-    gql`
-      query Users($amount: Int!, $page: Int!) {
-        users(amount: $amount, page: $page) {
-          email
-          id
-          imageURL
-          name
-          phoneNumber
-          role {
-            description
-            id
-            name
-          }
-          token
-          address {
-            city
-            detail
-            district
-            id
-            isDefault
-            name
-            phone
-            userId
-            ward
-          }
-        }
-      }
-    `,
-    {
-      context: {
-        headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MDA0NTI5NzcsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.GnwW0BAQZUY9C_HeA2O-3j9jjhKfSMGG4rVG7qgpD0miyvVB40_Ui72RCZuppObcXPgNg4Yd2cxTvTY2_wUUYA`,
-        },
-      },
-      variables: {
-        amount: 50,
-        page: 1,
-      },
+  const { data: dataUser, error } = useQueryUsers();
+  const { data: dataAddress } = useQueryAddress();
+  const [address, setAddress] = useState();
+  useEffect(() => {
+    if (dataAddress && dataAddress.addresses.length > 0) {
+      const defaultAddress = dataAddress.addresses.find(
+        (item) => item.isDefault === true
+      );
+      setAddress(defaultAddress);
     }
-  );
+    // console.log("ấdaa", address);
+  }, [address, dataAddress]);
+
   if (error) console.log(error);
   const handleGuestNameChange = (value) => {
     setGuest((prev) => ({
@@ -90,11 +62,11 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
       addressGuest: value,
     }));
   };
+
   useEffect(() => {
     localStorage.setItem("guest", JSON.stringify(guest));
   }, [guest]);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
-  console.log("ss", data);
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>
@@ -135,7 +107,7 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
         </TableHead>
         {isAuthenticated ? (
           <TableBody>
-            {data?.users.map((item, index) => {
+            {dataUser?.users.map((item, index) => {
               if (item?.email === user?.email) {
                 return (
                   <TableRow
@@ -143,20 +115,16 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="center" component="th" scope="row">
-                      <span className={cx("user-name")}>
-                        {storedData[0].name}
-                      </span>
+                      <span className={cx("user-name")}>{address?.name}</span>
                     </TableCell>
                     <TableCell style={{ padding: "20px" }} align="center">
-                      <span className={cx("user-phone")}>
-                        {storedData[0].phone}
-                      </span>
+                      <span className={cx("user-phone")}>{address?.phone}</span>
                     </TableCell>
                     {hiddenButtonAddresses ? (
                       <TableCell align="center">
                         <Address>
-                          {storedData[0].detail},{storedData[0].ward},
-                          {storedData[0].district},{storedData[0].city}
+                          {address?.detail},{address?.ward},{address?.district},
+                          {address?.city}
                         </Address>
                       </TableCell>
                     ) : (
@@ -164,8 +132,8 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
                         <span className={cx("address-content")}>
                           <span className={cx("address-content")}>
                             <Address>
-                              {storedData[0].detail},{storedData[0].ward},
-                              {storedData[0].district},{storedData[0].city}
+                              {address?.detail},{address?.ward},
+                              {address?.district},{address?.city}
                             </Address>
                             <ButtonChangeAddress data={item} />
                           </span>

@@ -35,7 +35,7 @@ function Shipment() {
           <TableInfoDelivery hiddenButtonAddresses />
         </div>
         <div className={cx("info-product")}>
-          <TableInfoShipment shipment order={data?.findOrders} />
+          <TableInfoShipment shipment order={data?.findOrdersByStatus} />
         </div>
       </div>
     </div>

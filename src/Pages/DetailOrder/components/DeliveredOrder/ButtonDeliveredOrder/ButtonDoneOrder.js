@@ -3,12 +3,13 @@ import classNames from "classnames/bind";
 import styles from "../ConfirmDoneOrder.module.scss";
 import Button from "~/components/Button";
 import { gql, useMutation } from "@apollo/client";
+import useQueryFindOrder from "~/hooks/useQueryFindOrder";
 const cx = classNames.bind(styles);
 
 const UPDATE_ORDER = gql`
-  mutation UpdateOrder($updateOrderId: Int!, $input: orderUpdateOrderInput!) {
-    updateOrder(id: $updateOrderId, input: $input) {
-      orderCreatedPayload {
+  mutation FinishOrder($input: orderFinishOrderInput!) {
+    finishOrder(input: $input) {
+      orderUpdatedPayload {
         message
       }
     }
@@ -16,34 +17,32 @@ const UPDATE_ORDER = gql`
 `;
 function ButtonDoneOrder({ data }) {
   const [showButton, setShowButton] = useState(false);
+  const { refetch } = useQueryFindOrder({ status: "DONE" });
+  const apiTokenLocal = localStorage.getItem("apiToken");
   const [update_order] = useMutation(UPDATE_ORDER);
   const handleConfirmOrderDone = () => {
     setShowButton(true);
-    const orderUpdateOrderInput = {
-      updateOrderId: data?.id,
+    const orderFinishOrderInput = {
       input: {
-        cancelReason: null,
-        phone: data?.phone,
-        shippingAddress: data?.shippingAddress,
-        status: "DONE",
-        userName: data?.userName,
+        id: data?.id,
       },
     };
     try {
       const result = update_order({
         context: {
           headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI3MWE5NTM0NS03YmYwLTQwMDYtYjBhNi05YmYwODdiZTA4Y2YiLCJuYW1lIjoiSOG7kyBU4bqlbiBIw7luZyIsImp0aSI6IjcxQTk1MzQ1LTdCRjAtNDAwNi1CMEE2LTlCRjA4N0JFMDhDRiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxMDU0NjMxLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.b8bvU_whCazN5PktrXMXiitOD-ggE7bXqB7xag_7E2QwNP2qnk_fv9eTSCVmEUY1EiyNlNcXMsjm8QSA74Hr0g`,
+            authorization: `Bearer ${apiTokenLocal}`,
           },
         },
         variables: {
-          updateOrderId: orderUpdateOrderInput.updateOrderId,
-          input: orderUpdateOrderInput.input,
+          input: orderFinishOrderInput.input,
         },
       });
       console.log("Đã update đơn hàng:", result);
     } catch (error) {
       console.error("Lỗi khi update đơn hàng:", error);
+    } finally {
+      refetch();
     }
   };
 

@@ -28,7 +28,7 @@ function DoneOrders() {
       <div className={cx("done-order")}>
         <TableInfoDeliveryOrderWrapperOrder
           deliveredOrder
-          order={data?.findOrders}
+          order={data?.findOrdersByStatus}
         />
       </div>
     </div>

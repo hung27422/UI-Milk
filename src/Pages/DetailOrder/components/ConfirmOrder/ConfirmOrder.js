@@ -22,7 +22,10 @@ function ConfirmOrder() {
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoConfirmWrapperOrder confirm order={data?.findOrders} />
+        <TableInfoConfirmWrapperOrder
+          confirm
+          order={data?.findOrdersByStatus}
+        />
       </div>
     </div>
   );

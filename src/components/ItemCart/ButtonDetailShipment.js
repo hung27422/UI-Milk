@@ -28,7 +28,7 @@ export default function ButtonDetailShipment() {
         style={{ backgroundColor: "var(--secondary)", color: "white" }}
         onClick={handleOpen}
       >
-        Open modal
+        Chi tiết giao
       </Button>
       <Modal
         open={open}

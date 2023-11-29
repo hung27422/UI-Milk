@@ -33,7 +33,7 @@ function CancelOrders() {
       <div>
         <TableInfoCancelOrderWrapperOrder
           cancelOrder
-          order={data?.findOrders}
+          order={data?.findOrdersByStatus}
         />
       </div>
     </div>

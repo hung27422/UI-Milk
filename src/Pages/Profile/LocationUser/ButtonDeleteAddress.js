@@ -11,8 +11,6 @@ const DELETE_ADDRESS = gql`
   }
 `;
 function ButtonDeleteAddress({ idAddress }) {
-  const storedData = JSON.parse(localStorage.getItem("addressesData"));
-
   const { data, refetch: refetchDeleteAddress } = useQuery(
     gql`
       query Addresses($amount: Int!, $page: Int!) {
@@ -25,6 +23,7 @@ function ButtonDeleteAddress({ idAddress }) {
           phone
           userId
           ward
+          isDefault
         }
       }
     `,
@@ -42,11 +41,11 @@ function ButtonDeleteAddress({ idAddress }) {
   }, [data]);
 
   const [deleteAddress, { error }] = useMutation(DELETE_ADDRESS);
-
-  const handleDeleteAddress = async () => {
+  if (error) console.log("Lỗi xóa address", error);
+  const handleDeleteAddress = async (id) => {
     const userDeleteAddressInput = {
       input: {
-        id: idAddress,
+        id: id,
       },
     };
     const result = await deleteAddress({
@@ -56,32 +55,28 @@ function ButtonDeleteAddress({ idAddress }) {
         },
       },
       variables: {
-        input: userDeleteAddressInput.input, // Pass the userCreateAddressInput object to the mutation
+        input: userDeleteAddressInput.input,
       },
     });
-    // Nếu mutation thành công, cập nhật trạng thái trong React
-    const updatedAddresses = data.addresses.filter(
-      (item) => item.id !== idAddress
-    );
-
-    // Cập nhật Local Storage với trạng thái mới của danh sách địa chỉ
-    localStorage.setItem("addressesData", JSON.stringify(updatedAddresses));
-    refetchDeleteAddress();
     console.log("Xóa địa chỉ thành công:", result);
-  };
-  const hanldeDeleteLocal = () => {
-    localStorage.removeItem("addressesData");
+    refetchDeleteAddress();
   };
 
   return (
     <div>
-      <Button
-        disabled={storedData[0].id === idAddress}
-        onClick={handleDeleteAddress}
-      >
-        Xóa
-      </Button>
-      {/* <Button onClick={hanldeDeleteLocal}>123</Button> */}
+      {data?.addresses?.map((item) => {
+        if (item?.id === idAddress) {
+          return (
+            <Button
+              key={item?.id}
+              disabled={item?.isDefault === true}
+              onClick={() => handleDeleteAddress(item?.id)}
+            >
+              Xóa
+            </Button>
+          );
+        }
+      })}
     </div>
   );
 }

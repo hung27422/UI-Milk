@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { client } from "~/ApolloClient";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
+import useQueryAddress from "~/hooks/useQueryAddress";
 
 // This value is from the props in the UI
 const style = { layout: "vertical" };
@@ -39,6 +40,7 @@ const ButtonWrapper = ({
   guest,
   isAuthenticated,
   inventory,
+  address,
 }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
@@ -51,9 +53,9 @@ const ButtonWrapper = ({
     });
   }, [currency, showSpinner]);
   const handleCreateOrder = async () => {
+    console.log(address);
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
-    const storedData = JSON.parse(localStorage.getItem("addressesData"));
     console.log("Inventory paypal", inventory);
     console.log("Email ở Button: " + emailUser);
     let total = 0;
@@ -71,12 +73,12 @@ const ButtonWrapper = ({
           sku: i?.sku,
         })),
       ],
-      shippingAddress: `${storedData[0].detail},${storedData[0].ward},${storedData[0].district},${storedData[0].city}`,
+      shippingAddress: `${address?.detail},${address?.ward},${address?.district},${address?.city}`,
       total: total,
       userId: userIdLocal,
       status: "CONFIRMED",
-      phone: storedData[0].phone,
-      userName: storedData[0].name,
+      phone: address?.phone,
+      userName: address?.name,
     };
 
     try {
@@ -191,11 +193,21 @@ const ButtonWrapper = ({
 
 export default function PayPal({ amount }) {
   const { user, isAuthenticated } = useAuth0();
+  const { data: dataAddress } = useQueryAddress();
   const [emailUser, setEmailUser] = useState(null);
+  const [address, setAddress] = useState();
   const [guest, setGuest] = useState();
   const { inventory } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
-
+  useEffect(() => {
+    if (dataAddress && dataAddress.addresses.length > 0) {
+      const defaultAddress = dataAddress.addresses.find(
+        (item) => item.isDefault === true
+      );
+      setAddress(defaultAddress);
+    }
+    // console.log("ấdaa", address);
+  }, [address, dataAddress]);
   useEffect(() => {
     if (user && user.email) {
       setEmailUser(user.email);
@@ -242,6 +254,7 @@ export default function PayPal({ amount }) {
             guest={storedGuest}
             isAuthenticated={isAuthenticated}
             inventory={inventory}
+            address={address}
           />
         ) : (
           // hiển thị một spinner hoặc thông báo "Loading" ở đây
