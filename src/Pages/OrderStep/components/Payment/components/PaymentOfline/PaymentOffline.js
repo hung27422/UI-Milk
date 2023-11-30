@@ -52,10 +52,10 @@ function PaymentOffline() {
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
-    let total = 0;
-    localStorageCart?.forEach((item) => {
-      total = item?.price * item?.quantity;
-    });
+    const total =
+      localStorageCart?.reduce((accumulator, item) => {
+        return accumulator + (item?.price * item?.quantity || 0);
+      }, 0) || 0;
     console.log(total);
     const orderCreateOrderInput = {
       email: user?.email,

@@ -58,10 +58,11 @@ const ButtonWrapper = ({
     const userIdLocal = localStorage.getItem("userId");
     console.log("Inventory paypal", inventory);
     console.log("Email ở Button: " + emailUser);
-    let total = 0;
-    data.forEach((item) => {
-      total += item.total;
-    });
+    const total =
+      data?.reduce((accumulator, item) => {
+        return accumulator + (item?.price * item?.quantity || 0);
+      }, 0) || 0;
+    console.log(total);
     const orderCreateOrderInput = {
       email: emailUser,
       items: [
