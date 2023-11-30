@@ -35,9 +35,10 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { indexAddress, setIndexAddress } = useContext(MilkContext);
-  const { addressRefetch, setAddressRefetch } = useContext(MilkContext);
+  const { setIndexAddress, setAddressRefetch } = useContext(MilkContext);
   const [value, setValue] = useState({});
+  const apiTokenLocal = localStorage.getItem("apiToken");
+
   const [createAddress, { error }] = useMutation(CREATE_ADDRESS);
   useEffect(() => {
     if (error) {
@@ -97,7 +98,7 @@ export default function BasicModal() {
     const result = await createAddress({
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxNDI0MTQ3LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.CKLeKzIf2wbQJchx-L285WcBrT6lVRjIlQ76IOMfsSNYZT9zuiZQe48XeDHz7_4m1yx9OS3OQB0ZuksihMtPkg`,
+          authorization: `Bearer ${apiTokenLocal}`,
         },
       },
       variables: {

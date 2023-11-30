@@ -8,6 +8,7 @@ import styles from "./LocationUser.module.scss";
 import { useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect } from "react";
+import useQueryAddress from "~/hooks/useQueryAddress";
 const cx = classNames.bind(styles);
 
 const style = {
@@ -27,7 +28,7 @@ const UPDATE_ADDRESS = gql`
     $updateAddressId: Int!
   ) {
     updateAddress(input: $input, id: $updateAddressId) {
-      addressCreatedPayload {
+      addressUpdatedPayload {
         message
       }
     }
@@ -35,7 +36,9 @@ const UPDATE_ADDRESS = gql`
 `;
 export default function ButtonUpdateAddress({ idAddress }) {
   const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
+  const apiTokenLocal = localStorage.getItem("apiToken");
+  const { data, refetch } = useQueryAddress();
+
   const [updateAddress, { error }] = useMutation(UPDATE_ADDRESS);
   if (error) {
     console.log("Lỗi update địa chỉ", error);
@@ -63,7 +66,7 @@ export default function ButtonUpdateAddress({ idAddress }) {
     const result = await updateAddress({
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAxNDI0MTQ3LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.CKLeKzIf2wbQJchx-L285WcBrT6lVRjIlQ76IOMfsSNYZT9zuiZQe48XeDHz7_4m1yx9OS3OQB0ZuksihMtPkg`,
+          authorization: `Bearer ${apiTokenLocal}`,
         },
       },
       variables: {
@@ -73,29 +76,9 @@ export default function ButtonUpdateAddress({ idAddress }) {
     });
     console.log("Cập nhật địa chỉ thành công:", result);
     setOpen(false);
+    refetch();
   };
-  const { data } = useQuery(
-    gql`
-      query Addresses($amount: Int!, $page: Int!) {
-        addresses(amount: $amount, page: $page) {
-          city
-          detail
-          district
-          id
-          name
-          phone
-          userId
-          ward
-        }
-      }
-    `,
-    {
-      variables: {
-        amount: 12,
-        page: 1,
-      },
-    }
-  );
+
   // useEffect(() => {
   //   console.log(data?.addresses);
   // }, [data]);
@@ -187,7 +170,7 @@ export default function ButtonUpdateAddress({ idAddress }) {
                         border: "1px solid var(--secondary)",
                         width: "80px",
                       }}
-                      onClick={handleClose}
+                      onClick={() => setOpen(false)}
                     >
                       Trở lại
                     </Button>

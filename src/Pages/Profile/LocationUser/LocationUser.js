@@ -1,48 +1,17 @@
 import classNames from "classnames/bind";
 import styles from "./LocationUser.module.scss";
-import Button from "~/components/Button";
 import ButtonAddress from "./ButtonAddress";
-import { gql, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
 import ButtonDeleteAddress from "./ButtonDeleteAddress";
 import ButtonUpdateAddress from "./ButtonUpdateAddress";
 import ButtonDefaultAddress from "./ButtonDefaultAddress";
-import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { useAuth0 } from "@auth0/auth0-react";
+import useQueryAddress from "~/hooks/useQueryAddress";
 const cx = classNames.bind(styles);
 function LocationUser() {
   const userIdLocal = localStorage.getItem("userId");
   const { isAuthenticated } = useAuth0();
 
-  const { data, refetch } = useQuery(
-    gql`
-      query Addresses($amount: Int!, $page: Int!) {
-        addresses(amount: $amount, page: $page) {
-          city
-          detail
-          district
-          id
-          name
-          phone
-          userId
-          ward
-          isDefault
-        }
-      }
-    `,
-    {
-      variables: {
-        amount: 50,
-        page: 1,
-      },
-    }
-  );
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //     refetch();
-  //   }
-  // }, [data, refetch]);
+  const { data } = useQueryAddress();
 
   const newIndexAddress = [
     data?.addresses.filter((address) => {

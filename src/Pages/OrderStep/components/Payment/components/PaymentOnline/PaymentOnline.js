@@ -3,37 +3,12 @@ import styles from "./PaymentOnline.module.scss";
 import PriceContent from "./PriceContent";
 import { useEffect, useState } from "react";
 import PayPal from "../PayPalCheckout/PayPal";
-import { gql, useQuery } from "@apollo/client";
 
 const cx = classNames.bind(styles);
 function PaymentOnline() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const [showPayment, setShowPayment] = useState(false);
-  const apiTokenLocal = localStorage.getItem("apiToken");
   // console.log(apiTokenLocal);
-  const { data } = useQuery(
-    gql`
-      query Orders {
-        orders {
-          date
-          id
-          shippingAddress
-          status
-          userId
-        }
-      }
-    `,
-    {
-      context: {
-        headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
-        },
-      },
-    }
-  );
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   let total = 0;
   useEffect(() => {
     const timer = setTimeout(() => {

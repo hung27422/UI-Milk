@@ -33,8 +33,11 @@ function PaymentOffline() {
   const { user, isAuthenticated } = useAuth0();
   const { data: dataAddress } = useQueryAddress();
   const [address, setAddress] = useState();
+  const { cartItem, setCartItem } = useContext(MilkContext);
 
   const { guest, setGuest } = useContext(MilkContext);
+  const storedGuest = JSON.parse(localStorage.getItem("guest"));
+
   const { inventory } = useContext(MilkContext);
   const { refetch } = useQueryInventories();
   const [createGuestOrder, { error }] = useMutation(CREATE_ORDER_GUEST);
@@ -98,7 +101,7 @@ function PaymentOffline() {
         }
       });
       console.log("Đã tạo đơn hàng:", result);
-      setGuest({});
+
       localStorage.removeItem("cartItems");
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng:", error);
@@ -111,9 +114,10 @@ function PaymentOffline() {
     }
   };
   const handleCreateOrderGuest = async () => {
+    console.log(storedGuest);
     const orderCreateGuestOrderInput = {
       input: {
-        email: guest?.emailGuest,
+        email: storedGuest?.emailGuest,
         items: [
           ...localStorageCart?.map((i) => ({
             name: i?.name,
@@ -123,11 +127,11 @@ function PaymentOffline() {
             sku: i?.sku,
           })),
         ],
-        phone: guest?.phoneGuest,
-        shippingAddress: guest?.addressGuest,
+        phone: storedGuest?.phoneGuest,
+        shippingAddress: storedGuest?.addressGuest,
         status: "CREATED",
         total: total,
-        userName: guest?.nameGuest,
+        userName: storedGuest?.nameGuest,
       },
     };
     const result = await createGuestOrder({
@@ -142,7 +146,11 @@ function PaymentOffline() {
         inventoryItem.quantity = updatedQuantity;
       }
     });
+    setCartItem([]);
     console.log("Tạo đơn hàng guest thành công", result);
+    localStorage.setItem("cartItems", JSON.stringify([]));
+    console.log("Đã xóa giỏ hàng");
+    refetch();
   };
   return (
     <div className={cx("wrapper")}>

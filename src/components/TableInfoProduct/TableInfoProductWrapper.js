@@ -8,9 +8,8 @@ const TableInfoProductWrapper = () => {
 };
 //ListAllOrder
 const TableInfoAllOrderWrapper = ({ order }) => {
-  const listOrders = order?.filter(
-    (items) => items.userId === userIdLocal.toLocaleLowerCase()
-  );
+  const { user } = useAuth0();
+  const listOrders = order?.filter((items) => items?.email === user?.email);
   return (
     <TableInfoProduct
       title={"Thông tin tất cả đơn hàng"}
@@ -23,12 +22,11 @@ const TableInfoAllOrderWrapper = ({ order }) => {
 };
 //WaitConfirm
 const TableInfoProductWrapperOrder = ({ waitConfirm, order }) => {
-  console.log(order);
   const { user } = useAuth0();
   const statusWaitConfirm = order?.filter((item) => {
     return item?.email === user?.email;
   });
-  console.log(statusWaitConfirm);
+
   if (Array.isArray(statusWaitConfirm) && statusWaitConfirm.length > 0) {
     return (
       <TableInfoProduct

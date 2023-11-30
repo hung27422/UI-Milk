@@ -10,20 +10,21 @@ import styles from "../../Delivery.module.scss";
 import ButtonChangeAddress from "../ButtonChangeAddress/ButtonChangeAddress";
 import Address from "../Address/Address";
 import { useAuth0 } from "@auth0/auth0-react";
-import { gql, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import useQueryUsers from "~/hooks/useQueryUsers";
 import useQueryAddress from "~/hooks/useQueryAddress";
+import useValidate from "../../../../../../hooks/useValidate";
 const cx = classNames.bind(styles);
 
-function TableInfoDelivery({ hiddenButtonAddresses }) {
+function TableInfoDelivery({ hiddenButtonAddresses, error }) {
   const { guest, setGuest } = useContext(MilkContext);
   const { isAuthenticated, user } = useAuth0();
-  const { data: dataUser, error } = useQueryUsers();
+  const { data: dataUser, error: errorUser } = useQueryUsers();
   const { data: dataAddress } = useQueryAddress();
   const [address, setAddress] = useState();
+
   useEffect(() => {
     if (dataAddress && dataAddress.addresses.length > 0) {
       const defaultAddress = dataAddress.addresses.find(
@@ -31,10 +32,9 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
       );
       setAddress(defaultAddress);
     }
-    // console.log("ấdaa", address);
-  }, [address, dataAddress]);
+  }, [dataAddress]);
 
-  if (error) console.log(error);
+  if (errorUser) console.log(errorUser);
   const handleGuestNameChange = (value) => {
     setGuest((prev) => ({
       ...prev,
@@ -67,6 +67,15 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
     localStorage.setItem("guest", JSON.stringify(guest));
   }, [guest]);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
+  // if (validationResult.error) {
+  //   // Cập nhật trạng thái lỗi
+  //   console.log(validationResult.error.details);
+  //   setError(
+  //     validationResult.error.details.map((detail) => detail.message).join(", ")
+  //   );
+  //   return; // const validationResult = guestSchema.validate(guest);
+  // }
+
   return (
     <div>
       <h2 className={cx("title")}>Thông tin giao hàng</h2>
@@ -199,6 +208,19 @@ function TableInfoDelivery({ hiddenButtonAddresses }) {
           </>
         )}
       </Table>
+      {error && (
+        <div
+          style={{
+            color: "red",
+            textAlign: "center",
+            marginTop: "20px",
+            width: "100%",
+            fontSize: "20px",
+          }}
+        >
+          {error}
+        </div>
+      )}
     </div>
   );
 }

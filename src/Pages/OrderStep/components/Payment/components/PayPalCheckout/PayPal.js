@@ -10,6 +10,7 @@ import { client } from "~/ApolloClient";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
 import useQueryAddress from "~/hooks/useQueryAddress";
+import useQueryInventories from "~/hooks/useQueryInventories";
 
 // This value is from the props in the UI
 const style = { layout: "vertical" };
@@ -41,6 +42,8 @@ const ButtonWrapper = ({
   isAuthenticated,
   inventory,
   address,
+  refetch,
+  setCartItem,
 }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
@@ -94,6 +97,7 @@ const ButtonWrapper = ({
           input: orderCreateOrderInput,
         },
       });
+
       data?.forEach((item) => {
         const inventoryItem = inventory?.find(
           (inventory) => inventory.id === item.idInventory
@@ -103,9 +107,14 @@ const ButtonWrapper = ({
           inventoryItem.quantity = updatedQuantity;
         }
       });
+      setCartItem([]);
       console.log("Đã lưu đơn hàng:", result);
     } catch (error) {
       console.error("Lỗi khi lưu đơn hàng:", error);
+    } finally {
+      localStorage.setItem("cartItems", JSON.stringify([]));
+      console.log("Đã xóa giỏ hàng");
+      refetch();
     }
   };
   const handleCreateOrderGuest = async () => {
@@ -147,9 +156,14 @@ const ButtonWrapper = ({
           inventoryItem.quantity = updatedQuantity;
         }
       });
+      setCartItem([]);
       console.log("Đã tạo đơn hàng Guest:", result);
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng guest:", error);
+    } finally {
+      localStorage.setItem("cartItems", JSON.stringify([]));
+      console.log("Đã xóa giỏ hàng");
+      refetch();
     }
   };
   const { setActiveStep } = useContext(MilkContext);
@@ -183,7 +197,7 @@ const ButtonWrapper = ({
               } else if (!isAuthenticated) {
                 handleCreateOrderGuest();
               }
-              handleDonePayment();
+              // handleDonePayment();
             }
           })
         }
@@ -193,6 +207,7 @@ const ButtonWrapper = ({
 };
 
 export default function PayPal({ amount }) {
+  const { refetch } = useQueryInventories();
   const { user, isAuthenticated } = useAuth0();
   const { data: dataAddress } = useQueryAddress();
   const [emailUser, setEmailUser] = useState(null);
@@ -217,7 +232,7 @@ export default function PayPal({ amount }) {
       setGuest(storedGuest);
     }
   }, [emailUser, user]);
-  const { cartItem } = useContext(MilkContext);
+  const { cartItem, setCartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const productOrder = [];
   if (Array.isArray(cartItem)) {
@@ -245,7 +260,7 @@ export default function PayPal({ amount }) {
           currency: "USD",
         }}
       >
-        {emailUser || guest ? ( // Kiểm tra xem emailUser đã có giá trị
+        {emailUser || !isAuthenticated || storedGuest ? ( // Kiểm tra xem emailUser đã có giá trị
           <ButtonWrapper
             currency={"USD"}
             amount={amount}
@@ -256,6 +271,8 @@ export default function PayPal({ amount }) {
             isAuthenticated={isAuthenticated}
             inventory={inventory}
             address={address}
+            refetch={refetch}
+            setCartItem={setCartItem}
           />
         ) : (
           // hiển thị một spinner hoặc thông báo "Loading" ở đây

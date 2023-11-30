@@ -22,11 +22,7 @@ function ProductItem({ hidden, data, inventoryId }) {
     >
       <Popper>
         <div className={cx("header")}>
-          <img
-            className={cx("product-image")}
-            src="https://www.thmilk.vn/wp-content/uploads/2021/02/HILO-457x396.png"
-            alt="milk"
-          />
+          <img className={cx("product-image")} src={data?.images} alt="milk" />
         </div>
         <div className={cx("container")}>
           <span className={cx("product-name")}>{data?.name}</span>
