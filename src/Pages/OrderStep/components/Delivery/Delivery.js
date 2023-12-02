@@ -8,9 +8,11 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
 import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
 import useValidate from "~/hooks/useValidate";
+import { useAuth0 } from "@auth0/auth0-react";
 const cx = classNames.bind(styles);
 function Delivery() {
   const { setActiveStep } = useContext(MilkContext);
+  const { isAuthenticated } = useAuth0();
   useEffect(() => setActiveStep(1), [setActiveStep]);
   const { guest, setGuest } = useContext(MilkContext);
   const { stock, setStock } = useContext(MilkContext);
@@ -52,13 +54,13 @@ function Delivery() {
               <Button to={configs.routes.orderstepper} delivery>
                 Trở lại
               </Button>
-              <Button
-                // to={}
-                onClick={handleSaveInfoGuest}
-                delivery
-              >
-                Tiếp tục
-              </Button>
+              {isAuthenticated ? (
+                <Button to={configs.routes.payment} delivery>
+                  Tiếp tục
+                </Button>
+              ) : (
+                <Button onClick={handleSaveInfoGuest}>Tiếp tục</Button>
+              )}
             </div>
           </div>
         </div>

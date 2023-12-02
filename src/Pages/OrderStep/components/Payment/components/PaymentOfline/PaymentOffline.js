@@ -107,8 +107,8 @@ function PaymentOffline() {
       console.error("Lỗi khi tạo đơn hàng:", error);
     } finally {
       //"Refetch"
-      const updatedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
-      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      setCartItem([]);
+      localStorage.setItem("cartItems", JSON.stringify([]));
       console.log("Đã xóa giỏ hàng");
       refetch();
     }
