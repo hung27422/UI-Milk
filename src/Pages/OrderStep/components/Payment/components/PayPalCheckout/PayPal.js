@@ -197,7 +197,7 @@ const ButtonWrapper = ({
               } else if (!isAuthenticated) {
                 handleCreateOrderGuest();
               }
-              // handleDonePayment();
+              handleDonePayment();
             }
           })
         }

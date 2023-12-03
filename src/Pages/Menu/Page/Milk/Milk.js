@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { gql, useQuery } from "@apollo/client";
 import useQueryInventories from "~/hooks/useQueryInventories";
+import useQueryProduct from "~/hooks/useQueryProduct";
 
 const cx = classNames.bind(styles);
 
@@ -12,27 +13,7 @@ function Milk() {
   const { products, setProducts } = useContext(MilkContext);
   const { inventory, setInventory } = useContext(MilkContext);
   const { data: dataInventory } = useQueryInventories();
-  const { data, error } = useQuery(
-    gql`
-      query Products($amount: Int!, $page: Int!) {
-        products(amount: $amount, page: $page) {
-          categoryId
-          description
-          id
-          images
-          name
-          price
-          sku
-        }
-      }
-    `,
-    {
-      variables: {
-        amount: 10,
-        page: 1,
-      },
-    }
-  );
+  const { data, error } = useQueryProduct();
 
   useEffect(() => {
     if (error) {

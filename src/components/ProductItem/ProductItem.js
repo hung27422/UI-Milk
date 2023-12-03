@@ -11,6 +11,7 @@ function ProductItem({ hidden, data, inventoryId }) {
   const { setIdProduct, setIdInventory } = useContext(MilkContext);
 
   const handleDetailProduct = () => {
+    console.log(typeof data.id);
     setIdProduct(data.id);
     setIdInventory(inventoryId);
   };
@@ -28,7 +29,7 @@ function ProductItem({ hidden, data, inventoryId }) {
           <span className={cx("product-name")}>{data?.name}</span>
           <div className={cx("product-info", { hidden })}>
             <div className={cx("product-price")}>
-              <span className={cx("price-discount")}>12.000đ</span>
+              {/* <span className={cx("price-discount")}>12.000đ</span> */}
               <span className={cx("price-new")}>{data?.price}</span>
             </div>
           </div>
