@@ -108,10 +108,10 @@ function ActionButton({ product, idInventory }) {
           +
         </button>
       </div>
-      <div className={cx("btn-buy")}>
+      {/* <div className={cx("btn-buy")}>
         <FontAwesomeIcon className={cx("icon-buy")} icon={faShop} />
         <span>Mua hàng</span>
-      </div>
+      </div> */}
       <div className={cx("btn-add__cart")} onClick={handleAddToCart}>
         <FontAwesomeIcon className={cx("icon-cart")} icon={faCartPlus} />
         <span>Thêm giỏ hàng</span>

@@ -48,7 +48,7 @@ export default function ButtonDiscount() {
             Chọn mã giảm giá:
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <CodeDiscount />
+            <CodeDiscount handleClose={handleClose} />
           </Typography>
         </Box>
       </Modal>

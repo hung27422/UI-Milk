@@ -17,18 +17,14 @@ const style = { layout: "vertical" };
 const CREATE_ORDER = gql`
   mutation CreateOrder($input: orderCreateOrderInput!) {
     createOrder(input: $input) {
-      orderCreatedPayload {
-        message
-      }
+      string
     }
   }
 `;
 const CREATE_ORDER_GUEST = gql`
   mutation CreateGuestOrder($input: orderCreateGuestOrderInput!) {
     createGuestOrder(input: $input) {
-      orderCreatedPayload {
-        message
-      }
+      string
     }
   }
 `;
@@ -44,6 +40,7 @@ const ButtonWrapper = ({
   address,
   refetch,
   setCartItem,
+  discount,
 }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
@@ -56,7 +53,6 @@ const ButtonWrapper = ({
     });
   }, [currency, showSpinner]);
   const handleCreateOrder = async () => {
-    console.log(address);
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
     console.log("Inventory paypal", inventory);
@@ -83,6 +79,12 @@ const ButtonWrapper = ({
       status: "CONFIRMED",
       phone: address?.phone,
       userName: address?.name,
+      condition: {
+        birthday: discount?.birthdayCondition,
+        specialDay: discount?.specialDayCondition,
+        total: discount?.totalOverCondition,
+      },
+      discountCode: discount?.code,
     };
 
     try {
@@ -122,7 +124,7 @@ const ButtonWrapper = ({
     data.forEach((item) => {
       total += item.total;
     });
-    const orderCreateOrderInput = {
+    const orderCreateGuestOrderInput = {
       email: guest?.emailGuest,
       items: [
         ...data.map((i) => ({
@@ -138,13 +140,19 @@ const ButtonWrapper = ({
       status: "CONFIRMED",
       phone: guest?.phoneGuest,
       userName: guest?.nameGuest,
+      condition: {
+        birthday: discount?.birthdayCondition,
+        specialDay: discount?.specialDayCondition,
+        total: discount?.totalOverCondition,
+      },
+      discountCode: discount?.code,
     };
 
     try {
       const result = await client.mutate({
         mutation: CREATE_ORDER_GUEST,
         variables: {
-          input: orderCreateOrderInput,
+          input: orderCreateGuestOrderInput,
         },
       });
       data?.forEach((item) => {
@@ -197,7 +205,7 @@ const ButtonWrapper = ({
               } else if (!isAuthenticated) {
                 handleCreateOrderGuest();
               }
-              handleDonePayment();
+              // handleDonePayment();
             }
           })
         }
@@ -212,6 +220,7 @@ export default function PayPal({ amount }) {
   const { data: dataAddress } = useQueryAddress();
   const [emailUser, setEmailUser] = useState(null);
   const [address, setAddress] = useState();
+  const { discount } = useContext(MilkContext);
   const [guest, setGuest] = useState();
   const { inventory } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
@@ -273,6 +282,7 @@ export default function PayPal({ amount }) {
             address={address}
             refetch={refetch}
             setCartItem={setCartItem}
+            discount={discount}
           />
         ) : (
           // hiển thị một spinner hoặc thông báo "Loading" ở đây
