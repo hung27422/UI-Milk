@@ -9,9 +9,7 @@ import { MilkContext } from "../ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function ProductItem({ hidden, data, inventoryId }) {
   const { setIdProduct, setIdInventory } = useContext(MilkContext);
-
   const handleDetailProduct = () => {
-    console.log(typeof data.id);
     setIdProduct(data.id);
     setIdInventory(inventoryId);
   };
