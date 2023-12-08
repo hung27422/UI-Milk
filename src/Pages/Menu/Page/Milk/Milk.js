@@ -3,8 +3,8 @@ import styles from "./Milk.module.scss";
 import ProductItem from "~/components/ProductItem/ProductItem";
 import { useContext, useEffect } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import { gql, useQuery } from "@apollo/client";
 import useQueryInventories from "~/hooks/useQueryInventories";
+import useQueryProduct from "~/hooks/useQueryProduct";
 
 const cx = classNames.bind(styles);
 
@@ -12,47 +12,47 @@ function Milk() {
   const { products, setProducts } = useContext(MilkContext);
   const { inventory, setInventory } = useContext(MilkContext);
   const { data: dataInventory } = useQueryInventories();
-  const { data, error } = useQuery(
-    gql`
-      query Products($amount: Int!, $page: Int!) {
-        products(amount: $amount, page: $page) {
-          categoryId
-          description
-          id
-          images
-          name
-          price
-          sku
-        }
-      }
-    `,
-    {
-      variables: {
-        amount: 10,
-        page: 1,
-      },
-    }
-  );
+  const { data, error } = useQueryProduct();
 
   useEffect(() => {
     if (error) {
       console.log(error);
     } else if (data) {
-      setProducts(data.products);
+      setProducts(data?.products);
       setInventory(dataInventory?.inventories);
+      console.log(inventory);
     } else if (dataInventory) {
       setInventory(dataInventory?.inventories);
     }
-  }, [data, setProducts, products, error, dataInventory, setInventory]);
-  return <MilkList products={products} inventory={inventory} />;
+  }, [
+    data,
+    setProducts,
+    products,
+    error,
+    dataInventory,
+    setInventory,
+    inventory,
+  ]);
+  const hasMilkProducts = data?.products.filter(
+    (item) => item?.category.name === "Milk"
+  );
+
+  return (
+    <div>
+      {hasMilkProducts && (
+        <MilkList hasMilkProducts={hasMilkProducts} inventory={inventory} />
+      )}
+    </div>
+  );
 }
 //Hiển thị
-const MilkList = ({ products, inventory }) => (
+const MilkList = ({ hasMilkProducts, inventory }) => (
   <div className={cx("wrapper")}>
-    {products?.map((product) => {
+    {hasMilkProducts?.map((product) => {
       const inventoryData = inventory?.find(
-        (inventory) => inventory.productId === product.id
+        (item) => item.productId === product.id
       );
+
       return (
         <ProductItem
           data={product}

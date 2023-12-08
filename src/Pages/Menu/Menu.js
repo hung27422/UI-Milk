@@ -3,7 +3,7 @@ import styles from "./Menu.module.scss";
 import MenuCategory from "~/components/MenuCategory";
 import Milk from "./Page/Milk/Milk";
 import Cream from "./Page/Cream/Cream";
-import Beverage from "./Page/Beverage/Beverage";
+import Drink from "./Page/Drink/Drink";
 import Yogurt from "./Page/Yogurt/Yogurt";
 import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
@@ -18,7 +18,7 @@ function Menu() {
       <div className={cx("page-mini")}>
         {active === "1" && <Milk />}
         {active === "2" && <Cream />}
-        {active === "3" && <Beverage />}
+        {active === "3" && <Drink />}
         {active === "4" && <Yogurt />}
       </div>
     </div>

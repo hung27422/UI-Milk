@@ -14,18 +14,14 @@ const cx = classNames.bind(styles);
 const CREATE_ORDER = gql`
   mutation CreateOrder($input: orderCreateOrderInput!) {
     createOrder(input: $input) {
-      orderCreatedPayload {
-        message
-      }
+      string
     }
   }
 `;
 const CREATE_ORDER_GUEST = gql`
   mutation CreateGuestOrder($input: orderCreateGuestOrderInput!) {
     createGuestOrder(input: $input) {
-      orderCreatedPayload {
-        message
-      }
+      string
     }
   }
 `;
@@ -34,7 +30,7 @@ function PaymentOffline() {
   const { data: dataAddress } = useQueryAddress();
   const [address, setAddress] = useState();
   const { cartItem, setCartItem } = useContext(MilkContext);
-
+  const { discount } = useContext(MilkContext);
   const { guest, setGuest } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
 
@@ -55,11 +51,11 @@ function PaymentOffline() {
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
+
     const total =
       localStorageCart?.reduce((accumulator, item) => {
         return accumulator + (item?.price * item?.quantity || 0);
       }, 0) || 0;
-    console.log(total);
     const orderCreateOrderInput = {
       email: user?.email,
       items: [
@@ -72,11 +68,17 @@ function PaymentOffline() {
         })),
       ],
       shippingAddress: `${address?.detail},${address?.ward},${address?.district},${address?.city}`,
-      total: total,
+      total: discount ? total - discount.amount : total,
       userId: userIdLocal,
       status: "CREATED",
       phone: address?.phone,
       userName: address?.name,
+      condition: {
+        birthday: discount?.birthdayCondition,
+        specialDay: discount?.specialDayCondition,
+        total: discount?.totalOverCondition,
+      },
+      discountCode: discount?.code,
     };
 
     try {
@@ -130,8 +132,14 @@ function PaymentOffline() {
         phone: storedGuest?.phoneGuest,
         shippingAddress: storedGuest?.addressGuest,
         status: "CREATED",
-        total: total,
+        total: discount ? total - discount.amount : total,
         userName: storedGuest?.nameGuest,
+        condition: {
+          birthday: discount?.birthdayCondition,
+          specialDay: discount?.specialDayCondition,
+          total: discount?.totalOverCondition,
+        },
+        discountCode: discount?.code,
       },
     };
     const result = await createGuestOrder({
@@ -157,7 +165,9 @@ function PaymentOffline() {
       <div className={cx("content")}>
         <div className={cx("content-left")}>
           {localStorageCart.forEach((item) => {
-            total = total + item.total;
+            total = discount
+              ? total + item.total - discount?.amount
+              : total + item.total;
           })}
           <PriceContent price={total} />
         </div>

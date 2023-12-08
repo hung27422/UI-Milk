@@ -2,10 +2,12 @@ import classNames from "classnames/bind";
 import styles from "./Detail.module.scss";
 import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import useQueryInventories from "~/hooks/useQueryInventories";
 const cx = classNames.bind(styles);
 
 function InfoProduct({ product, idInventory }) {
   const { inventory } = useContext(MilkContext);
+
   return (
     <div>
       {inventory?.map((item) => {
@@ -19,7 +21,7 @@ function InfoProduct({ product, idInventory }) {
               <span className={cx("quantity-inventories")}>
                 Số lượng tồn kho: {item?.quantity}
               </span>
-            </div>
+          </div>
           );
         }
       })}
