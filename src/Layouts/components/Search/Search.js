@@ -4,28 +4,50 @@ import Tippy from "@tippyjs/react/headless";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faStore } from "@fortawesome/free-solid-svg-icons";
 import PopperSearch from "~/components/Popper/Popper";
+import useQueryProductsByName from "~/hooks/useQueryProductsByName";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import configs from "~/configs";
+import { NavLink } from "react-router-dom";
 const cx = classNames.bind(styles);
 
-const ResultSearch = ({ children }) => {
-  return <span className={cx("result-search")}>{children}</span>;
-};
-const SearchResultTippy = (attrs) => {
-  return (
-    <PopperSearch>
-      <div className={cx("box")} tabIndex="-1" {...attrs}>
-        <div className={cx("header-search")}>
-          <FontAwesomeIcon className={cx("icon-shop")} icon={faStore} />
-          <span className={cx("title")}>Tìm sản phẩm: "Sữa"</span>
-        </div>
-        <div className={cx("search-body")}>
-          <ResultSearch>Sữa tiệc trùng VinaMilk</ResultSearch>
-          <ResultSearch>Sữa tiệc trùng TH Milk</ResultSearch>
-        </div>
-      </div>
-    </PopperSearch>
-  );
-};
 function Search() {
+  const [value, setValue] = useState();
+  const { setIdProduct } = useContext(MilkContext);
+  const { data } = useQueryProductsByName({ name: value });
+  const handleSearchProduct = (value) => {
+    setValue(value);
+  };
+  const handleSelectProduct = (e) => {
+    setIdProduct(Number(e.currentTarget.id));
+  };
+  const SearchResultTippy = (attrs) => {
+    return (
+      <PopperSearch>
+        <div className={cx("box")} tabIndex="-1" {...attrs}>
+          <div className={cx("header-search")}>
+            <FontAwesomeIcon className={cx("icon-shop")} icon={faStore} />
+            <span className={cx("title")}>Tìm sản phẩm:{value}</span>
+          </div>
+          <div className={cx("search-body")}>
+            {data &&
+              data?.productsByName?.map((result) => (
+                <NavLink
+                  id={result?.id}
+                  to={configs.routes.detailproduct}
+                  onClick={handleSelectProduct}
+                  className={cx("result-search")}
+                  key={result.id}
+                >
+                  {result.name}
+                </NavLink>
+              ))}
+          </div>
+        </div>
+      </PopperSearch>
+    );
+  };
   return (
     <Tippy interactive trigger="click" render={SearchResultTippy}>
       <div className={cx("search")}>
@@ -33,7 +55,12 @@ function Search() {
           className={cx("icon-search")}
           icon={faMagnifyingGlass}
         />
-        <input className={cx("search-input")} type="search" name="search" />
+        <input
+          className={cx("search-input")}
+          type="search"
+          name="search"
+          onChange={(e) => handleSearchProduct(e.target.value)}
+        />
       </div>
     </Tippy>
   );

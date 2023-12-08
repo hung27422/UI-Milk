@@ -5,7 +5,6 @@ import Button from "~/components/Button";
 import configs from "~/configs";
 import { useContext, useEffect, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
-import ButtonDiscount from "./ButtonDiscount";
 import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAddCart";
 import useQueryInventories from "~/hooks/useQueryInventories";
 const cx = classNames.bind(styles);
@@ -42,7 +41,7 @@ function Cart() {
           hasInsufficientStock = true;
           setQuantityInventory(inventoryItem.quantity);
           setNameInventory(item?.name);
-          break; // Exit the loop once you find a product with insufficient stock
+          break;
         } else {
           total += item.total;
         }
@@ -89,12 +88,6 @@ function Cart() {
         <TableCart />
       </div>
       <div className={cx("container")}>
-        <div className={cx("discount")}>
-          <div className={cx("discount-item")}>
-            <InfoPrice title={"Discount"} numberPrice={"0"} />
-          </div>
-          <ButtonDiscount />
-        </div>
         <div className={cx("total-price")}>
           {localStorageCart?.forEach((item) => {
             total = total + item.total;

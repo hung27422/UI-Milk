@@ -1,8 +1,35 @@
 import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import Button from "~/components/Button";
+import useQueryDiscount from "~/hooks/useQueryDiscount";
+import { useContext, useState } from "react";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
-function CodeDiscount() {
+const formatDate = (dateString) => {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1;
+const currentDay = currentDate.getDate();
+const dateNow = `${currentDay}/${currentMonth}/${currentYear}`;
+function CodeDiscount({ handleClose }) {
+  const { data } = useQueryDiscount();
+  const { discount, setDiscount } = useContext(MilkContext);
+  const [showAcnoument, setShowAcnoument] = useState(false);
+  const handleDiscount = (item) => {
+    const activeDate = new Date(formatDate(item.activeDate));
+    const expireDate = new Date(formatDate(item.expireDate));
+    const currentDate = new Date(dateNow);
+
+    if (currentDate < activeDate || currentDate > expireDate) {
+      setShowAcnoument(true);
+    } else {
+      setDiscount(item);
+      handleClose();
+    }
+  };
   return (
     <div className={cx("code-discount")}>
       <div className={cx("form-discount")}>
@@ -14,38 +41,34 @@ function CodeDiscount() {
         />
         <Button selectChoose>Áp Dụng</Button>
       </div>
-      <div className={cx("list-discount")}>
-        <div className={cx("discount-item")}>
-          <img
-            className={cx("img-discount")}
-            src="https://product.hstatic.net/200000551679/product/tag-11_a9411fd05c3b47d9a98b566ecd9b46c1_grande.png"
-            alt=""
-          />
-        </div>
-        <div className={cx("discount-item")}>
-          <span className={cx("desc-discount")}>
-            Giảm 10k đối với. <p className={cx("desc-item")}>Đơn giá 200k</p>
-          </span>
-          <span className={cx("expiry")}>Hạn sử dụng: 31.12.2023</span>
-        </div>
-        <Button selectChoose>Chọn</Button>
-      </div>
-      <div className={cx("list-discount")}>
-        <div className={cx("discount-item")}>
-          <img
-            className={cx("img-discount")}
-            src="https://product.hstatic.net/200000551679/product/tag-11_a9411fd05c3b47d9a98b566ecd9b46c1_grande.png"
-            alt=""
-          />
-        </div>
-        <div className={cx("discount-item")}>
-          <span className={cx("desc-discount")}>
-            Giảm 10k đối với. <p className={cx("desc-item")}>Đơn giá 200k</p>
-          </span>
-          <span className={cx("expiry")}>Hạn sử dụng: 31.12.2023</span>
-        </div>
-        <Button selectChoose>Chọn</Button>
-      </div>
+      {showAcnoument && (
+        <span style={{ color: "red" }}>
+          Không được dùng voucher này. Hãy xem lại hạn sử dụng
+        </span>
+      )}
+      {data?.discounts.map((item) => {
+        return (
+          <div className={cx('scroll')} key={item?.id}>
+            <div className={cx("list-discount")}>
+              <div className={cx("discount-des")}>
+                <span>{item?.description}</span>
+              </div>
+              <div className={cx("discount-item")}>
+                <span className={cx("desc-discount")}>
+                  Giảm: {item?.amount} VNĐ
+                </span>
+                <span className={cx("expiry")}>
+                  Hạn sử dụng:{formatDate(item?.activeDate)} -
+                  {formatDate(item?.expireDate)}
+                </span>
+              </div>
+              <Button selectChoose onClick={() => handleDiscount(item)}>
+                Chọn
+              </Button>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

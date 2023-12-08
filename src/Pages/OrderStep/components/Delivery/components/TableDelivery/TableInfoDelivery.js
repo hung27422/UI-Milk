@@ -66,14 +66,10 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
   useEffect(() => {
     localStorage.setItem("guest", JSON.stringify(guest));
   }, [guest]);
-  const storedGuest = JSON.parse(localStorage.getItem("guest"));
-  // if (validationResult.error) {
-  //   // Cập nhật trạng thái lỗi
-  //   console.log(validationResult.error.details);
-  //   setError(
-  //     validationResult.error.details.map((detail) => detail.message).join(", ")
-  //   );
-  //   return; // const validationResult = guestSchema.validate(guest);
+
+  // const storedGuest = JSON.parse(localStorage.getItem("guest"));
+  // if (!storedGuest) {
+  //   console.log(123);
   // }
 
   return (
@@ -163,7 +159,7 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                 <TableCell component="th" scope="row">
                   <TextField
                     id="guest-name"
-                    label={storedGuest ? storedGuest.nameGuest : "Mời nhập tên"}
+                    label={"Mời nhập tên"}
                     variant="outlined"
                     onChange={(e) => handleGuestNameChange(e.target.value)}
                   />
@@ -171,11 +167,7 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                 <TableCell style={{ padding: "20px" }} align="left">
                   <TextField
                     id="guest-phone"
-                    label={
-                      storedGuest
-                        ? storedGuest.phoneGuest
-                        : "Mời nhập số điện thoại"
-                    }
+                    label={"Mời nhập số điện thoại"}
                     variant="outlined"
                     onChange={(e) => handleGuestPhoneChange(e.target.value)}
                   />
@@ -183,9 +175,7 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                 <TableCell align="center">
                   <TextField
                     id="guest-email"
-                    label={
-                      storedGuest ? storedGuest.emailGuest : "Mời nhập email"
-                    }
+                    label={"Mời nhập email"}
                     variant="outlined"
                     onChange={(e) => handleGuestEmailChange(e.target.value)}
                   />
@@ -194,11 +184,7 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                   <TextField
                     style={{ width: "500px" }}
                     id="guest-address"
-                    label={
-                      storedGuest
-                        ? storedGuest.addressGuest
-                        : "Mời nhập địa chỉ"
-                    }
+                    label={"Mời nhập địa chỉ"}
                     variant="outlined"
                     onChange={(e) => handleGuestAddressChange(e.target.value)}
                   />

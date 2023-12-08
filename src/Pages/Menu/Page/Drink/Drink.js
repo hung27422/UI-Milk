@@ -4,10 +4,10 @@ import ProductItem from "~/components/ProductItem/ProductItem";
 import useQueryInventories from "~/hooks/useQueryInventories";
 import useQueryProduct from "~/hooks/useQueryProduct";
 import classNames from "classnames/bind";
-import styles from "./Cream.module.scss";
+import styles from "./Drink.module.scss";
 const cx = classNames.bind(styles);
 
-function Cream() {
+function Drink() {
   const { products, setProducts } = useContext(MilkContext);
   const { inventory, setInventory } = useContext(MilkContext);
   const { data: dataInventory } = useQueryInventories();
@@ -24,20 +24,20 @@ function Cream() {
     }
   }, [data, setProducts, products, error, dataInventory, setInventory]);
 
-  const hasCreamProducts = data?.products.filter(
-    (item) => item?.category.name === "Cream"
+  const hasDrinkProducts = data?.products.filter(
+    (item) => item?.category.name === "Drink"
   );
   return (
     <div>
-      {hasCreamProducts && (
-        <CreamList hasCreamProducts={hasCreamProducts} inventory={inventory} />
+      {hasDrinkProducts && (
+        <DrinkList hasDrinkProducts={hasDrinkProducts} inventory={inventory} />
       )}
     </div>
   );
 }
-const CreamList = ({ hasCreamProducts, inventory }) => (
+const DrinkList = ({ hasDrinkProducts, inventory }) => (
   <div className={cx("wrapper")}>
-    {hasCreamProducts?.map((product) => {
+    {hasDrinkProducts?.map((product) => {
       const inventoryData = inventory?.find(
         (inventory) => inventory.productId === product.id
       );
@@ -51,4 +51,4 @@ const CreamList = ({ hasCreamProducts, inventory }) => (
     })}
   </div>
 );
-export default Cream;
+export default Drink;

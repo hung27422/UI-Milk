@@ -1,14 +1,17 @@
 import classNames from "classnames/bind";
 import styles from "./PaymentOnline.module.scss";
 import PriceContent from "./PriceContent";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PayPal from "../PayPalCheckout/PayPal";
+import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 
 const cx = classNames.bind(styles);
 function PaymentOnline() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const [showPayment, setShowPayment] = useState(false);
-  // console.log(apiTokenLocal);
+  const { discount } = useContext(MilkContext);
+
+  console.log(discount);
   let total = 0;
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,7 +28,9 @@ function PaymentOnline() {
         <div className={cx("content-left")}>
           <h2 className={cx("title-payment")}>Thông tin thanh toán</h2>
           {localStorageCart.forEach((item) => {
-            total = total + item.total;
+            total = discount
+              ? total + item.total - discount?.amount
+              : total + item.total;
           })}
           {showPayment && (
             <div style={{ width: "300px", height: "40px" }}>

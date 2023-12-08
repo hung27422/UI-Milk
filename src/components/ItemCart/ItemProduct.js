@@ -5,11 +5,7 @@ function ItemProduct({ data }) {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("image")}>
-        <img
-          className={cx("img-product")}
-          src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-ID-457x396.png"
-          alt=""
-        />
+        <img className={cx("img-product")} src={data?.images} alt="" />
       </div>
       <div className={cx("info-product")}>
         <span className={cx("name-product")}>{data?.name}</span>

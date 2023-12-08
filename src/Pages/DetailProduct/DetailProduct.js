@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 function DetailProduct() {
   const { products } = useContext(MilkContext);
   const { idProduct, idInventory } = useContext(MilkContext);
-  // console.log("idInventory", idInventory);
+
   return (
     <div>
       {products?.map(
@@ -22,7 +22,7 @@ function DetailProduct() {
               <div className={cx("image")}>
                 <img
                   className={cx("img-product")}
-                  src="https://hienthaoshop.com/wp-content/uploads/2020/06/uht-fresh-milk-sweetened-th-true-milk-box-of-1-liter.jpg"
+                  src={product?.images}
                   alt="img-product"
                 />
               </div>
