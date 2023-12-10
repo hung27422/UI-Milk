@@ -54,7 +54,7 @@ export default function ButtonShowInfoOrders({ data }) {
           </div>
           <div className={cx("content")}>
             {data?.items?.map((item, i) => (
-              <div key={item?.id + i} className={cx("box-product")}>
+              <div key={item?.id} className={cx("box-product")}>
                 <img
                   className={cx("img-product")}
                   src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"

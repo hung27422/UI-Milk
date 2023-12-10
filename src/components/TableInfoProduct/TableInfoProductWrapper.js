@@ -105,6 +105,7 @@ const TableInfoDoneOrderWrapperOrder = ({ doneOrder, order }) => {
         data={statusDone?.map((i) => i).flat()}
         tableStatus={doneOrder ? "Hoàn thành" : ""}
         showTotalPrice
+        isShowButtonReview
       />
     );
   }

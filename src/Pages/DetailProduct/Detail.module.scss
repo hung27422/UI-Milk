@@ -4,6 +4,11 @@
   margin-left: auto;
   margin-top: 20px;
   display: flex;
+  flex-direction: column;
+}
+.box-info {
+  display: flex;
+  align-items: center;
 }
 .image {
   width: fit-content;
@@ -169,3 +174,4 @@
   font-family: var(--font-primary);
   color: var(--text-color);
 }
+

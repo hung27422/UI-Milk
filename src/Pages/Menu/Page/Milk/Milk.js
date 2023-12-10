@@ -20,7 +20,6 @@ function Milk() {
     } else if (data) {
       setProducts(data?.products);
       setInventory(dataInventory?.inventories);
-      console.log(inventory);
     } else if (dataInventory) {
       setInventory(dataInventory?.inventories);
     }

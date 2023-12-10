@@ -11,14 +11,16 @@ function WaitConfirm() {
       console.log(error);
     }
     if (data) {
-      console.log("data", data);
       refetch();
     }
   }, [data, error, refetch]);
   return (
     <div className={cx("wrapper")}>
       <div>
-        <TableInfoProductWrapperOrder waitConfirm order={data?.findOrdersByStatus} />
+        <TableInfoProductWrapperOrder
+          waitConfirm
+          order={data?.findOrdersByStatus}
+        />
       </div>
     </div>
   );

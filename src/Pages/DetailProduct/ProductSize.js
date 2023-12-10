@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./Detail.module.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function ProductSize({ product }) {

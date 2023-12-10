@@ -244,7 +244,7 @@ export default function PayPal({ amount }) {
   const { cartItem, setCartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const productOrder = [];
-  if (Array.isArray(cartItem)) {
+  if (Array.isArray(localStorageCart)) {
     localStorageCart.forEach((item) => {
       const productInfo = {
         productId: item.id,

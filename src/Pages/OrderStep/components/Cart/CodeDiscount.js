@@ -4,6 +4,8 @@ import Button from "~/components/Button";
 import useQueryDiscount from "~/hooks/useQueryDiscount";
 import { useContext, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
+import { useQuery } from "@apollo/client";
+import useAvailableDiscount from "~/hooks/useAvailableDiscount";
 const cx = classNames.bind(styles);
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -18,6 +20,12 @@ function CodeDiscount({ handleClose }) {
   const { data } = useQueryDiscount();
   const { discount, setDiscount } = useContext(MilkContext);
   const [showAcnoument, setShowAcnoument] = useState(false);
+  const { data: dataDiscount } = useAvailableDiscount({
+    birthday: dateNow,
+    specialDay: dateNow,
+    total: 0,
+  });
+  console.log("123", dataDiscount);
   const handleDiscount = (item) => {
     const activeDate = new Date(formatDate(item.activeDate));
     const expireDate = new Date(formatDate(item.expireDate));
@@ -46,9 +54,9 @@ function CodeDiscount({ handleClose }) {
           Không được dùng voucher này. Hãy xem lại hạn sử dụng
         </span>
       )}
-      {data?.discounts.map((item) => {
+      {dataDiscount?.availableDiscounts.map((item) => {
         return (
-          <div className={cx('scroll')} key={item?.id}>
+          <div className={cx("scroll")} key={item?.id}>
             <div className={cx("list-discount")}>
               <div className={cx("discount-des")}>
                 <span>{item?.description}</span>

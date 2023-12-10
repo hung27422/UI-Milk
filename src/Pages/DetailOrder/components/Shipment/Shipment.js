@@ -24,7 +24,6 @@ function Shipment() {
       console.log(error);
     }
     if (data) {
-      console.log("data", data);
       refetch();
     }
   }, [data, error, refetch]);

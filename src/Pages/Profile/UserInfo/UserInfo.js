@@ -96,7 +96,7 @@ function UserInfo() {
         mutation: UPDATE_USER,
         context: {
           headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0MzgxMzVlOC1lNDgwLTQ5NGQtOTRhNy1kNWJkY2ZkMDdlNmUiLCJuYW1lIjoiTWFjIiwianRpIjoiNDM4MTM1RTgtRTQ4MC00OTRELTk0QTctRDVCRENGRDA3RTZFIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2OTk4NjE5MzYsImlzcyI6IklmV2hhdCIsImF1ZCI6IklmV2hhdENsaWVudCJ9.ErzgxPhF4-1wTCFPu8D9XWENQR7TlCPcQZKES71BnzyXX-v3r4fZrVP5OdOURJ5XBOKfVWXbSd12NqVtUdETxA`,
+            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAyNDUwMzcyLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.PjCUwu_VQ-T86vKqlgrw5OAjrC_HaJ77_x6_XOAPvQ6aZik9Yz5i3j2VqxiRVqcvzH-na8sSL7vYCF6KUTFXxQ`,
           },
         },
         variables: {
@@ -168,15 +168,12 @@ function UserInfo() {
                     handleUpdateInfo("phoneNumber", e.target.value)
                   }
                 />
-                {/* <DatePicker className={cx("input-data")} label="Ngày sinh" /> */}
 
                 <TextField
                   className={cx("input-data")}
                   id="email"
                   label={item?.email}
-                  // value={formValues["email"] || ""}
                   variant="outlined"
-                  // onChange={(e) => handleUpdateInfo("email", e.target.value)}
                 />
               </div>
               <div className={cx("btn-action")}>

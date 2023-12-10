@@ -12,6 +12,7 @@ import PhoneUserOrders from "~/Pages/DetailOrder/components/PhoneUserOrders/Phon
 import DateOrders from "~/Pages/DetailOrder/components/DateOrders/DateOrders";
 import ButtonDoneOrder from "~/Pages/DetailOrder/components/DeliveredOrder/ButtonDeliveredOrder/ButtonDoneOrder";
 import ButtonCancelOrder from "~/Pages/DetailOrder/components/WaitConfirm/ButtonCancelOrder";
+import ButtonReviewProduct from "~/Pages/DetailOrder/components/DoneOrders/ButtonReviewProduct";
 
 const cx = classNames.bind(styles);
 const getStatusText = (status) => {
@@ -44,8 +45,8 @@ function TableInfoProduct({
   isShowButtonDetailShipment,
   isShowButtonDone,
   isShowButtonCancel,
+  isShowButtonReview,
 }) {
-  console.log(data);
   return (
     <div>
       <div className={cx("box-title")}>
@@ -135,6 +136,14 @@ function TableInfoProduct({
                 Action
               </TableCell>
             )}
+            {isShowButtonReview && (
+              <TableCell
+                style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
+                align="center"
+              >
+                Action
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -189,6 +198,11 @@ function TableInfoProduct({
                 {isShowButtonDone && (
                   <TableCell align="center">
                     <ButtonDoneOrder data={item} />
+                  </TableCell>
+                )}
+                {isShowButtonReview && (
+                  <TableCell align="center">
+                    <ButtonReviewProduct data={item} />
                   </TableCell>
                 )}
               </TableRow>

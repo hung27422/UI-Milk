@@ -47,6 +47,7 @@ function useQueryFindOrder({ status }) {
         },
       },
       fetchPolicy: "no-cache",
+      pollInterval: 5000,
     }
   );
   return { data, error, refetch };

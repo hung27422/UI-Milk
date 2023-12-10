@@ -1,17 +1,15 @@
 import { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "../ConfirmDoneOrder.module.scss";
-import Button from "~/components/Button";
 import { gql, useMutation } from "@apollo/client";
 import useQueryFindOrder from "~/hooks/useQueryFindOrder";
+import { Button } from "@mui/material";
 const cx = classNames.bind(styles);
 
 const UPDATE_ORDER = gql`
   mutation FinishOrder($input: orderFinishOrderInput!) {
     finishOrder(input: $input) {
-      orderUpdatedPayload {
-        message
-      }
+      string
     }
   }
 `;
@@ -38,11 +36,10 @@ function ButtonDoneOrder({ data }) {
           input: orderFinishOrderInput.input,
         },
       });
+      refetch();
       console.log("Đã update đơn hàng:", result);
     } catch (error) {
       console.error("Lỗi khi update đơn hàng:", error);
-    } finally {
-      refetch();
     }
   };
 
@@ -50,20 +47,15 @@ function ButtonDoneOrder({ data }) {
     <div>
       {!showButton && (
         <div className={cx("action-btn")}>
-          <Button confirmOrderDone onClick={handleConfirmOrderDone}>
+          <Button
+            style={{
+              backgroundColor: "var(--secondary)",
+              color: "var(--white)",
+            }}
+            onClick={handleConfirmOrderDone}
+          >
             Đã nhận được hàng
           </Button>
-        </div>
-      )}
-
-      {showButton && (
-        <div className={cx("action-btn")}>
-          <Button confirmOrderDone>Mua lại</Button>
-        </div>
-      )}
-      {showButton && (
-        <div className={cx("action-btn")}>
-          <Button confirmOrderDone>Đánh giá sản phẩm</Button>
         </div>
       )}
     </div>
