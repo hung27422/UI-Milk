@@ -136,14 +136,6 @@ function TableInfoProduct({
                 Action
               </TableCell>
             )}
-            {isShowButtonReview && (
-              <TableCell
-                style={{ width: "15%", fontSize: "19px", fontWeight: "600" }}
-                align="center"
-              >
-                Action
-              </TableCell>
-            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -163,7 +155,6 @@ function TableInfoProduct({
                   <PhoneUserOrders data={item} />
                 </TableCell>
                 <TableCell align="center">
-                  {/* Date */}
                   <DateOrders data={item} />
                 </TableCell>
                 <TableCell className={cx("list-item-order")} align="center">
@@ -174,7 +165,10 @@ function TableInfoProduct({
                       justifyContent: "space-around",
                     }}
                   >
-                    <ButtonShowInfoOrders data={item} />
+                    <ButtonShowInfoOrders
+                      data={item}
+                      isShowButtonReview={isShowButtonReview}
+                    />
                     {isShowButtonCancel && <ButtonCancelOrder data={item} />}
                   </div>
                 </TableCell>
@@ -200,35 +194,11 @@ function TableInfoProduct({
                     <ButtonDoneOrder data={item} />
                   </TableCell>
                 )}
-                {isShowButtonReview && (
-                  <TableCell align="center">
-                    <ButtonReviewProduct data={item} />
-                  </TableCell>
-                )}
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-      {/* {!showTotalPrice && (
-        <div
-          style={{
-            padding: "20px",
-            textAlign: "right",
-            width: "100%",
-            fontSize: "30px",
-            fontWeight: "600",
-          }}
-        >
-          <span>Tổng tiền: </span>
-          {data?.map((item) =>
-            item?.items.forEach((i) => {
-              total += i.price * i.quantity;
-            })
-          )}
-          <span style={{ color: "var(--text-color)" }}>{total} VNĐ</span>
-        </div>
-      )} */}
     </div>
   );
 }

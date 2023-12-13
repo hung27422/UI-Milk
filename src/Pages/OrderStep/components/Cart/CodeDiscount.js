@@ -15,7 +15,7 @@ const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
-const dateNow = `${currentDay}/${currentMonth}/${currentYear}`;
+const dateNow = `${currentYear}-${currentDay}-${currentMonth}/`;
 function CodeDiscount({ handleClose }) {
   const { data } = useQueryDiscount();
   const { discount, setDiscount } = useContext(MilkContext);

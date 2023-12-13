@@ -37,12 +37,13 @@ function ButtonDefaultAddress({ idAddress }) {
     }
   );
   const [defaultAddress] = useMutation(DEFAULT_ADDRESS);
-  const storedData = JSON.parse(localStorage.getItem("addressesData"));
+  const userIdLocal = localStorage.getItem("userId");
 
   const handleDefaultAddress = async (id) => {
     const userUpdateDefaultAddressInput = {
       input: {
         id: id,
+        userId: userIdLocal,
       },
     };
     const result = await defaultAddress({

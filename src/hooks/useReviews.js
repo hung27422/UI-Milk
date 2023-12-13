@@ -21,6 +21,7 @@ function useReviews() {
           rating
           updatedDate
           userId
+          orderId
         }
       }
     `,

@@ -18,6 +18,9 @@ import styles from "./ButtonReviewProduct.module.scss";
 import { useState } from "react";
 import useReviews from "~/hooks/useReviews";
 import { useEffect } from "react";
+import { date } from "yup";
+import useQueryFindOrder from "~/hooks/useQueryFindOrder";
+import ButtonDeleteReview from "./ButtonDeleteReview";
 const cx = classNames.bind(styles);
 
 const style = {
@@ -34,6 +37,13 @@ const style = {
 const CREATE_REVIEW = gql`
   mutation CreateReview($input: productCreateReviewInput!) {
     createReview(input: $input) {
+      string
+    }
+  }
+`;
+const UPDATE_REVIEW = gql`
+  mutation UpdateReview($input: productUpdateReviewInput!) {
+    updateReview(input: $input) {
       string
     }
   }
@@ -66,19 +76,20 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
 const dateNow = `${currentDay}/${currentMonth}/${currentYear}`;
 export default function ButtonReviewProduct({ data }) {
+  const productId = data?.productId;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [value, setValue] = useState({});
-  const [valueId, setValueId] = useState();
   const [createReview] = useMutation(CREATE_REVIEW);
+  const [updateReview] = useMutation(UPDATE_REVIEW);
+  const [reviews, setReviews] = useState([]);
+  // const [productReview, setProductReview] = useState();
   const userIdLocal = localStorage.getItem("userId");
-  const { refetch } = useReviews();
+  const [productReview, setProductReview] = useState(null);
+  const { data: dataReviews, refetch } = useReviews();
+  const { data: dataOrders } = useQueryFindOrder({ status: "DONE" });
 
-  const handleChangeIdProduct = (id) => {
-    setValueId(id);
-    console.log(id);
-  };
   const handleValueReview = (id, value) => {
     setValue((prev) => ({
       ...prev,
@@ -86,17 +97,41 @@ export default function ButtonReviewProduct({ data }) {
     }));
   };
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    //tim` order
+    dataOrders?.findOrdersByStatus?.find((order) => {
+      // setReviews([...])
+      //tim` review theo order
+      dataReviews?.reviews?.find((review) => {
+        if (Number(order?.id) === Number(review?.orderId)) {
+          setReviews((reviews) => [review, ...reviews]);
+        }
+      });
+    });
+  }, [dataOrders?.findOrdersByStatus, dataReviews]);
+  useEffect(() => {
+    // if (reviews) {
+    //   console.log("rv", reviews);
+    // }
+    setProductReview(
+      reviews.filter((product) => productId === product.productId)?.[0]
+    );
+  }, [productId, reviews]);
+
+  useEffect(() => {
+    if (productReview) {
+      console.log("prr", productReview);
+    }
+  }, [productReview]);
   const handleCreateReview = async () => {
     const productCreateReviewInput = {
       input: {
         createdDate: new Date(dateNow),
         detail: value?.detail,
-        productId: Number(valueId),
+        productId: Number(data?.productId),
         rating: value?.rating,
         updatedDate: new Date(dateNow),
         userId: userIdLocal,
+        orderId: "152",
       },
     };
     const result = await createReview({
@@ -104,23 +139,50 @@ export default function ButtonReviewProduct({ data }) {
         input: productCreateReviewInput.input,
       },
     });
-
     refetch();
     setOpen(false);
     console.log("Đánh giá thành công", result);
   };
-
+  const handleUpdateReview = async () => {
+    const productUpdateReviewInput = {
+      input: {
+        detail: value?.detail || productReview?.detail,
+        id: productReview?.id,
+        rating: value?.rating || productReview?.rating,
+      },
+    };
+    const result = await updateReview({
+      variables: {
+        input: productUpdateReviewInput.input,
+      },
+    });
+    refetch();
+    setOpen(false);
+    console.log("Update đánh giá thành công", result);
+  };
   return (
     <div>
-      <Button
-        style={{
-          backgroundColor: "var(--secondary)",
-          color: "var(--white)",
-        }}
-        onClick={handleOpen}
-      >
-        Đánh giá sản phẩm
-      </Button>
+      {productReview ? (
+        <Button
+          style={{
+            backgroundColor: "var(--secondary)",
+            color: "var(--white)",
+          }}
+          onClick={handleOpen}
+        >
+          Xem đánh giá
+        </Button>
+      ) : (
+        <Button
+          style={{
+            backgroundColor: "var(--secondary)",
+            color: "var(--white)",
+          }}
+          onClick={handleOpen}
+        >
+          Đánh giá sản phẩm
+        </Button>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
@@ -129,36 +191,14 @@ export default function ButtonReviewProduct({ data }) {
       >
         <Box sx={style}>
           <div className={cx("form-group")}>
-            <div className={cx("box-item")}>
-              <FormControl>
-                <FormLabel id="demo-controlled-radio-buttons-group">
-                  Chọn sản phẩm đánh giá
-                </FormLabel>
-                {data?.items?.map((item) => {
-                  return (
-                    <RadioGroup
-                      key={item?.id}
-                      aria-labelledby="demo-controlled-radio-buttons-group"
-                      name="controlled-radio-buttons-group"
-                      defaultChecked={item[0]?.productId}
-                      value={valueId}
-                      onChange={(e) => handleChangeIdProduct(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value={item?.productId}
-                        control={<Radio />}
-                        label={item?.name}
-                      />
-                    </RadioGroup>
-                  );
-                })}
-              </FormControl>
-            </div>
-
+            <h2 style={{ color: "var(--text-color)", marginBottom: "10px" }}>
+              Đánh giá sản phẩm
+            </h2>
             <div className={cx("form-item")}>
               <TextField
                 className={cx("input-value")}
                 id="detail"
+                defaultValue={productReview?.detail ?? ""}
                 label="Nội dung đánh giá"
                 onChange={(e) => handleValueReview("detail", e.target.value)}
                 variant="outlined"
@@ -170,6 +210,7 @@ export default function ButtonReviewProduct({ data }) {
                 id="outlined-select-currency"
                 select
                 label="Chọn Rating"
+                defaultValue={productReview?.rating}
                 onChange={(e) => handleValueReview("rating", e.target.value)}
               >
                 {valueRating.map((option) => (
@@ -181,12 +222,34 @@ export default function ButtonReviewProduct({ data }) {
             </div>
           </div>
           <div className={cx("btn-action")}>
-            <Button
-              style={{ backgroundColor: "var(--secondary)", color: "white" }}
-              onClick={handleCreateReview}
-            >
-              Gửi Đánh Giá
-            </Button>
+            {productReview ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  style={{
+                    backgroundColor: "var(--secondary)",
+                    color: "white",
+                    marginRight: "5px",
+                  }}
+                  onClick={handleUpdateReview}
+                >
+                  UPDATE
+                </Button>
+                <ButtonDeleteReview data={productReview?.id} />
+              </div>
+            ) : (
+              <Button
+                style={{ backgroundColor: "var(--secondary)", color: "white" }}
+                onClick={handleCreateReview}
+              >
+                Gửi Đánh Giá
+              </Button>
+            )}
           </div>
         </Box>
       </Modal>

@@ -14,6 +14,18 @@
   overflow-y: overlay;
   max-height: 380px;
 }
+.box-info-order {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 12px 0;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+}
+.box-info-order.isShowButtonReview {
+  display: flex;
+  justify-content: left;
+}
 .status {
   color: #e4a166;
   font-size: 25px;
@@ -26,11 +38,7 @@
 }
 .box-product {
   display: flex;
-  align-items: center;
-  padding: 12px 0;
-  border: 1px solid #ccc;
-
-  margin-bottom: 8px;
+  text-align: left;
 }
 .img-product {
   width: 100px;

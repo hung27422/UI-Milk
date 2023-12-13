@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import classNames from "classnames/bind";
 import styles from "./ButtonShowInfoOrders.module.scss";
+import ButtonReviewProduct from "../DoneOrders/ButtonReviewProduct";
 const cx = classNames.bind(styles);
 const style = {
   position: "absolute",
@@ -17,11 +18,12 @@ const style = {
   p: 4,
 };
 
-export default function ButtonShowInfoOrders({ data }) {
+export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let total = 0;
+  // console.log(data);
   return (
     <div>
       <Button
@@ -54,19 +56,34 @@ export default function ButtonShowInfoOrders({ data }) {
           </div>
           <div className={cx("content")}>
             {data?.items?.map((item, i) => (
-              <div key={item?.id} className={cx("box-product")}>
-                <img
-                  className={cx("img-product")}
-                  src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"
-                  alt=""
-                />
-                <div className={cx("info-product")}>
-                  <span className={cx("name-product")}>{item?.name}</span>
-                  <span className={cx("quantity-product")}>
-                    x {item?.quantity}
-                  </span>
-                  <span className={cx("price-product")}>{item?.price} VNĐ</span>
+              <div
+                key={item?.id}
+                className={cx(
+                  "box-info-order",
+                  !isShowButtonReview && "isShowButtonReview"
+                )}
+              >
+                <div className={cx("box-product")}>
+                  <img
+                    className={cx("img-product")}
+                    src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"
+                    alt=""
+                  />
+                  <div className={cx("info-product")}>
+                    <span className={cx("name-product")}>{item?.name}</span>
+                    <span className={cx("quantity-product")}>
+                      x {item?.quantity}
+                    </span>
+                    <span className={cx("price-product")}>
+                      {item?.price} VNĐ
+                    </span>
+                  </div>
                 </div>
+                {isShowButtonReview && (
+                  <div className={cx("box-reviews")}>
+                    <ButtonReviewProduct data={item} />
+                  </div>
+                )}
               </div>
             ))}
           </div>
