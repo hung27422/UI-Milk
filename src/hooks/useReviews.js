@@ -8,20 +8,11 @@ function useReviews() {
           createdDate
           detail
           id
-          product {
-            categoryId
-            description
-            id
-            images
-            name
-            price
-            sku
-          }
+          orderId
           productId
           rating
           updatedDate
           userId
-          orderId
         }
       }
     `,

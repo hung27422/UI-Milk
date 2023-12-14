@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 function Milk() {
   const { products, setProducts } = useContext(MilkContext);
   const { inventory, setInventory } = useContext(MilkContext);
-  const { data: dataInventory } = useQueryInventories();
+  const { data: dataInventory, error: errorIV } = useQueryInventories();
   const { data, error } = useQueryProduct();
 
   useEffect(() => {
@@ -23,6 +23,9 @@ function Milk() {
     } else if (dataInventory) {
       setInventory(dataInventory?.inventories);
     }
+    if (errorIV) {
+      console.log("123", errorIV);
+    }
   }, [
     data,
     setProducts,
@@ -31,6 +34,7 @@ function Milk() {
     dataInventory,
     setInventory,
     inventory,
+    errorIV,
   ]);
   const hasMilkProducts = data?.products.filter(
     (item) => item?.category.name === "Milk"

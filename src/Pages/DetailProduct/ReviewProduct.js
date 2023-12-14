@@ -10,6 +10,7 @@ const formatDate = (dateString) => {
 };
 function ReviewProduct({ product }) {
   const { data: dataReviews } = useReviews();
+
   const { data: dataUser } = useQueryUsers();
   const imgUser = dataReviews?.reviews.map((review) => {
     let stringImg = "";

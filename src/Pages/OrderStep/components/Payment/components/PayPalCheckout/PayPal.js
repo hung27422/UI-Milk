@@ -176,7 +176,9 @@ const ButtonWrapper = ({
         total: discount?.totalOverCondition,
       },
       discountCode: discount?.code,
-      pointDeductionAmount: isCheckedPoint ? dataPoint?.pointByUserId?.point : 0,
+      pointDeductionAmount: isCheckedPoint
+        ? dataPoint?.pointByUserId?.point
+        : 0,
     };
 
     try {
@@ -304,7 +306,7 @@ const ButtonWrapper = ({
               } else if (!isAuthenticated) {
                 handleCreateOrderGuest();
               }
-              // handleDonePayment();
+              handleDonePayment();
             }
           })
         }
@@ -320,8 +322,8 @@ export default function PayPal({ amount }) {
   const [emailUser, setEmailUser] = useState(null);
   const [address, setAddress] = useState();
   const { discount } = useContext(MilkContext);
-  const [setGuest] = useState();
-  const { inventory } = useContext(MilkContext);
+  // const {setGuest} = useCon();
+  const { inventory, setGuest } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
   const { setCartItem } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
@@ -347,7 +349,7 @@ export default function PayPal({ amount }) {
     } else if (storedGuest) {
       setGuest(storedGuest);
     }
-  }, [emailUser, storedGuest, user]);
+  }, [emailUser, setGuest, user]);
   const { isCheckedPoint, setIsCheckedPoint } = useContext(MilkContext);
   //total đơn hàng
   let total = 0;

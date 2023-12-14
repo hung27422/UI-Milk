@@ -17,6 +17,16 @@ function useQueryProduct() {
             id
             name
           }
+          reviews {
+            createdDate
+            detail
+            id
+            orderId
+            productId
+            rating
+            updatedDate
+            userId
+          }
         }
       }
     `,
