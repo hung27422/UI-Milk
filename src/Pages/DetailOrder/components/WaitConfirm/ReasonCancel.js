@@ -5,14 +5,13 @@ import { useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import useQueryInventories from "~/hooks/useQueryInventories";
 import { client } from "~/ApolloClient";
+import useQueryPoint from "~/hooks/useQueryPoint";
 const cx = classNames.bind(styles);
 
 const UPDATE_ORDER = gql`
-  mutation UpdateOrder($updateOrderId: Int!, $input: orderUpdateOrderInput!) {
-    updateOrder(id: $updateOrderId, input: $input) {
-      orderUpdatedPayload {
-        message
-      }
+  mutation UpdateOrder($input: orderUpdateOrderInput!) {
+    updateOrder(input: $input) {
+      string
     }
   }
 `;
@@ -25,6 +24,13 @@ const UPDATE_INVENTORY = gql`
       inventoryUpdatedPayload {
         message
       }
+    }
+  }
+`;
+const ADD_POINT = gql`
+  mutation AddPoint($input: userAddPointInput!) {
+    addPoint(input: $input) {
+      string
     }
   }
 `;
@@ -46,13 +52,13 @@ function ReasonCancel({ data, handleClose }) {
   const [nameReason, setNameReason] = useState();
   const [updateOrder] = useMutation(UPDATE_ORDER);
   const [updateInventory] = useMutation(UPDATE_INVENTORY);
+  const [addPoint] = useMutation(ADD_POINT);
   const [reasonId, setReasonId] = useState(1);
-
+  const { data: dataPoint, refetch: refetchPoint } = useQueryPoint();
   const { data: dataInventory, refetch } = useQueryInventories();
   const handleCancelReason = (value, id) => {
     setNameReason(value);
     setReasonId(id);
-    console.log(data);
     const inventoryItem = dataInventory?.inventories?.find((inventory) =>
       data.items.find((item) => inventory.productId === item.productId)
     );
@@ -64,10 +70,29 @@ function ReasonCancel({ data, handleClose }) {
     console.log("inventoryItem", inventoryItem.quantity);
     console.log("quantity", dataQuantity);
   };
+  const handleAddPoint = async () => {
+    const idPoint = dataPoint?.pointByUserId.id;
+
+    const userAddPointInput = {
+      input: {
+        input: {
+          id: idPoint,
+          point: data?.pointDeductionAmount,
+        },
+      },
+    };
+    const result = await addPoint({
+      variables: {
+        input: userAddPointInput.input,
+      },
+    });
+    console.log("Trả point thành công", result);
+    refetchPoint();
+  };
   const handleCancelOrder = async () => {
     const orderUpdateOrderInput = {
-      updateOrderId: data?.id,
       input: {
+        id: data?.id,
         cancelReason: nameReason,
         phone: data?.phone,
         shippingAddress: data?.shippingAddress,
@@ -83,7 +108,6 @@ function ReasonCancel({ data, handleClose }) {
           },
         },
         variables: {
-          updateOrderId: orderUpdateOrderInput.updateOrderId,
           input: orderUpdateOrderInput.input,
         },
       });
@@ -94,7 +118,7 @@ function ReasonCancel({ data, handleClose }) {
           );
 
           if (item) {
-            const updatedQuantity = inventory.quantity + item.quantity;
+            const updatedQuantity = inventory?.quantity + item?.quantity;
 
             await updateInventory({
               variables: {
@@ -120,6 +144,7 @@ function ReasonCancel({ data, handleClose }) {
     } finally {
       handleClose();
       refetch();
+      handleAddPoint();
     }
   };
   return (

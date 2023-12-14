@@ -30,6 +30,7 @@ function useQueryFindOrder({ status }) {
           total
           userId
           userName
+          pointDeductionAmount
         }
       }
     `,
@@ -37,6 +38,7 @@ function useQueryFindOrder({ status }) {
       variables: {
         query: {
           status,
+          pointDeductionAmount: 0,
         },
         page: 1,
         amount: 50,
@@ -46,7 +48,6 @@ function useQueryFindOrder({ status }) {
           authorization: `Bearer ${apiTokenLocal}`,
         },
       },
-      fetchPolicy: "no-cache",
       pollInterval: 5000,
     }
   );

@@ -160,7 +160,6 @@ function PaymentOffline() {
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
-
     const total =
       localStorageCart?.reduce((accumulator, item) => {
         return accumulator + (item?.price * item?.quantity || 0);
@@ -195,6 +194,7 @@ function PaymentOffline() {
         total: discount?.totalOverCondition,
       },
       discountCode: discount?.code,
+      pointDeductionAmount: isCheckedPoint ? dataPoint?.pointByUserId?.point : 0,
     };
 
     try {

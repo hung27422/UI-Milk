@@ -23,7 +23,7 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let total = 0;
-  console.log(data);
+
   return (
     <div>
       <Button

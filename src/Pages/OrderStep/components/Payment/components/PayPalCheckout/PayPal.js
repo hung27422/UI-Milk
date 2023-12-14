@@ -176,6 +176,7 @@ const ButtonWrapper = ({
         total: discount?.totalOverCondition,
       },
       discountCode: discount?.code,
+      pointDeductionAmount: isCheckedPoint ? dataPoint?.pointByUserId?.point : 0,
     };
 
     try {
