@@ -23,7 +23,7 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let total = 0;
-  // console.log(data);
+  console.log(data);
   return (
     <div>
       <Button
@@ -87,10 +87,9 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
               </div>
             ))}
           </div>
-          {data?.items?.forEach((element) => {
-            total += element.subtotal;
-          })}
-          <div className={cx("total-price")}>Tổng tiền: {total} VNĐ</div>
+          <div className={cx("total-price")}>
+            Tổng tiền: {(total += data.total)} VNĐ
+          </div>
           <div className={cx("show-action")}>
             {data?.cancelReason && (
               <span className={cx("reason-cancel")}>

@@ -10,6 +10,7 @@ import ModalSuccessAddCart from "~/components/ModalSuccessAddCart/ModalSuccessAd
 import useValidate from "~/hooks/useValidate";
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonDiscount from "../Cart/ButtonDiscount";
+import useQueryPoint from "~/hooks/useQueryPoint";
 const cx = classNames.bind(styles);
 const InfoPrice = ({ numberPrice, title }) => {
   return (
@@ -23,16 +24,20 @@ function Delivery() {
   const { setActiveStep } = useContext(MilkContext);
   const { isAuthenticated } = useAuth0();
   useEffect(() => setActiveStep(1), [setActiveStep]);
-  const { guest, setGuest } = useContext(MilkContext);
-  const { stock, setStock } = useContext(MilkContext);
-  const { discount, setDiscount } = useContext(MilkContext);
+  const { guest, stock, discount } = useContext(MilkContext);
   const [error, setError] = useState();
+  const { isCheckedPoint, setIsCheckedPoint } = useContext(MilkContext);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const { guestSchema } = useValidate();
+  const { data: dataPoint } = useQueryPoint();
+  // useEffect(() => {
+  //   if (dataPoint) {
+  //     console.log(dataPoint);
+  //   }
+  // }, [dataPoint]);
   let total = 0;
+  let totalPrice = 0;
   const handleSaveInfoGuest = async () => {
-    const storedGuest = JSON.parse(localStorage.getItem("guest"));
-
     const validationResult = await guestSchema.validate(guest, {
       abortEarly: false,
     });
@@ -47,7 +52,25 @@ function Delivery() {
       window.location.href = `${configs.routes.payment}`;
     }
   };
+  // Hàm xử lý khi checkbox thay đổi trạng thái
+  const handleCheckboxChange = () => {
+    setIsCheckedPoint(!isCheckedPoint);
+  };
 
+  if (localStorageCart) {
+    localStorageCart.forEach((item) => {
+      total += item.total;
+    });
+
+    if (discount) {
+      total -= discount.amount;
+    }
+    if (isCheckedPoint && dataPoint) {
+      total -= dataPoint.pointByUserId.point;
+    }
+    // Ensure the total price is not negative
+    totalPrice = Math.max(total, 0);
+  }
   return (
     <>
       {stock ? (
@@ -66,13 +89,37 @@ function Delivery() {
                 <span className={cx("title-discount")}>Chọn mã giảm giá: </span>
                 <ButtonDiscount />
               </div>
+              {isAuthenticated && (
+                <div className={cx("box-point")}>
+                  <span className={cx("title-point")}>
+                    Điểm tích lũy: {dataPoint?.pointByUserId.point}
+                  </span>
+                  <div className={cx("point-info")}>
+                    <span
+                      style={{
+                        color: !isCheckedPoint ? "#ccc" : "var(--text-color)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      [-{dataPoint?.pointByUserId.point}]
+                    </span>
+                    <div>
+                      <input
+                        className={cx("input-point")}
+                        type="checkbox"
+                        name=""
+                        checked={isCheckedPoint}
+                        onChange={handleCheckboxChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <div>
-                {localStorageCart?.forEach((item) => {
-                  total = discount
-                    ? total + item.total - discount?.amount
-                    : total + item.total;
-                })}
-                <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>
+                <InfoPrice
+                  title={"TotalPrice"}
+                  numberPrice={totalPrice}
+                ></InfoPrice>
               </div>
               <div>
                 <Button to={configs.routes.orderstepper} delivery>

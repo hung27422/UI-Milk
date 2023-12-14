@@ -83,7 +83,7 @@ function Cart() {
       )}
       <div className={cx("header")}>
         <TableCart />
-      </div>
+    </div>
       <div className={cx("container")}>
         <div className={cx("total-price")}>
           {localStorageCart?.forEach((item) => {

@@ -5,25 +5,55 @@ import { DatePicker } from "@mui/x-date-pickers";
 import Button from "~/components/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { client } from "~/ApolloClient";
+import useQueryPoint from "~/hooks/useQueryPoint";
 const cx = classNames.bind(styles);
-
+const CREATE_POINT = gql`
+  mutation CreatePoint($input: userCreatePointInput!) {
+    createPoint(input: $input) {
+      string
+    }
+  }
+`;
 function UserInfo() {
   const { user } = useAuth0();
   const [value, setValue] = useState("");
   const [formValues, setFormValues] = useState({});
   const userIdLocal = localStorage.getItem("userId");
-
+  const [createPoint] = useMutation(CREATE_POINT);
+  const { data: dataPoint, refetch } = useQueryPoint();
+  const [point, setPoint] = useState(null);
   const handleUpdateInfo = (id, value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
       [id]: value,
     }));
   };
+  const handleCreatePoint = async () => {
+    const userCreatePointInput = {
+      input: {
+        point: 0,
+        userId: userIdLocal,
+      },
+    };
+    const result = await createPoint({
+      variables: {
+        input: userCreatePointInput.input,
+      },
+    });
+    refetch();
+    console.log("Tạo point thành công: ", result);
+  };
   useEffect(() => {
-    console.log("value", value); // Log the updated value in useEffect
-  }, [value]);
+    if (dataPoint?.pointByUserId === null) {
+      handleCreatePoint();
+    } else {
+      setPoint(dataPoint?.pointByUserId?.point);
+    }
+    // console.log("value", value); // Log the updated value in useEffect
+  }, [dataPoint, value]);
+
   const { data, error } = useQuery(
     gql`
       query Users($amount: Int!, $page: Int!) {
@@ -153,8 +183,8 @@ function UserInfo() {
                 <TextField
                   className={cx("input-data")}
                   id="address"
-                  label={item?.id}
-                  value={userIdLocal}
+                  label={"Điểm tích lũy"}
+                  value={point}
                   variant="outlined"
                 />
                 <TextField

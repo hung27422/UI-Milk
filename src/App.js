@@ -4,6 +4,7 @@ import DefaultLayout from "./Layouts/DefaultLayout/DefaultLayout";
 import { gql, useMutation } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 const LOGIN_USER = gql`
   mutation LoginUser($input: userLoginUserInput!) {
     loginUser(input: $input) {
@@ -54,28 +55,37 @@ function App() {
   }, [isAuthenticated]);
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((router, index) => {
-            let Layout = DefaultLayout;
-            if (router.layout) {
-              Layout = router.layout;
-            }
-            const Page = router.component;
-            return (
-              <Route
-                key={index}
-                path={router.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              ></Route>
-            );
-          })}
-        </Routes>
-      </div>
+      <PayPalScriptProvider
+        deferLoading={false }
+        options={{
+          clientId: "test",
+          components: "buttons",
+          currency: "USD",
+        }}
+      >
+        <div className="App">
+          <Routes>
+            {publicRoutes.map((router, index) => {
+              let Layout = DefaultLayout;
+              if (router.layout) {
+                Layout = router.layout;
+              }
+              const Page = router.component;
+              return (
+                <Route
+                  key={index}
+                  path={router.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                ></Route>
+              );
+            })}
+          </Routes>
+        </div>
+      </PayPalScriptProvider>
     </Router>
   );
 }

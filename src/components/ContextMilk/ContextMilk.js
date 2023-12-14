@@ -25,6 +25,9 @@ function ContextMilk({ children }) {
   const [inventory, setInventory] = useState();
   const [idInventory, setIdInventory] = useState();
   const [discount, setDiscount] = useState();
+  const [code, setCode] = useState();
+  const [isCheckedPoint, setIsCheckedPoint] = useState(false);
+
   return (
     <MilkContext.Provider
       value={{
@@ -74,6 +77,10 @@ function ContextMilk({ children }) {
         setIdInventory,
         discount,
         setDiscount,
+        code,
+        setCode,
+        isCheckedPoint,
+        setIsCheckedPoint,
       }}
     >
       {children}

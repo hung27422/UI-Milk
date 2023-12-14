@@ -66,3 +66,27 @@
   font-weight: 700;
   text-align: center;
 }
+//Point
+.box-point {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 230px;
+}
+.title-point {
+  font-size: 18px;
+  color: var(--text-color);
+  font-weight: 600;
+}
+.input-point {
+  width: 20px;
+  height: 20px;
+  margin-top: 6px;
+}
+.point-info {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  justify-content: space-around;
+}

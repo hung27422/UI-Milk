@@ -11,6 +11,7 @@ import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import configs from "~/configs";
 import useQueryAddress from "~/hooks/useQueryAddress";
 import useQueryInventories from "~/hooks/useQueryInventories";
+import useQueryPoint from "~/hooks/useQueryPoint";
 
 // This value is from the props in the UI
 const style = { layout: "vertical" };
@@ -28,6 +29,28 @@ const CREATE_ORDER_GUEST = gql`
     }
   }
 `;
+const ADD_POINT = gql`
+  mutation AddPoint($input: userAddPointInput!) {
+    addPoint(input: $input) {
+      string
+    }
+  }
+`;
+const SUBTRACT_POINT = gql`
+  mutation SubtractPoint($input: userSubtractPointInput!) {
+    subtractPoint(input: $input) {
+      string
+    }
+  }
+`;
+const UPDATE_DISCOUNT = gql`
+  mutation UpdateDiscount($input: orderUpdateDiscountInput!) {
+    updateDiscount(input: $input) {
+      string
+    }
+  }
+`;
+
 const ButtonWrapper = ({
   showSpinner,
   currency,
@@ -41,6 +64,11 @@ const ButtonWrapper = ({
   refetch,
   setCartItem,
   discount,
+  idPoint,
+  totalPrice,
+  dataPoint,
+  refetchPoint,
+  isCheckedPoint,
 }) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
@@ -52,16 +80,79 @@ const ButtonWrapper = ({
       },
     });
   }, [currency, showSpinner]);
+  const handleUpdateDiscount = async () => {
+    const orderUpdateDiscountInput = {
+      input: {
+        activeDate: discount?.activeDate,
+        amount: discount?.amount,
+        code: discount?.code,
+        description: discount?.description,
+        expireDate: discount?.expireDate,
+        id: discount?.id,
+        quantity: discount?.quantity - 1,
+        type: discount?.type,
+      },
+    };
+    const result = await client.mutate({
+      mutation: UPDATE_DISCOUNT,
+      variables: {
+        input: orderUpdateDiscountInput.input,
+      },
+    });
+    console.log("Cập nhật quantity Discount thành công", result);
+  };
+  const handleAddPoint = async (total) => {
+    const quantityPoint = total * (0.3 / 100);
+    console.log("quantityPoint", quantityPoint);
+    const userAddPointInput = {
+      input: {
+        input: {
+          id: idPoint,
+          point: quantityPoint,
+        },
+      },
+    };
+    const result = await client.mutate({
+      mutation: ADD_POINT,
+      variables: {
+        input: userAddPointInput.input,
+      },
+    });
+    console.log("ADD_POINT thành công,", result);
+  };
+  const handleSubtractPoint = async () => {
+    const idPoint = dataPoint?.pointByUserId?.id;
+    const point = dataPoint?.pointByUserId?.point;
+    const userSubtractPointInput = {
+      input: {
+        input: {
+          id: idPoint,
+          point: point,
+        },
+      },
+    };
+    const result = await client.mutate({
+      mutation: SUBTRACT_POINT,
+      variables: {
+        input: userSubtractPointInput.input,
+      },
+    });
+    refetchPoint();
+    console.log("SUBTRACT_POINT thành công,", result);
+  };
   const handleCreateOrder = async () => {
     const apiTokenLocal = localStorage.getItem("apiToken");
     const userIdLocal = localStorage.getItem("userId");
-    console.log("Inventory paypal", inventory);
-    console.log("Email ở Button: " + emailUser);
     const total =
       data?.reduce((accumulator, item) => {
         return accumulator + (item?.price * item?.quantity || 0);
       }, 0) || 0;
-    console.log(total);
+    if (total >= 100000) {
+      handleAddPoint(total);
+    }
+    if (isCheckedPoint) {
+      handleSubtractPoint();
+    }
     const orderCreateOrderInput = {
       email: emailUser,
       items: [
@@ -74,7 +165,7 @@ const ButtonWrapper = ({
         })),
       ],
       shippingAddress: `${address?.detail},${address?.ward},${address?.district},${address?.city}`,
-      total: total,
+      total: totalPrice,
       userId: userIdLocal,
       status: "CONFIRMED",
       phone: address?.phone,
@@ -117,13 +208,17 @@ const ButtonWrapper = ({
       localStorage.setItem("cartItems", JSON.stringify([]));
       console.log("Đã xóa giỏ hàng");
       refetch();
+      if (discount) {
+        handleUpdateDiscount();
+      }
     }
   };
   const handleCreateOrderGuest = async () => {
-    let total = 0;
-    data.forEach((item) => {
-      total += item.total;
-    });
+    const total =
+      data?.reduce((accumulator, item) => {
+        return accumulator + (item?.price * item?.quantity || 0);
+      }, 0) || 0;
+
     const orderCreateGuestOrderInput = {
       email: guest?.emailGuest,
       items: [
@@ -172,6 +267,9 @@ const ButtonWrapper = ({
       localStorage.setItem("cartItems", JSON.stringify([]));
       console.log("Đã xóa giỏ hàng");
       refetch();
+      if (discount) {
+        handleUpdateDiscount();
+      }
     }
   };
   const { setActiveStep } = useContext(MilkContext);
@@ -221,9 +319,18 @@ export default function PayPal({ amount }) {
   const [emailUser, setEmailUser] = useState(null);
   const [address, setAddress] = useState();
   const { discount } = useContext(MilkContext);
-  const [guest, setGuest] = useState();
+  const [setGuest] = useState();
   const { inventory } = useContext(MilkContext);
   const storedGuest = JSON.parse(localStorage.getItem("guest"));
+  const { setCartItem } = useContext(MilkContext);
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+  const { data: dataPoint, refetch: refetchPoint } = useQueryPoint();
+
+  useEffect(() => {
+    if (dataPoint) {
+      console.log("point nè", dataPoint?.pointByUserId?.id);
+    }
+  }, [dataPoint]);
   useEffect(() => {
     if (dataAddress && dataAddress.addresses.length > 0) {
       const defaultAddress = dataAddress.addresses.find(
@@ -231,7 +338,6 @@ export default function PayPal({ amount }) {
       );
       setAddress(defaultAddress);
     }
-    // console.log("ấdaa", address);
   }, [address, dataAddress]);
   useEffect(() => {
     if (user && user.email) {
@@ -240,9 +346,27 @@ export default function PayPal({ amount }) {
     } else if (storedGuest) {
       setGuest(storedGuest);
     }
-  }, [emailUser, user]);
-  const { cartItem, setCartItem } = useContext(MilkContext);
-  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+  }, [emailUser, storedGuest, user]);
+  const { isCheckedPoint, setIsCheckedPoint } = useContext(MilkContext);
+  //total đơn hàng
+  let total = 0;
+  let totalPrice = 0;
+  if (localStorageCart) {
+    localStorageCart.forEach((item) => {
+      total += item.total;
+    });
+
+    if (discount) {
+      total -= discount.amount;
+    }
+    if (isCheckedPoint && dataPoint) {
+      total -= dataPoint.pointByUserId.point;
+    }
+
+    // Ensure the total price is not negative
+    totalPrice = Math.max(total, 0);
+  }
+  // ----------------------------------------
   const productOrder = [];
   if (Array.isArray(localStorageCart)) {
     localStorageCart.forEach((item) => {
@@ -262,33 +386,38 @@ export default function PayPal({ amount }) {
 
   return (
     <div style={{ maxWidth: "100px", minHeight: "50px" }}>
-      <PayPalScriptProvider
+      {/* <PayPalScriptProvider
         options={{
           clientId: "test",
           components: "buttons",
           currency: "USD",
         }}
-      >
-        {emailUser || !isAuthenticated || storedGuest ? ( // Kiểm tra xem emailUser đã có giá trị
-          <ButtonWrapper
-            currency={"USD"}
-            amount={amount}
-            showSpinner={false}
-            data={productOrder}
-            emailUser={emailUser}
-            guest={storedGuest}
-            isAuthenticated={isAuthenticated}
-            inventory={inventory}
-            address={address}
-            refetch={refetch}
-            setCartItem={setCartItem}
-            discount={discount}
-          />
-        ) : (
-          // hiển thị một spinner hoặc thông báo "Loading" ở đây
-          <div>Loading...</div>
-        )}
-      </PayPalScriptProvider>
+      > */}
+      {emailUser || !isAuthenticated || storedGuest ? ( // Kiểm tra xem emailUser đã có giá trị
+        <ButtonWrapper
+          currency={"USD"}
+          amount={amount}
+          showSpinner={false}
+          data={productOrder}
+          emailUser={emailUser}
+          guest={storedGuest}
+          isAuthenticated={isAuthenticated}
+          inventory={inventory}
+          address={address}
+          refetch={refetch}
+          setCartItem={setCartItem}
+          discount={discount}
+          idPoint={dataPoint?.pointByUserId?.id}
+          totalPrice={totalPrice}
+          dataPoint={dataPoint}
+          refetchPoint={refetchPoint}
+          isCheckedPoint={isCheckedPoint}
+        />
+      ) : (
+        // hiển thị một spinner hoặc thông báo "Loading" ở đây
+        <div>Loading...</div>
+      )}
+      {/* </PayPalScriptProvider> */}
     </div>
   );
 }

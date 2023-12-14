@@ -19,20 +19,37 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
 const dateNow = `${currentYear}-${currentDay}-${currentMonth}`;
 function CodeDiscount({ handleClose }) {
-  const { setDiscount } = useContext(MilkContext);
+  const { discount, setDiscount, code, setCode } = useContext(MilkContext);
+  const [errorDiscount, setErrorDiscount] = useState(false);
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   let total = 0;
   localStorageCart?.forEach((item) => {
     total = total + item.total;
   });
 
-  console.log("tt", total);
   const { data: dataDiscount } = useAvailableDiscount({
     birthday: dayjs(dateNow),
     specialDay: dayjs(dateNow),
     total: total,
   });
-  // console.log("123", dataDiscount, "dateNow", typeof dateNow);
+  const handleInputCodeDiscount = (value) => {
+    setCode(value);
+  };
+  const handleValueCodeDiscount = () => {
+    dataDiscount?.availableDiscounts.filter((discount) => {
+      if (discount.code === code) {
+        setDiscount(discount);
+        handleClose();
+      } else {
+        setErrorDiscount(true);
+      }
+    });
+  };
+  // useEffect(() => {
+  //   if (discount) {
+  //     console.log("dc", discount);
+  //   }
+  // }, [discount]);
   const handleDiscount = (item) => {
     setDiscount(item);
     handleClose();
@@ -45,8 +62,18 @@ function CodeDiscount({ handleClose }) {
           className={cx("input-voucher")}
           type="search"
           placeholder="Nhập mã voucher"
+          onChange={(e) => handleInputCodeDiscount(e.target.value)}
         />
-        <Button selectChoose>Áp Dụng</Button>
+        <Button onClick={handleValueCodeDiscount} selectChoose>
+          Áp Dụng
+        </Button>
+      </div>
+      <div style={{ width: "100%", textAlign: "center", marginBottom: "10px" }}>
+        {errorDiscount && (
+          <span style={{ color: "red" }}>
+            Mã giảm giá của bạn nhập không đúng
+          </span>
+        )}
       </div>
       {dataDiscount?.availableDiscounts.map((item) => {
         return (
