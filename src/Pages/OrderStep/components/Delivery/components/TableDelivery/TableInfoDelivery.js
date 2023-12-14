@@ -24,15 +24,16 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
   const { data: dataUser, error: errorUser } = useQueryUsers();
   const { data: dataAddress } = useQueryAddress();
   const [address, setAddress] = useState();
+  const userIdLocal = localStorage.getItem("userId");
 
   useEffect(() => {
     if (dataAddress && dataAddress.addresses.length > 0) {
       const defaultAddress = dataAddress.addresses.find(
-        (item) => item.isDefault === true
+        (item) => item.isDefault === true && item.userId === userIdLocal
       );
       setAddress(defaultAddress);
     }
-  }, [dataAddress]);
+  }, [dataAddress, userIdLocal]);
 
   if (errorUser) console.log(errorUser);
   const handleGuestNameChange = (value) => {

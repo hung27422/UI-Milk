@@ -1,24 +1,14 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
+import { gql, useMutation } from "@apollo/client";
+import { MenuItem, TextField } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./ButtonReviewProduct.module.scss";
 import { useState } from "react";
 import useReviews from "~/hooks/useReviews";
 import { useEffect } from "react";
-import { date } from "yup";
 import useQueryFindOrder from "~/hooks/useQueryFindOrder";
 import ButtonDeleteReview from "./ButtonDeleteReview";
 const cx = classNames.bind(styles);
@@ -76,6 +66,7 @@ const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
 const dateNow = `${currentDay}/${currentMonth}/${currentYear}`;
 export default function ButtonReviewProduct({ data }) {
+  // console.log("data nè", data);
   const productId = data?.productId;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -131,7 +122,7 @@ export default function ButtonReviewProduct({ data }) {
         rating: value?.rating,
         updatedDate: new Date(dateNow),
         userId: userIdLocal,
-        orderId: "152",
+        orderId: String(data?.orderId),
       },
     };
     const result = await createReview({
