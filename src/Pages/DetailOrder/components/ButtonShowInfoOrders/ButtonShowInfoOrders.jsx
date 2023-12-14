@@ -23,7 +23,6 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let total = 0;
-
   return (
     <div>
       <Button
@@ -66,7 +65,7 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
                 <div className={cx("box-product")}>
                   <img
                     className={cx("img-product")}
-                    src="https://www.thmilk.vn/wp-content/uploads/2019/11/UHT-180-socola-800x800-2-1.png"
+                    src={item?.Product?.images}
                     alt=""
                   />
                   <div className={cx("info-product")}>

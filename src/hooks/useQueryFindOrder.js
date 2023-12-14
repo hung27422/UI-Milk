@@ -23,6 +23,9 @@ function useQueryFindOrder({ status }) {
             productId
             quantity
             subtotal
+            Product {
+              images
+            }
           }
           phone
           shippingAddress
@@ -41,7 +44,7 @@ function useQueryFindOrder({ status }) {
           pointDeductionAmount: 0,
         },
         page: 1,
-        amount: 50,
+        amount: 100,
       },
       context: {
         headers: {

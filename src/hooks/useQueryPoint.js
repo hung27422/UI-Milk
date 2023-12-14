@@ -17,6 +17,7 @@ function useQueryPoint() {
       variables: {
         userId: userIdLocal,
       },
+      pollInterval: 5000,
     }
   );
   return { data, error, refetch };
