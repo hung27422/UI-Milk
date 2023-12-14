@@ -105,7 +105,7 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                 fontSize: "19px",
                 fontWeight: "600",
               }}
-              align="center"
+              align="left"
             >
               Địa chỉ
             </TableCell>
@@ -129,19 +129,19 @@ function TableInfoDelivery({ hiddenButtonAddresses, error }) {
                     {hiddenButtonAddresses ? (
                       <TableCell align="center">
                         <Address>
-                          {address?.detail},{address?.ward},{address?.district},
+                          {address?.detail},{address?.ward},{address?.district},{" "}
                           {address?.city}
                         </Address>
                       </TableCell>
                     ) : (
-                      <TableCell align="center">
+                      <TableCell align="right">
                         <span className={cx("address-content")}>
                           <span className={cx("address-content")}>
                             <Address>
-                              {address?.detail},{address?.ward},
-                              {address?.district},{address?.city}
+                              {address?.detail}, {address?.ward},{" "}
+                              {address?.district}, {address?.city}
                             </Address>
-                            <ButtonChangeAddress data={item} />
+                            {/* <ButtonChangeAddress data={item} /> */}
                           </span>
                         </span>
                       </TableCell>

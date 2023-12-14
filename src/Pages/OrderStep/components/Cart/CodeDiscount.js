@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import { MilkContext } from "~/components/ContextMilk/ContextMilk";
 import { useQuery } from "@apollo/client";
 import useAvailableDiscount from "~/hooks/useAvailableDiscount";
+import dayjs from "dayjs";
+import { useEffect } from "react";
 const cx = classNames.bind(styles);
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -15,28 +17,25 @@ const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth() + 1;
 const currentDay = currentDate.getDate();
-const dateNow = `${currentYear}-${currentDay}-${currentMonth}/`;
+const dateNow = `${currentYear}-${currentDay}-${currentMonth}`;
 function CodeDiscount({ handleClose }) {
-  const { data } = useQueryDiscount();
-  const { discount, setDiscount } = useContext(MilkContext);
-  const [showAcnoument, setShowAcnoument] = useState(false);
-  const { data: dataDiscount } = useAvailableDiscount({
-    birthday: dateNow,
-    specialDay: dateNow,
-    total: 0,
+  const { setDiscount } = useContext(MilkContext);
+  const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
+  let total = 0;
+  localStorageCart?.forEach((item) => {
+    total = total + item.total;
   });
-  console.log("123", dataDiscount);
-  const handleDiscount = (item) => {
-    const activeDate = new Date(formatDate(item.activeDate));
-    const expireDate = new Date(formatDate(item.expireDate));
-    const currentDate = new Date(dateNow);
 
-    if (currentDate < activeDate || currentDate > expireDate) {
-      setShowAcnoument(true);
-    } else {
-      setDiscount(item);
-      handleClose();
-    }
+  console.log("tt", total);
+  const { data: dataDiscount } = useAvailableDiscount({
+    birthday: dayjs(dateNow),
+    specialDay: dayjs(dateNow),
+    total: total,
+  });
+  // console.log("123", dataDiscount, "dateNow", typeof dateNow);
+  const handleDiscount = (item) => {
+    setDiscount(item);
+    handleClose();
   };
   return (
     <div className={cx("code-discount")}>
@@ -49,11 +48,6 @@ function CodeDiscount({ handleClose }) {
         />
         <Button selectChoose>Áp Dụng</Button>
       </div>
-      {showAcnoument && (
-        <span style={{ color: "red" }}>
-          Không được dùng voucher này. Hãy xem lại hạn sử dụng
-        </span>
-      )}
       {dataDiscount?.availableDiscounts.map((item) => {
         return (
           <div className={cx("scroll")} key={item?.id}>

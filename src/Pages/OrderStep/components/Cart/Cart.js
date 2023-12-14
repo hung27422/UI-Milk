@@ -20,7 +20,6 @@ const InfoPrice = ({ numberPrice, title }) => {
 function Cart() {
   const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
   const { setActiveStep } = useContext(MilkContext);
-  console.log("123", localStorageCart);
   const { data } = useQueryInventories();
   const [quantityInventory, setQuantityInventory] = useState();
   const [nameInventory, setNameInventory] = useState();
@@ -36,7 +35,7 @@ function Cart() {
         const inventoryItem = data.inventories.find(
           (inv) => inv.productId === item.id
         );
-        console.log("000", item);
+
         if (inventoryItem && item.quantity > inventoryItem.quantity) {
           hasInsufficientStock = true;
           setQuantityInventory(inventoryItem.quantity);
@@ -55,8 +54,6 @@ function Cart() {
       }
     }
   };
-  // console.log(nameInventory);
-
   const handleCloseModal = () => {
     setShowSuccessModal(false);
   };
