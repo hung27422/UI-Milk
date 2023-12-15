@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { client } from "~/ApolloClient";
 import useQueryPoint from "~/hooks/useQueryPoint";
+import useQueryUsers from "~/hooks/useQueryUsers";
 const cx = classNames.bind(styles);
 const CREATE_POINT = gql`
   mutation CreatePoint($input: userCreatePointInput!) {
@@ -23,6 +24,7 @@ function UserInfo() {
   const userIdLocal = localStorage.getItem("userId");
   const [createPoint] = useMutation(CREATE_POINT);
   const { data: dataPoint, refetch } = useQueryPoint();
+  const { data: dataUser } = useQueryUsers();
   const [point, setPoint] = useState(null);
   const handleUpdateInfo = (id, value) => {
     setFormValues((prevValues) => ({
@@ -54,7 +56,7 @@ function UserInfo() {
     // console.log("value", value); // Log the updated value in useEffect
   }, [dataPoint, value]);
 
-  const { data, error } = useQuery(
+  const { data, error, loading, refetch } = useQuery(
     gql`
       query Users($amount: Int!, $page: Int!) {
         users(amount: $amount, page: $page) {
@@ -134,6 +136,7 @@ function UserInfo() {
           input: userUpdateUserInput.input,
         },
       });
+      refetch();
       console.log("Đã update user thành công:", result);
     } catch (error) {
       console.error("Lỗi khi update user:", error);
@@ -207,12 +210,16 @@ function UserInfo() {
                 />
               </div>
               <div className={cx("btn-action")}>
-                <Button
-                  userInfo
-                  onClick={() => handleUpdateUser(item?.id, item?.token)}
-                >
-                  Lưu thay đổi
-                </Button>
+                {loading ? (
+                  <span>Đang thực thi....</span>
+                ) : (
+                  <Button
+                    userInfo
+                    onClick={() => handleUpdateUser(item?.id, item?.token)}
+                  >
+                    Lưu thay đổi
+                  </Button>
+                )}
               </div>
             </div>
           );

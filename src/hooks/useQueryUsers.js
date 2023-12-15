@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 
 function useQueryUsers() {
-  const { data, error } = useQuery(
+  const { data, error, loading } = useQuery(
     gql`
       query Users($amount: Int!, $page: Int!) {
         users(amount: $amount, page: $page) {
@@ -37,7 +37,7 @@ function useQueryUsers() {
       },
     }
   );
-  return { data, error };
+  return { data, error, loading };
 }
 
 export default useQueryUsers;
