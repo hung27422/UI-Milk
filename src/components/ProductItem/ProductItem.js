@@ -28,7 +28,7 @@ function ProductItem({ hidden, data, inventoryId }) {
           <div className={cx("product-info", { hidden })}>
             <div className={cx("product-price")}>
               {/* <span className={cx("price-discount")}>12.000đ</span> */}
-              <span className={cx("price-new")}>{data?.price}</span>
+              <span className={cx("price-new")}>{data?.price} VNĐ</span>
             </div>
           </div>
         </div>
