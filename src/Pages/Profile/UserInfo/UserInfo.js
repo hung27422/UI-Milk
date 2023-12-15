@@ -56,7 +56,7 @@ function UserInfo() {
     // console.log("value", value); // Log the updated value in useEffect
   }, [dataPoint, value]);
 
-  const { data, error, loading, refetch } = useQuery(
+  const { data, error, loading,refetch: refetchUser } = useQuery(
     gql`
       query Users($amount: Int!, $page: Int!) {
         users(amount: $amount, page: $page) {
@@ -136,7 +136,7 @@ function UserInfo() {
           input: userUpdateUserInput.input,
         },
       });
-      refetch();
+      refetchUser();
       console.log("Đã update user thành công:", result);
     } catch (error) {
       console.error("Lỗi khi update user:", error);
