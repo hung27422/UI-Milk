@@ -33,22 +33,19 @@ export default function AvatarUse() {
         title={
           <React.Fragment>
             <div className={cx("box-item")}>
-              <NavLink to={configs.routes.userinfo} className={cx("box-link")}>
+              <NavLink id="account" to={configs.routes.userinfo} className={cx("box-link")}>
                 Tài khoản của tôi
               </NavLink>
             </div>
             <div className={cx("box-item")}>
-              <NavLink
-                to={configs.routes.detailorder}
-                className={cx("box-link")}
-              >
+              <NavLink to={configs.routes.detailorder} className={cx("box-link")}>
                 Đơn mua
               </NavLink>
             </div>
           </React.Fragment>
         }
       >
-        <Button>
+        <Button id="avatar">
           <img className={cx("avatar")} src={user.picture} alt="avatar" />
         </Button>
       </HtmlTooltip>

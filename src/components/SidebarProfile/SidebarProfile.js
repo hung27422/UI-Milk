@@ -33,6 +33,7 @@ function SidebarProfile() {
           </div>
           <div className={cx("bot")}>
             <MenuItem
+              id={"btn-logout"}
               logOut
               icon={<LogoutIcon />}
               title={"LogOut"}

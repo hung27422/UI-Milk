@@ -16,12 +16,9 @@ function ActionButton({ product, idInventory }) {
   const [showStock, setShowStock] = useState(false);
   const [quantityInventory, setQuantityInventory] = useState();
   const handleAddToCart = () => {
-    const existingCartItems =
-      JSON.parse(localStorage.getItem("cartItems")) || [];
+    const existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-    const existingItemIndex = existingCartItems.findIndex(
-      (item) => item.id === product.id
-    );
+    const existingItemIndex = existingCartItems.findIndex((item) => item.id === product.id);
     if (idInventory) {
       const inventoryItem = inventory.find((item) => item.id === idInventory);
 
@@ -104,7 +101,7 @@ function ActionButton({ product, idInventory }) {
           value={quantity}
           onChange={(e) => handleInputQuantityChange(e)}
         />
-        <button className={cx("btn-add")} onClick={handleQuantityAdd}>
+        <button id="add-quantity-product" className={cx("btn-add")} onClick={handleQuantityAdd}>
           +
         </button>
       </div>
@@ -112,7 +109,7 @@ function ActionButton({ product, idInventory }) {
         <FontAwesomeIcon className={cx("icon-buy")} icon={faShop} />
         <span>Mua hàng</span>
       </div> */}
-      <div className={cx("btn-add__cart")} onClick={handleAddToCart}>
+      <div id="add-cart" className={cx("btn-add__cart")} onClick={handleAddToCart}>
         <FontAwesomeIcon className={cx("icon-cart")} icon={faCartPlus} />
         <span>Thêm giỏ hàng</span>
       </div>

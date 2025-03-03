@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./ItemCart.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MilkContext } from "../ContextMilk/ContextMilk";
 const cx = classNames.bind(styles);
 function DeleteProduct({ data }) {
@@ -11,14 +11,12 @@ function DeleteProduct({ data }) {
   const handleDeleteItemCart = () => {
     const itemIdToDelete = data.id;
     const localStorageCart = JSON.parse(localStorage.getItem("cartItems"));
-    const updatedCart = localStorageCart.filter(
-      (item) => item.id !== itemIdToDelete
-    );
+    const updatedCart = localStorageCart.filter((item) => item.id !== itemIdToDelete);
     setCartItem(updatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
   return (
-    <div className={cx("wrapper")} onClick={handleDeleteItemCart}>
+    <div id="btn-delete-item-cart" className={cx("wrapper")} onClick={handleDeleteItemCart}>
       <FontAwesomeIcon className={cx("delete-icon")} icon={faTrash} />
     </div>
   );

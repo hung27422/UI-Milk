@@ -48,6 +48,7 @@ function App() {
           console.error("Lỗi tạo user:", error);
         } finally {
           console.log("Tạo user thành công");
+          console.log("user", getAccessTokenSilently());
         }
       };
       getAPI();
@@ -56,7 +57,7 @@ function App() {
   return (
     <Router>
       <PayPalScriptProvider
-        deferLoading={false }
+        deferLoading={false}
         options={{
           clientId: "test",
           components: "buttons",

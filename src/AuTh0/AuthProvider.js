@@ -5,9 +5,9 @@ function AuthProvider({ children }) {
   return (
     <Auth0Provider
       domain="dev-zse8qge31om0dwlh.us.auth0.com"
-      clientId="6mNu2Dwxqvai9vX65n26bX59ZB82DspH"
+      clientId="TU4SOfr30wC8StvIXjf3AMgtNFNNnsAp"
       authorizationParams={{
-        redirect_uri: "https://ui-milk.vercel.app/",
+        redirect_uri: "http://localhost:3000/",
       }}
     >
       {children}

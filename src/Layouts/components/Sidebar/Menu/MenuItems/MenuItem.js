@@ -3,9 +3,10 @@ import styles from "./MenuItem.module.scss";
 import { NavLink } from "react-router-dom";
 
 const cx = classNames.bind(styles);
-function MenuItem({ title, to, icon, onClick, logOut }) {
+function MenuItem({ title, to, icon, onClick, logOut, id }) {
   return (
     <NavLink
+      id={id}
       to={to}
       icon={icon}
       onClick={onClick}

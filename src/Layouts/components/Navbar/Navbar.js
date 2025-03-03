@@ -35,7 +35,7 @@ function Navbar() {
       </NavLink>
       <Search />
       <div className={cx("btn-action")}>
-        <NavLink to={configs.routes.orderstepper} className={cx("icon-action")}>
+        <NavLink id="btn-cart" to={configs.routes.orderstepper} className={cx("icon-action")}>
           <FontAwesomeIcon className={cx("btn-icon")} icon={faCartShopping} />
           <Quantity>{countQuantity ? countQuantity : 0}</Quantity>
         </NavLink>

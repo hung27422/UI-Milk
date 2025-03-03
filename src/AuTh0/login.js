@@ -51,7 +51,7 @@ const LoginButton = () => {
     loginWithRedirect();
   };
   return (
-    <button className={cx("btn-login")} onClick={handleLogin}>
+    <button id="login-button" className={cx("btn-login")} onClick={handleLogin}>
       Log in
     </button>
   );
