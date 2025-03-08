@@ -28,6 +28,7 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
       <Button
         style={{ backgroundColor: "var(--secondary)", color: "var(--white)" }}
         onClick={handleOpen}
+        id="show-info"
       >
         Xem thông tin
       </Button>
@@ -40,42 +41,23 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
         <Box sx={style}>
           <div className={cx("header")}>
             <h3 className={cx("title")}>Xem thông tin sản phẩm</h3>
-            {data?.status === "CREATED" && (
-              <h3 className={cx("status")}>Chưa xác nhận</h3>
-            )}
-            {data?.status === "CONFIRMED" && (
-              <h3 className={cx("status")}>Đã xác nhận</h3>
-            )}
-            {data?.status === "SHIPPING" && (
-              <h3 className={cx("status")}>Đang giao hàng</h3>
-            )}
-            {data?.status === "DELIVERED" && (
-              <h3 className={cx("status")}>Đã giao</h3>
-            )}
+            {data?.status === "CREATED" && <h3 className={cx("status")}>Chưa xác nhận</h3>}
+            {data?.status === "CONFIRMED" && <h3 className={cx("status")}>Đã xác nhận</h3>}
+            {data?.status === "SHIPPING" && <h3 className={cx("status")}>Đang giao hàng</h3>}
+            {data?.status === "DELIVERED" && <h3 className={cx("status")}>Đã giao</h3>}
           </div>
           <div className={cx("content")}>
             {data?.items?.map((item, i) => (
               <div
                 key={item?.id}
-                className={cx(
-                  "box-info-order",
-                  !isShowButtonReview && "isShowButtonReview"
-                )}
+                className={cx("box-info-order", !isShowButtonReview && "isShowButtonReview")}
               >
                 <div className={cx("box-product")}>
-                  <img
-                    className={cx("img-product")}
-                    src={item?.Product?.images}
-                    alt=""
-                  />
+                  <img className={cx("img-product")} src={item?.Product?.images} alt="" />
                   <div className={cx("info-product")}>
                     <span className={cx("name-product")}>{item?.name}</span>
-                    <span className={cx("quantity-product")}>
-                      x {item?.quantity}
-                    </span>
-                    <span className={cx("price-product")}>
-                      {item?.price} VNĐ
-                    </span>
+                    <span className={cx("quantity-product")}>x {item?.quantity}</span>
+                    <span className={cx("price-product")}>{item?.price} VNĐ</span>
                   </div>
                 </div>
                 {isShowButtonReview && (
@@ -86,14 +68,10 @@ export default function ButtonShowInfoOrders({ data, isShowButtonReview }) {
               </div>
             ))}
           </div>
-          <div className={cx("total-price")}>
-            Tổng tiền: {(total += data.total)} VNĐ
-          </div>
+          <div className={cx("total-price")}>Tổng tiền: {(total += data.total)} VNĐ</div>
           <div className={cx("show-action")}>
             {data?.cancelReason && (
-              <span className={cx("reason-cancel")}>
-                Hủy với lí do: {data?.cancelReason}
-              </span>
+              <span className={cx("reason-cancel")}>Hủy với lí do: {data?.cancelReason}</span>
             )}
 
             <div className={cx("btn-action")}>

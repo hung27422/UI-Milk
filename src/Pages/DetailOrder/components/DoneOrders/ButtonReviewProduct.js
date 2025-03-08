@@ -103,9 +103,7 @@ export default function ButtonReviewProduct({ data }) {
     // if (reviews) {
     //   console.log("rv", reviews);
     // }
-    setProductReview(
-      reviews.filter((product) => productId === product.productId)?.[0]
-    );
+    setProductReview(reviews.filter((product) => productId === product.productId)?.[0]);
   }, [productId, reviews]);
 
   useEffect(() => {
@@ -170,6 +168,7 @@ export default function ButtonReviewProduct({ data }) {
             color: "var(--white)",
           }}
           onClick={handleOpen}
+          id="evaluated"
         >
           Đánh giá sản phẩm
         </Button>
@@ -182,9 +181,7 @@ export default function ButtonReviewProduct({ data }) {
       >
         <Box sx={style}>
           <div className={cx("form-group")}>
-            <h2 style={{ color: "var(--text-color)", marginBottom: "10px" }}>
-              Đánh giá sản phẩm
-            </h2>
+            <h2 style={{ color: "var(--text-color)", marginBottom: "10px" }}>Đánh giá sản phẩm</h2>
             <div className={cx("form-item")}>
               <TextField
                 className={cx("input-value")}
@@ -237,6 +234,7 @@ export default function ButtonReviewProduct({ data }) {
               <Button
                 style={{ backgroundColor: "var(--secondary)", color: "white" }}
                 onClick={handleCreateReview}
+                id="send-evaluated"
               >
                 Gửi Đánh Giá
               </Button>

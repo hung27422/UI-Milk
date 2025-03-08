@@ -19,7 +19,7 @@ function useQueryInventories() {
       },
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmODhlZGFlOS1mNzhiLTQ2YTEtOTNmMC0yYTdjMmQwOTViMGMiLCJuYW1lIjoiVOG6pW4gSMO5bmcgSOG7kyIsImp0aSI6IkY4OEVEQUU5LUY3OEItNDZBMS05M0YwLTJBN0MyRDA5NUIwQyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzAyODI1ODczLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.o5ruNE0RWtXFGb_0xstZHSpIoZHmTy9xBOgusLM-9NYsHlrOCQsAU0xJNEmlNIwnQiapx4dQkrcFefzrJ6NXnw`,
+          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0NTliNDNjNC0xYzI5LTQ1OTUtOWM5NS00YjVkOThmYjNiYjgiLCJuYW1lIjoiSOG7kyBU4bqlbiBIw7luZyIsImp0aSI6IjQ1OUI0M0M0LTFDMjktNDU5NS05Qzk1LTRCNUQ5OEZCM0JCOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzQxNTkxMjIxLCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.ZenEp9rwBBLBhvp6GDj7WLAHYkXPu3vKbbJ_HBoQnuaAMrOCHUBr-VCfS6OkB6t6xHHvidguWwdcxqC2SeUuoQ`,
         },
       },
     }

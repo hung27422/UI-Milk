@@ -9,6 +9,7 @@ function AuthProvider({ children }) {
       authorizationParams={{
         redirect_uri: "http://localhost:3000/",
       }}
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

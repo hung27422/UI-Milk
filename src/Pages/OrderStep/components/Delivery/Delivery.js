@@ -42,11 +42,7 @@ function Delivery() {
       abortEarly: false,
     });
     if (validationResult.error) {
-      setError(
-        validationResult.error.details
-          .map((detail) => detail.message)
-          .join(", ")
-      );
+      setError(validationResult.error.details.map((detail) => detail.message).join(", "));
       return;
     } else {
       window.location.href = `${configs.routes.payment}`;
@@ -116,21 +112,20 @@ function Delivery() {
                 </div>
               )}
               <div>
-                <InfoPrice
-                  title={"TotalPrice"}
-                  numberPrice={totalPrice}
-                ></InfoPrice>
+                <InfoPrice title={"TotalPrice"} numberPrice={totalPrice}></InfoPrice>
               </div>
               <div>
                 <Button to={configs.routes.orderstepper} delivery>
                   Trở lại
                 </Button>
                 {isAuthenticated ? (
-                  <Button to={configs.routes.payment} delivery>
+                  <Button id="continue" to={configs.routes.payment} delivery>
                     Tiếp tục
                   </Button>
                 ) : (
-                  <Button onClick={handleSaveInfoGuest}>Tiếp tục</Button>
+                  <Button id="continue" onClick={handleSaveInfoGuest}>
+                    Tiếp tục
+                  </Button>
                 )}
               </div>
             </div>

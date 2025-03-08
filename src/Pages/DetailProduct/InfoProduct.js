@@ -19,6 +19,7 @@ function InfoProduct({ product, idInventory }) {
             </div>
           );
         }
+        return null;
       })}
     </div>
   );

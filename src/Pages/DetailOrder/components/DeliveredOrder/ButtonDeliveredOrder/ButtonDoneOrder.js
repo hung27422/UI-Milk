@@ -53,6 +53,7 @@ function ButtonDoneOrder({ data }) {
               color: "var(--white)",
             }}
             onClick={handleConfirmOrderDone}
+            id="received"
           >
             Đã nhận được hàng
           </Button>

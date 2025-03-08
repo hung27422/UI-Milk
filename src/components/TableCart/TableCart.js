@@ -42,6 +42,7 @@ export default function TableCart({ showDelete, title, total }) {
           {localStorageCart?.map((item, index) => {
             return (
               <TableRow
+                id="item-cart"
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >

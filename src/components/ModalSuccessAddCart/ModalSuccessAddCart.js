@@ -1,12 +1,6 @@
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-function ModalSuccessAddCart({
-  open,
-  onClose,
-  showStock,
-  quantityInventory,
-  nameInventory,
-}) {
+function ModalSuccessAddCart({ open, onClose, showStock, quantityInventory, nameInventory }) {
   return (
     <Modal open={open} onClose={onClose}>
       <div
@@ -31,9 +25,7 @@ function ModalSuccessAddCart({
           >
             Xin lỗi, số lượng sản phẩm bạn muốn mua{" "}
             {nameInventory && (
-              <span
-                style={{ color: "red", fontWeight: "700", fontSize: "20px" }}
-              >
+              <span style={{ color: "red", fontWeight: "700", fontSize: "20px" }}>
                 {nameInventory}
               </span>
             )}{" "}
@@ -41,8 +33,8 @@ function ModalSuccessAddCart({
             <span style={{ color: "red", fontWeight: "700", fontSize: "20px" }}>
               {quantityInventory}
             </span>{" "}
-            sản phẩm.<br></br> Vui lòng giảm số lượng hoặc liên hệ với chúng tôi
-            để biết thêm chi tiết. Cảm ơn bạn!
+            sản phẩm.<br></br> Vui lòng giảm số lượng hoặc liên hệ với chúng tôi để biết thêm chi
+            tiết. Cảm ơn bạn!
           </span>
         ) : (
           <>
@@ -64,6 +56,7 @@ function ModalSuccessAddCart({
             variant="contained"
             color="primary"
             onClick={onClose}
+            id="close"
           >
             Đóng
           </Button>

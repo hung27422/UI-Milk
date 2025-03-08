@@ -31,6 +31,7 @@ export default function ButtonCancelOrder({ data }) {
           color: "var(--white)",
         }}
         onClick={handleOpen}
+        id="cancel"
       >
         Hủy đơn hàng
       </Button>

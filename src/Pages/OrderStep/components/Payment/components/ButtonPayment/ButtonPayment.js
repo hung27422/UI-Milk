@@ -10,7 +10,7 @@ function ButtonPayment({ onClick }) {
       <Button to={configs.routes.delivery} payment>
         Trở lại
       </Button>
-      <Button to={configs.routes.orderdone} payment onClick={onClick}>
+      <Button to={configs.routes.orderdone} payment onClick={onClick} id="confirm-payment">
         Xác nhận thanh toán
       </Button>
     </div>

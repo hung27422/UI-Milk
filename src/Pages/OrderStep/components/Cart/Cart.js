@@ -92,7 +92,7 @@ function Cart() {
           <InfoPrice title={"TotalPrice"} numberPrice={total}></InfoPrice>
         </div>
         <div className={cx("btn-action")}>
-          <Button checkout onClick={handleBuyOrder}>
+          <Button checkout onClick={handleBuyOrder} id="buy-order">
             Mua hàng
           </Button>
         </div>

@@ -7,7 +7,6 @@ export default function TableDelivery({ error }) {
   return (
     <TableContainer component={Paper}>
       <TableInfoDelivery error={error} />
-
       <TableCartOfShipment />
     </TableContainer>
   );

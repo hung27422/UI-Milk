@@ -30,7 +30,7 @@ function Search() {
             <FontAwesomeIcon className={cx("icon-shop")} icon={faStore} />
             <span className={cx("title")}>Tìm sản phẩm:{value}</span>
           </div>
-          <div className={cx("search-body")}>
+          <div id="list-search-product" className={cx("search-body")}>
             {data &&
               data?.productsByName?.map((result) => (
                 <NavLink
@@ -49,12 +49,9 @@ function Search() {
     );
   };
   return (
-    <Tippy interactive trigger="click" render={SearchResultTippy}>
+    <Tippy interactive visible={value?.length > 0} render={SearchResultTippy}>
       <div className={cx("search")}>
-        <FontAwesomeIcon
-          className={cx("icon-search")}
-          icon={faMagnifyingGlass}
-        />
+        <FontAwesomeIcon className={cx("icon-search")} icon={faMagnifyingGlass} />
         <input
           className={cx("search-input")}
           type="search"
