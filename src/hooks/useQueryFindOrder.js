@@ -1,14 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
+import { tokenUser } from "~/TokenTestSelenium/token";
 
 function useQueryFindOrder({ status }) {
   const apiTokenLocal = localStorage.getItem("apiToken");
   const { data, error, refetch } = useQuery(
     gql`
-      query FindOrdersByStatus(
-        $query: orderGetOrderInput!
-        $amount: Int!
-        $page: Int!
-      ) {
+      query FindOrdersByStatus($query: orderGetOrderInput!, $amount: Int!, $page: Int!) {
         findOrdersByStatus(query: $query, amount: $amount, page: $page) {
           cancelReason
           date
@@ -48,7 +45,7 @@ function useQueryFindOrder({ status }) {
       },
       context: {
         headers: {
-          authorization: `Bearer ${apiTokenLocal}`,
+          authorization: `Bearer ${tokenUser}`,
         },
       },
       pollInterval: 5000,

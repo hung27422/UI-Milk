@@ -88,7 +88,7 @@ function Delivery() {
               {isAuthenticated && (
                 <div className={cx("box-point")}>
                   <span className={cx("title-point")}>
-                    Điểm tích lũy: {dataPoint?.pointByUserId.point}
+                    Điểm tích lũy: {dataPoint?.pointByUserId?.point}
                   </span>
                   <div className={cx("point-info")}>
                     <span
@@ -97,7 +97,7 @@ function Delivery() {
                         fontWeight: "600",
                       }}
                     >
-                      [-{dataPoint?.pointByUserId.point}]
+                      [-{dataPoint?.pointByUserId?.point}]
                     </span>
                     <div>
                       <input

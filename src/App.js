@@ -22,6 +22,8 @@ function App() {
   const [loginUser] = useMutation(LOGIN_USER, {
     fetchPolicy: "network-only",
   });
+  const apiTokenLocal = localStorage.getItem("apiToken");
+  console.log({ apiTokenLocal });
 
   useEffect(() => {
     if (isAuthenticated) {

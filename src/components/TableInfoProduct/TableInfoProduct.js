@@ -58,7 +58,7 @@ function TableInfoProduct({
           {tableStatus}
         </h2>
       </div>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table" id="table-product">
         <TableHead>
           <TableRow>
             <TableCell

@@ -176,9 +176,7 @@ const ButtonWrapper = ({
         total: discount?.totalOverCondition,
       },
       discountCode: discount?.code,
-      pointDeductionAmount: isCheckedPoint
-        ? dataPoint?.pointByUserId?.point
-        : 0,
+      pointDeductionAmount: isCheckedPoint ? dataPoint?.pointByUserId?.point : 0,
     };
 
     try {
@@ -195,9 +193,7 @@ const ButtonWrapper = ({
       });
 
       data?.forEach((item) => {
-        const inventoryItem = inventory?.find(
-          (inventory) => inventory.id === item.idInventory
-        );
+        const inventoryItem = inventory?.find((inventory) => inventory.id === item.idInventory);
         if (inventoryItem) {
           const updatedQuantity = inventoryItem.quantity - item.quantity;
           inventoryItem.quantity = updatedQuantity;
@@ -254,9 +250,7 @@ const ButtonWrapper = ({
         },
       });
       data?.forEach((item) => {
-        const inventoryItem = inventory?.find(
-          (inventory) => inventory.id === item.idInventory
-        );
+        const inventoryItem = inventory?.find((inventory) => inventory.id === item.idInventory);
         if (inventoryItem) {
           const updatedQuantity = inventoryItem.quantity - item.quantity;
           inventoryItem.quantity = updatedQuantity;
@@ -284,6 +278,7 @@ const ButtonWrapper = ({
     <>
       {showSpinner && isPending && <div className="spinner" />}
       <PayPalButtons
+        id="paypal"
         style={style}
         disabled={false}
         forceReRender={[style]}
@@ -291,9 +286,7 @@ const ButtonWrapper = ({
         createOrder={(data, actions) => {
           return actions.order
             .create({
-              purchase_units: [
-                { amount: { currency_code: currency, value: amount } },
-              ],
+              purchase_units: [{ amount: { currency_code: currency, value: amount } }],
             })
             .then((orderId) => orderId);
         }}
@@ -336,9 +329,7 @@ export default function PayPal({ amount }) {
   }, [dataPoint]);
   useEffect(() => {
     if (dataAddress && dataAddress.addresses.length > 0) {
-      const defaultAddress = dataAddress.addresses.find(
-        (item) => item.isDefault === true
-      );
+      const defaultAddress = dataAddress.addresses.find((item) => item.isDefault === true);
       setAddress(defaultAddress);
     }
   }, [address, dataAddress]);
@@ -415,6 +406,7 @@ export default function PayPal({ amount }) {
           dataPoint={dataPoint}
           refetchPoint={refetchPoint}
           isCheckedPoint={isCheckedPoint}
+          id="paypal"
         />
       ) : (
         // hiển thị một spinner hoặc thông báo "Loading" ở đây

@@ -9,6 +9,7 @@ import { client } from "~/ApolloClient";
 import useQueryPoint from "~/hooks/useQueryPoint";
 import useQueryUsers from "~/hooks/useQueryUsers";
 import ThongBaoUserUpdateThanhCong from "./Thongbao";
+import { tokenUser } from "~/TokenTestSelenium/token";
 const cx = classNames.bind(styles);
 const CREATE_POINT = gql`
   mutation CreatePoint($input: userCreatePointInput!) {
@@ -94,7 +95,7 @@ function UserInfo() {
     {
       context: {
         headers: {
-          authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI4ZDkxOWU4MS0wM2MyLTRhYmEtYWRiZi04MDE5YzE3YjVlOTEiLCJuYW1lIjoiSOG7kyBU4bqlbiBIw7luZyIsImp0aSI6IjhEOTE5RTgxLTAzQzItNEFCQS1BREJGLTgwMTlDMTdCNUU5MSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzQxMjQ3ODI1LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.MtzqyovbDo8jZguSkHhMYWpbO_2vT2KvGksZtEeJFL4jlt6Us2mfcfn26fvD9ICGy5vhdU7__x_SnQo5jqIIeg`,
+          authorization: `Bearer ${tokenUser}`,
         },
       },
       variables: {
@@ -131,7 +132,7 @@ function UserInfo() {
         mutation: UPDATE_USER,
         context: {
           headers: {
-            authorization: `Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI4ZDkxOWU4MS0wM2MyLTRhYmEtYWRiZi04MDE5YzE3YjVlOTEiLCJuYW1lIjoiSOG7kyBU4bqlbiBIw7luZyIsImp0aSI6IjhEOTE5RTgxLTAzQzItNEFCQS1BREJGLTgwMTlDMTdCNUU5MSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzQxMjQ3ODI1LCJpc3MiOiJJZldoYXQiLCJhdWQiOiJJZldoYXRDbGllbnQifQ.MtzqyovbDo8jZguSkHhMYWpbO_2vT2KvGksZtEeJFL4jlt6Us2mfcfn26fvD9ICGy5vhdU7__x_SnQo5jqIIeg`,
+            authorization: `Bearer ${tokenUser}`,
           },
         },
         variables: {

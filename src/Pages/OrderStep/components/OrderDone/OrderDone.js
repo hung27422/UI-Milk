@@ -23,7 +23,7 @@ function OrderDone() {
         </div>
       </div>
       <div className={cx("btn-action")}>
-        <Button to={configs.routes.detailorder} orderDone>
+        <Button to={configs.routes.detailorder} orderDone id="show-detail-order">
           Xem chi tiết đơn hàng
         </Button>
       </div>

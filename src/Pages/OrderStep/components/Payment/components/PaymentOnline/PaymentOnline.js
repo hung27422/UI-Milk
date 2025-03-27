@@ -46,7 +46,7 @@ function PaymentOnline() {
           <h2 className={cx("title-payment")}>Thông tin thanh toán</h2>
           {showPayment && (
             <div style={{ width: "300px", height: "40px" }}>
-              <PayPal amount={totalPrice} />
+              <PayPal id="paypal" amount={totalPrice} />
             </div>
           )}
         </div>
